@@ -1,0 +1,33 @@
+﻿@page "/votingstation"
+@using Elections.Frontend.Shared
+<h3>Puestos de Votación</h3>
+<div class="mb-3">
+    <a class="btn btn-primary" href="/votingstation/create">Nuevo Puesto de Votación</a>
+</div>
+<GenericList MyList="VotingStations">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Puesto de Votación</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var votingstation in VotingStations!)
+                {
+                    <tr>
+                        <td>
+                            @votingstation.Name
+                        </td>
+                        <td>
+                            <a class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
+

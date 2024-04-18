@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elections.Backend", "Elections.Backend\Elections.Backend.csproj", "{AA2CAFD1-567E-4281-BC16-29AB7CECFDE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elections.Backend", "Elections.Backend\Elections.Backend.csproj", "{AA2CAFD1-567E-4281-BC16-29AB7CECFDE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elections.Frontend", "Elections.Frontend\Elections.Frontend.csproj", "{340FFEBD-CBAA-43E0-80BD-B04A7C2BC0E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elections.Frontend", "Elections.Frontend\Elections.Frontend.csproj", "{340FFEBD-CBAA-43E0-80BD-B04A7C2BC0E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elections.Shared", "Elections.Shared\Elections.Shared.csproj", "{888E425F-8295-4F21-81EE-DFB37415F0FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elections.Shared", "Elections.Shared\Elections.Shared.csproj", "{888E425F-8295-4F21-81EE-DFB37415F0FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elections.UnitTests", "Elections.UnitTests\Elections.UnitTests.csproj", "{3FBF1C80-8EAC-4CB9-A8FE-915045B07C7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elections.UnitTests", "Elections.UnitTests\Elections.UnitTests.csproj", "{3FBF1C80-8EAC-4CB9-A8FE-915045B07C7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
