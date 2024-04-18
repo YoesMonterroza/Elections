@@ -13,12 +13,17 @@ namespace Elections.Backend.Data
         public DbSet<ElectoralJourney> ElectoralJourneys { get; set; }
 
         public DbSet<ElectoralPosition> ElectoralPositions { get; set; }
+        public DbSet<VotingStation> VotingStations { get; set; }
+        public DbSet<Zoning> Zonings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ElectoralJourney>().HasIndex(x => x.Date).IsUnique();
             modelBuilder.Entity<ElectoralPosition>().HasIndex(x => x.Name).IsUnique();
+            //modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.CityId, x.Name }).IsUnique();
+            modelBuilder.Entity<VotingStation>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<Zoning>().HasIndex(x => new { x.VotingStationId, x.ZoningNumber }).IsUnique();
         }
     }
 }
