@@ -12,9 +12,10 @@ namespace Elections.Frontend.Pages.VotingStations
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         private VotingStation votingStation = new();
+        private readonly String VOTING_STATION_PATH = "api/votingstation";
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync("/api/votingstation", votingStation);
+            var responseHttp = await Repository.PostAsync(VOTING_STATION_PATH, votingStation);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -34,7 +35,7 @@ namespace Elections.Frontend.Pages.VotingStations
         private void Return()
         {
             votingStationForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/votingstation");
+            NavigationManager.NavigateTo("votingstation");
         }
 
     }

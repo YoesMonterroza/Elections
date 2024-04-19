@@ -1,5 +1,4 @@
 ﻿@page "/votingstation"
-@using Elections.Frontend.Shared
 <h3>Puestos de Votación</h3>
 <div class="mb-3">
     <a class="btn btn-primary" href="/votingstation/create">Nuevo Puesto de Votación</a>
@@ -16,15 +15,15 @@
             <tbody>
                 @foreach (var votingstation in VotingStations!)
                 {
-                    <tr>
-                        <td>
+                        <tr>
+                            <td>
                             @votingstation.Name
-                        </td>
-                        <td>
-                            <a class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger">Borrar</button>
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                                    <a href="/votingstation/edit/@votingstation.Id" class="btn btn-warning">Editar</a>
+                                    <button class="btn btn-danger" @onclick=@(() => DeleteAsync(votingstation))>Borrar</button>
+                            </td>
+                        </tr>
                 }
             </tbody>
         </table>

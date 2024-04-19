@@ -1,0 +1,10 @@
+﻿@page "/votingstation/edit/{Id:int}"
+<h3>Editar Puesto de Votación</h3>
+@if (votingStation is null)
+{
+<Loading/>
+}
+else
+{
+    <VotingStationForm @ref="votingStationForm" VotingStation="votingStation" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}
