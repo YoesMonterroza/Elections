@@ -18,7 +18,7 @@ namespace Elections.Backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.VotingStations.ToListAsync());
+            return Ok(await _context.VotingStations.AsNoTracking().ToListAsync());
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(int id)
