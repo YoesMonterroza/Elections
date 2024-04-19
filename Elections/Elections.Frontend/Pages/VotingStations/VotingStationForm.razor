@@ -1,0 +1,27 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Puesto de Votación:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@VotingStation.Name" />
+            <ValidationMessage For="@(() => VotingStation.Name)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Descripción:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@VotingStation.Description" />
+            <ValidationMessage For="@(() => VotingStation.Description)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Código:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@VotingStation.Code" />
+            <ValidationMessage For="@(() => VotingStation.Code)" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>
