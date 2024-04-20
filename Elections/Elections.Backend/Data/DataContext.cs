@@ -22,7 +22,7 @@ namespace Elections.Backend.Data
             modelBuilder.Entity<ElectoralJourney>().HasIndex(x => x.Date).IsUnique();
             modelBuilder.Entity<ElectoralPosition>().HasIndex(x => x.Name).IsUnique();
             //modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.CityId, x.Name }).IsUnique();
-            modelBuilder.Entity<VotingStation>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.Name, x.Code }).IsUnique();
             modelBuilder.Entity<Zoning>().HasIndex(x => new { x.VotingStationId, x.ZoningNumber }).IsUnique();
         }
     }
