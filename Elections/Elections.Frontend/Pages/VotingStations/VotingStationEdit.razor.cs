@@ -22,7 +22,7 @@ namespace Elections.Frontend.Pages.VotingStations
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("votingstation");
+                    NavigationManager.NavigateTo("votingstations");
                 }
                 else
                 {
@@ -57,7 +57,7 @@ namespace Elections.Frontend.Pages.VotingStations
         private void Return()
         {
             votingStationForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("votingstation");
+            NavigationManager.NavigateTo("votingstations");
         }
 
     }

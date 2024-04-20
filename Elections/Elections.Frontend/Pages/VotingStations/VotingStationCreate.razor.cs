@@ -35,7 +35,7 @@ namespace Elections.Frontend.Pages.VotingStations
         private void Return()
         {
             votingStationForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("votingstation");
+            NavigationManager.NavigateTo("votingstations");
         }
 
     }
