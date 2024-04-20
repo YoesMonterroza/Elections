@@ -13,7 +13,7 @@ namespace Elections.Frontend.Pages.VotingStations
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
 
-        private readonly String VOTING_STATION_PATH = "api/votingstation";
+        private readonly String VOTING_STATION_PATH = "api/votingstations";
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();

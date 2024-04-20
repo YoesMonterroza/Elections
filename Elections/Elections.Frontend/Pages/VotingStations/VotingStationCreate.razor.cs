@@ -12,7 +12,7 @@ namespace Elections.Frontend.Pages.VotingStations
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         private VotingStation votingStation = new();
-        private readonly String VOTING_STATION_PATH = "api/votingstation";
+        private readonly String VOTING_STATION_PATH = "api/votingstations";
         private async Task CreateAsync()
         {
             var responseHttp = await Repository.PostAsync(VOTING_STATION_PATH, votingStation);

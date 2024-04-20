@@ -9,21 +9,26 @@
             <thead>
                 <tr>
                     <th>Puesto de Votación</th>
+                    <th>Mesas de Votación</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var votingstation in VotingStations!)
                 {
-                        <tr>
-                            <td>
+                    <tr>
+                        <td>
                             @votingstation.Name
-                            </td>
-                            <td>
-                                    <a href="/votingstation/edit/@votingstation.Id" class="btn btn-warning">Editar</a>
-                                    <button class="btn btn-danger" @onclick=@(() => DeleteAsync(votingstation))>Borrar</button>
-                            </td>
-                        </tr>
+                        </td>
+                        <td>
+                            @votingstation.ZoningNumber
+                        </td>
+                        <td>
+                            <a href="/votingstation/edit/@votingstation.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/votingstation/details/@votingstation.Id" class="btn btn-info btn-sm">Detalles</a>
+                            <button class="btn btn-danger" @onclick=@(() => DeleteAsync(votingstation))>Borrar</button>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

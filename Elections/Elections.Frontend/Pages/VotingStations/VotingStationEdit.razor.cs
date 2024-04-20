@@ -14,7 +14,7 @@ namespace Elections.Frontend.Pages.VotingStations
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Parameter] public int Id { get; set; }
 
-        private readonly String VOTING_STATION_PATH = "api/votingstation";
+        private readonly String VOTING_STATION_PATH = "api/votingstations";
         protected override async Task OnInitializedAsync()
         {            
             var responseHttp = await Repository.GetAsync<VotingStation>(string.Concat(VOTING_STATION_PATH, $"/{Id}"));

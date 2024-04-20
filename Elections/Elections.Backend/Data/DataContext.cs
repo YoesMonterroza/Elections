@@ -24,6 +24,16 @@ namespace Elections.Backend.Data
             //modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.CityId, x.Name }).IsUnique();
             modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.Name, x.Code }).IsUnique();
             modelBuilder.Entity<Zoning>().HasIndex(x => new { x.VotingStationId, x.ZoningNumber }).IsUnique();
+            DisableCascadingDelete(modelBuilder);
         }
+        private void DisableCascadingDelete(ModelBuilder modelBuilder)
+        {
+            var relationships = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys());
+            foreach (var relationship in relationships)
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+        }
+
     }
 }
