@@ -8,11 +8,11 @@ else
 {
     <h3>@votingStation.Name</h3>
     <div class="mb-2">
-        <a class="btn btn-primary" href="/zonigns/create/@votingStation.Id">Nueva mesa de votación</a>
+        <a class="btn btn-primary" href="/zoning/create/@votingStation.Id">Nueva mesa de votación</a>
         <a class="btn btn-success" href="/votingstations">Regresar</a>
     </div>
 
-    <h4>Mesas de votacioón</h4>
+    <h4>Mesas de votación</h4>
     <GenericList MyList="votingStation.Zonings!.ToList()">
         <Body>
             <table class="table table-striped">
@@ -30,8 +30,7 @@ else
                                 @zoning.ZoningNumber
                             </td>
                             <td>
-                                <a class="btn btn-warning btn-sm" href="/zonings/edit/@zoning.Id">Editar</a>
-                                <a class="btn btn-info btn-sm" href="/zonings/details/@zoning.Id">Detalles</a>
+                                <a class="btn btn-warning btn-sm" href="/zoning/edit/@zoning.Id">Editar</a>
                                 <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(zoning))>Borrar</button>
                             </td>
                         </tr>

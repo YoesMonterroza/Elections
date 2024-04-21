@@ -1,0 +1,13 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Mesa de Votación:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Zoning.ZoningNumber" />
+            <ValidationMessage For="@(() => Zoning.ZoningNumber)" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>

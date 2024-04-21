@@ -1,0 +1,5 @@
+﻿@page "/zoning/create/{VotingStationId:int}"
+
+<h3>Nueva mesa de Votación</h3>
+
+<ZoningForm @ref="zoningForm" Zoning="zoning" OnValidSubmit="CreateAsync" ReturnAction="Return" />

@@ -24,8 +24,8 @@
                             @votingstation.ZoningNumber
                         </td>
                         <td>
-                            <a href="/votingstation/edit/@votingstation.Id" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="/votingstation/details/@votingstation.Id" class="btn btn-info btn-sm">Detalles</a>
+                            <a href="/votingstations/edit/@votingstation.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/votingstations/details/@votingstation.Id" class="btn btn-info btn-sm">Detalles</a>
                             <button class="btn btn-danger" @onclick=@(() => DeleteAsync(votingstation))>Borrar</button>
                         </td>
                     </tr>
