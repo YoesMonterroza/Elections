@@ -9,6 +9,9 @@ namespace Elections.Frontend.Pages.VotingStations
     partial class VotingStationIndex
     {
         public List<VotingStation>? VotingStations { get; set; }
+        private int currentPage = 1;
+        private int totalPages;
+
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -69,5 +72,46 @@ namespace Elections.Frontend.Pages.VotingStations
             }
             VotingStations = responseHppt.Response!;
         }
+
+        private async Task SelectedPageAsync(int page)
+        {
+            currentPage = page;
+            await LoadAsync(page);
+        }
+
+        private async Task LoadAsync(int page = 1)
+        {
+            var ok = await LoadListAsync(page);
+            if (ok)
+            {
+                await LoadPagesAsync();
+            }
+        }
+
+        private async Task<bool> LoadListAsync(int page)
+        {
+            var responseHttp = await Repository.GetAsync<List<VotingStation>>(string.Concat(VOTING_STATION_PATH, $"?page={page}"));
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            VotingStations = responseHttp.Response;
+            return true;
+        }
+
+        private async Task LoadPagesAsync()
+        {
+            var responseHttp = await Repository.GetAsync<int>(string.Concat(VOTING_STATION_PATH, "/totalPages"));
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            totalPages = responseHttp.Response;
+        }
+
     }
 }

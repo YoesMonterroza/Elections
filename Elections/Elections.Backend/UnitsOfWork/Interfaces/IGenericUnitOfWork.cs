@@ -1,4 +1,5 @@
-﻿using Elections.Shared.Responses;
+﻿using Elections.Shared.DTOs;
+using Elections.Shared.Responses;
 
 namespace Elections.Backend.UnitsOfWork.Interfaces
 {
@@ -13,5 +14,9 @@ namespace Elections.Backend.UnitsOfWork.Interfaces
         Task<ActionResponse<T>> GetAsync(int id);
 
         Task<ActionResponse<T>> UpdateAsync(T model);
+        Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
+
     }
 }

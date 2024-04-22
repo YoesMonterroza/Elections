@@ -1,5 +1,7 @@
 ﻿using Elections.Backend.Data;
+using Elections.Backend.Helpers;
 using Elections.Backend.Repositories.Interfaces;
+using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,7 @@ namespace Elections.Backend.Repositories.Implementations
         public override async Task<ActionResponse<IEnumerable<VotingStation>>> GetAsync()
         {
             var votingstations = await _context.VotingStations
+                .OrderBy(c => c.Name)
                 .Include(c => c.Zonings)
                 .ToListAsync();
             return new ActionResponse<IEnumerable<VotingStation>>
@@ -48,6 +51,48 @@ namespace Elections.Backend.Repositories.Implementations
                 Result = votingStation
             };
         }
+
+        public override async Task<ActionResponse<IEnumerable<VotingStation>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.VotingStations
+                .Include(c => c.Zonings)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+
+            return new ActionResponse<IEnumerable<VotingStation>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                    .OrderBy(x => x.Name)
+                    .Paginate(pagination)
+                    .ToListAsync()
+            };
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.VotingStations.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            double count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
+            };
+        }
+
+
 
     }
 }

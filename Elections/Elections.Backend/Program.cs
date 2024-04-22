@@ -4,6 +4,7 @@ using Elections.Backend.Repositories.Interfaces;
 using Elections.Backend.UnitsOfWork.Implementations;
 using Elections.Backend.UnitsOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Orders.Backend.Repositories.Interfaces;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,10 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 builder.Services.AddScoped<IVotingStationsRepository, VotingStationsRepository>();
 builder.Services.AddScoped<IVotingStationsUnitOfWork, VotingStationsUnitOfWork>();
+
+builder.Services.AddScoped<IZoningsRepository, ZoningsRepository>();
+builder.Services.AddScoped<IZoningsUnitOfWork, ZoningsUnitOfWork>();
+
 
 var app = builder.Build();
 SeedData(app);

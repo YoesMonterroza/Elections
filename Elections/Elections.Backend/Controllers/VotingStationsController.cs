@@ -1,5 +1,6 @@
 ﻿using Elections.Backend.Data;
 using Elections.Backend.UnitsOfWork.Interfaces;
+using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace Elections.Backend.Controllers
             _votingStationsUnitOfWork = votingStationsUnitOfWork;
         }
 
-        [HttpGet]
+        [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
             var response = await _votingStationsUnitOfWork.GetAsync();
@@ -38,6 +39,18 @@ namespace Elections.Backend.Controllers
             }
             return NotFound(response.Message);
         }
+
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
+        {
+            var response = await _votingStationsUnitOfWork.GetAsync(pagination);
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
+        }
+
 
     }
 }

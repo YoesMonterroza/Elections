@@ -13,8 +13,12 @@ else
     </div>
 
     <h4>Mesas de votación</h4>
-    <GenericList MyList="votingStation.Zonings!.ToList()">
+    <GenericList MyList="zonings!">
         <Body>
+                <Pagination CurrentPage="currentPage"
+                            TotalPages="totalPages"
+                            SelectedPage="SelectedPageAsync" />
+
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -23,7 +27,7 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var zoning in votingStation.Zonings!)
+                    @foreach (var zoning in zonings!)
                     {
                         <tr>
                             <td>

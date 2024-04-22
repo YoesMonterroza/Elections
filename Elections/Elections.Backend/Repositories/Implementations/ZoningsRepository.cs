@@ -1,0 +1,52 @@
+﻿using Elections.Backend.Data;
+using Elections.Backend.Helpers;
+using Elections.Shared.DTOs;
+using Elections.Shared.Entities;
+using Elections.Shared.Responses;
+using Microsoft.EntityFrameworkCore;
+using Orders.Backend.Repositories.Interfaces;
+
+namespace Elections.Backend.Repositories.Implementations
+{
+    public class ZoningsRepository : GenericRepository<Zoning>, IZoningsRepository
+    {
+        private readonly DataContext _context;
+
+        public ZoningsRepository(DataContext context) : base(context)
+        {
+            _context = context;
+        }
+
+        public override async Task<ActionResponse<IEnumerable<Zoning>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.Zonings
+                .Where(x => x.VotingStation!.Id == pagination.Id)
+                .AsQueryable();
+
+            return new ActionResponse<IEnumerable<Zoning>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                    .OrderBy(x => x.ZoningNumber)
+                    .Paginate(pagination)
+                    .ToListAsync()
+            };
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.Zonings
+                .Where(x => x.VotingStation!.Id == pagination.Id)
+                .AsQueryable();
+
+            double count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
+            };
+        }
+    }
+
+}
