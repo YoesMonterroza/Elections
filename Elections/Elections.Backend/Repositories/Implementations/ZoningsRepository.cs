@@ -23,6 +23,12 @@ namespace Elections.Backend.Repositories.Implementations
                 .Where(x => x.VotingStation!.Id == pagination.Id)
                 .AsQueryable();
 
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.ZoningNumber.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+
             return new ActionResponse<IEnumerable<Zoning>>
             {
                 WasSuccess = true,
@@ -38,6 +44,13 @@ namespace Elections.Backend.Repositories.Implementations
             var queryable = _context.Zonings
                 .Where(x => x.VotingStation!.Id == pagination.Id)
                 .AsQueryable();
+
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.ZoningNumber.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
 
             double count = await queryable.CountAsync();
             int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);

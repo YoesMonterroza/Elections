@@ -20,6 +20,7 @@ namespace Elections.Backend.UnitsOfWork.Implementations
         public override async Task<ActionResponse<VotingStation>> GetAsync(int id) => await _votingStationsRepository.GetAsync(id);
 
         public override async Task<ActionResponse<IEnumerable<VotingStation>>> GetAsync(PaginationDTO pagination) => await _votingStationsRepository.GetAsync(pagination);
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination) => await _votingStationsRepository.GetTotalPagesAsync(pagination);
 
     }
 }

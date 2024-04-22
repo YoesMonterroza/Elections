@@ -10,6 +10,7 @@ namespace Elections.Backend.UnitsOfWork.Interfaces
 
         Task<ActionResponse<IEnumerable<VotingStation>>> GetAsync();
         Task<ActionResponse<IEnumerable<VotingStation>>> GetAsync(PaginationDTO pagination);
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
 
     }
 }
