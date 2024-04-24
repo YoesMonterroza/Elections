@@ -21,6 +21,7 @@ namespace Elections.Frontend.Pages.VotingStations
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
 
         [Parameter]
@@ -30,7 +31,7 @@ namespace Elections.Frontend.Pages.VotingStations
         private readonly String ZONING_PATH = "api/zonings";
 
         protected override async Task OnInitializedAsync()
-        {
+        {            
             await LoadAsync();
         }
 
@@ -100,7 +101,8 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task LoadPagesAsync()
         {
-            var url = string.Concat(ZONING_PATH, $"/totalPages?id={VotingStationId}");
+            validateRecordsNumber(RecordsNumber);
+            var url = string.Concat(ZONING_PATH, $"/totalPages?id={VotingStationId}", $"&recordsnumber={RecordsNumber}");
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -118,7 +120,8 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task<bool> LoadZoningsAsync(int page)
         {
-            var url = string.Concat(ZONING_PATH, $"?id={VotingStationId}&page={page}");
+            validateRecordsNumber(RecordsNumber);
+            var url = string.Concat(ZONING_PATH, $"?id={VotingStationId}&page={page}", $"&recordsnumber={RecordsNumber}");
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -162,6 +165,21 @@ namespace Elections.Frontend.Pages.VotingStations
             await SelectedPageAsync(page);
         }
 
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
+        private void validateRecordsNumber(int recordsnumber)
+        {
+            if (recordsnumber == 0)
+            {
+                RecordsNumber = 10;
+            }
+        }
 
 
     }

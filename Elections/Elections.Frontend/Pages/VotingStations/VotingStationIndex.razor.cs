@@ -18,6 +18,7 @@ namespace Elections.Frontend.Pages.VotingStations
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
 
         private readonly String VOTING_STATION_PATH = "api/votingstations";
@@ -67,7 +68,7 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task SelectedPageAsync(int page)
         {
-            currentPage = page;
+            currentPage = page;           
             await LoadAsync(page);
         }
 
@@ -87,7 +88,8 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = string.Concat(VOTING_STATION_PATH, $"?page={page}");
+            validateRecordsNumber(RecordsNumber);
+            var url = string.Concat(VOTING_STATION_PATH, $"?page={page}", $"&recordsnumber={RecordsNumber}");
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -106,10 +108,10 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task LoadPagesAsync()
         {
-            var url = string.Concat(VOTING_STATION_PATH, "/totalPages");
+            var url = string.Concat(VOTING_STATION_PATH, "/totalPages", $"?recordsnumber={RecordsNumber}");
             if (!string.IsNullOrEmpty(Filter))
             {
-                url += $"?filter={Filter}";
+                url += $"&filter={Filter}";
             }
 
             var responseHttp = await Repository.GetAsync<int>(url);
@@ -124,10 +126,26 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task ApplyFilterAsync(string filter)
         {
-            Filter = filter;
+            Filter = filter;            
             int page = 1;
             await LoadAsync(page);
             await SelectedPageAsync(page);
+        }
+
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
+        private void validateRecordsNumber(int recordsnumber)
+        {
+            if (recordsnumber == 0)
+            {
+                RecordsNumber = 10;
+            }
         }
 
 

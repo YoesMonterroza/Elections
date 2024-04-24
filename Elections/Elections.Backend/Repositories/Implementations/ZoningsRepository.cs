@@ -28,6 +28,11 @@ namespace Elections.Backend.Repositories.Implementations
                 queryable = queryable.Where(x => x.ZoningNumber.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
+            if (pagination.RecordsNumber == -1)
+            {
+                pagination.RecordsNumber = await queryable.CountAsync();
+            }
+
 
             return new ActionResponse<IEnumerable<Zoning>>
             {
@@ -53,6 +58,12 @@ namespace Elections.Backend.Repositories.Implementations
 
 
             double count = await queryable.CountAsync();
+
+            if (pagination.RecordsNumber == -1)
+            {
+                pagination.RecordsNumber = (int) count;
+            }
+
             int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
             return new ActionResponse<int>
             {

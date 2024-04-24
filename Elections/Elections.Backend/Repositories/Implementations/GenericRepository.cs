@@ -125,6 +125,11 @@ namespace Elections.Backend.Repositories.Implementations
         {
             var queryable = _entity.AsQueryable();
 
+            if (pagination.RecordsNumber == -1)
+            {
+                pagination.RecordsNumber = await queryable.CountAsync();
+            }
+
             return new ActionResponse<IEnumerable<T>>
             {
                 WasSuccess = true,
@@ -138,6 +143,10 @@ namespace Elections.Backend.Repositories.Implementations
         {
             var queryable = _entity.AsQueryable();
             double count = await queryable.CountAsync();
+            if (pagination.RecordsNumber == -1)
+            {
+                pagination.RecordsNumber = (int) count;
+            }
             int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
             return new ActionResponse<int>
             {
