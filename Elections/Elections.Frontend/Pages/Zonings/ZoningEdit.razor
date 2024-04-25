@@ -1,0 +1,12 @@
+﻿@page "/zoning/edit/{ZoningId:int}"
+
+<h3>Editar Mesa de Votación</h3>
+
+@if (zoning is null)
+{
+    <Loading />
+}
+else
+{
+    <ZoningForm @ref="zoningForm" Zoning="zoning" OnValidSubmit="SaveAsync" ReturnAction="Return" />
+}

@@ -1,60 +1,69 @@
-﻿using Elections.Frontend.Repositories;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components;
-using CurrieTechnologies.Razor.SweetAlert2;
 using System.Diagnostics.Metrics;
+using System.Net;
 
 namespace Elections.Frontend.Pages.VotingStations
 {
-    partial class VotingStationIndex
+    public partial class VotingStationDetails
     {
-        public List<VotingStation>? VotingStations { get; set; }
+        private VotingStation? votingStation;
+        private List<Zoning>? zonings;
         private int currentPage = 1;
         private int totalPages;
 
+
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private IRepository Repository { get; set; } = null!;
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
 
+        [Parameter]
+        public int VotingStationId { get; set; }
+
         private readonly String VOTING_STATION_PATH = "api/votingstations";
+        private readonly String ZONING_PATH = "api/zonings";
+
         protected override async Task OnInitializedAsync()
-        {
+        {            
             await LoadAsync();
         }
 
-        private async Task DeleteAsync(VotingStation votingStation)
+        private async Task DeleteAsync(Zoning zoning)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Esta seguro que quieres borrar el puesto de votación: {votingStation.Name}?",
+                Text = $"¿Realmente deseas eliminar la mesa de votación? {zoning.ZoningNumber}",
                 Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
             });
+
             var confirm = string.IsNullOrEmpty(result.Value);
             if (confirm)
             {
                 return;
-            }            
-            var responseHTTP = await Repository.DeleteAsync(string.Concat(VOTING_STATION_PATH, $"/{votingStation.Id}"));
-            if (responseHTTP.Error)
-            {
-                if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    NavigationManager.NavigateTo("/");
-                }
-                else
-                {
-                    var mensajeError = await responseHTTP.GetErrorMessageAsync();
-                    await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
-                }
-                return;
             }
+            var url = string.Concat(ZONING_PATH, $"/{zoning.Id}");
+            var responseHttp = await Repository.DeleteAsync(url);
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return;
+                }
+            }
+
             await LoadAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
@@ -68,47 +77,32 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task SelectedPageAsync(int page)
         {
-            currentPage = page;           
-            await LoadAsync(page);
-        }
-
-        private async Task LoadAsync(int page = 1)
-        {
             if (!string.IsNullOrWhiteSpace(Page))
             {
                 page = Convert.ToInt32(Page);
             }
 
-            var ok = await LoadListAsync(page);
-            if (ok)
-            {
-                await LoadPagesAsync();
-            }
+            currentPage = page;
+            await LoadAsync(page);
         }
 
-        private async Task<bool> LoadListAsync(int page)
+        private async Task LoadAsync(int page = 1)
         {
-            validateRecordsNumber(RecordsNumber);
-            var url = string.Concat(VOTING_STATION_PATH, $"?page={page}", $"&recordsnumber={RecordsNumber}");
-            if (!string.IsNullOrEmpty(Filter))
+            var ok = await LoadVotingStationAsync();
+            if (ok)
             {
-                url += $"&filter={Filter}";
+                ok = await LoadZoningsAsync(page);
+                if (ok)
+                {
+                    await LoadPagesAsync();
+                }
             }
-
-            var responseHttp = await Repository.GetAsync<List<VotingStation>>(url);
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return false;
-            }
-            VotingStations = responseHttp.Response;
-            return true;
         }
 
         private async Task LoadPagesAsync()
         {
-            var url = string.Concat(VOTING_STATION_PATH, "/totalPages", $"?recordsnumber={RecordsNumber}");
+            validateRecordsNumber(RecordsNumber);
+            var url = string.Concat(ZONING_PATH, $"/totalPages?id={VotingStationId}", $"&recordsnumber={RecordsNumber}");
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -124,9 +118,48 @@ namespace Elections.Frontend.Pages.VotingStations
             totalPages = responseHttp.Response;
         }
 
+        private async Task<bool> LoadZoningsAsync(int page)
+        {
+            validateRecordsNumber(RecordsNumber);
+            var url = string.Concat(ZONING_PATH, $"?id={VotingStationId}&page={page}", $"&recordsnumber={RecordsNumber}");
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<List<Zoning>>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            zonings = responseHttp.Response;
+            return true;
+        }
+
+        private async Task<bool> LoadVotingStationAsync()
+        {
+            var responseHttp = await Repository.GetAsync<VotingStation>(string.Concat(VOTING_STATION_PATH, $"/{VotingStationId}"));
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo("/votingstations");
+                    return false;
+                }
+
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            votingStation = responseHttp.Response;
+            return true;
+        }
+
         private async Task ApplyFilterAsync(string filter)
         {
-            Filter = filter;            
+            Filter = filter;
             int page = 1;
             await LoadAsync(page);
             await SelectedPageAsync(page);

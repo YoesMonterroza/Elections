@@ -1,15 +1,24 @@
-﻿@page "/votingstation"
-@using Elections.Frontend.Shared
+﻿@page "/votingstations"
 <h3>Puestos de Votación</h3>
 <div class="mb-3">
-    <a class="btn btn-primary" href="/votingstation/create">Nuevo Puesto de Votación</a>
+    <a class="btn btn-primary" href="/votingstations/create">Nuevo Puesto de Votación</a>
 </div>
 <GenericList MyList="VotingStations">
     <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync"
+                    RecordsNumber="SelectedRecordsNumberAsync"/>
+
+        <GenericFilter PlaceHolder="Buscar Puesto de votación..."
+                       SelectedFilter="ApplyFilterAsync" />
+
+
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Puesto de Votación</th>
+                    <th>Mesas de Votación</th>
                     <th></th>
                 </tr>
             </thead>
@@ -21,8 +30,12 @@
                             @votingstation.Name
                         </td>
                         <td>
-                            <a class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger">Borrar</button>
+                            @votingstation.ZoningNumber
+                        </td>
+                        <td>
+                            <a href="/votingstations/edit/@votingstation.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/votingstations/details/@votingstation.Id" class="btn btn-info btn-sm">Detalles</a>
+                            <button class="btn btn-danger" @onclick=@(() => DeleteAsync(votingstation))>Borrar</button>
                         </td>
                     </tr>
                 }

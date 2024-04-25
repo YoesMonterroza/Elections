@@ -30,6 +30,10 @@ namespace Elections.Shared.Entities
 
         //public City? City { get; set; }
 
-        public ICollection<Zoning>? Zoning { get; set; }
+        public ICollection<Zoning>? Zonings { get; set; }
+
+        [Display(Name = "Mesas de Votación")]
+        public int ZoningNumber => Zonings == null || Zonings.Count == 0 ? 0 : Zonings.Count;
+
     }
 }
