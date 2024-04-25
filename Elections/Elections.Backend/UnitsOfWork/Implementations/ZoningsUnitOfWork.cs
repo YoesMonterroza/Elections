@@ -3,7 +3,6 @@ using Elections.Backend.UnitsOfWork.Interfaces;
 using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
-using Orders.Backend.Repositories.Interfaces;
 
 namespace Elections.Backend.UnitsOfWork.Implementations
 {
