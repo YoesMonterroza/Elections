@@ -2,7 +2,7 @@
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
 
-namespace Orders.Backend.Repositories.Interfaces
+namespace Elections.Backend.Repositories.Interfaces
 {
     public interface IZoningsRepository
     {

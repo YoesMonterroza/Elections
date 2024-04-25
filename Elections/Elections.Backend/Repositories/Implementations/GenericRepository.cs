@@ -40,7 +40,6 @@ namespace Elections.Backend.Repositories.Implementations
             }
         }
 
-
         public virtual async Task<ActionResponse<T>> DeleteAsync(int id)
         {
             var row = await _entity.FindAsync(id);
@@ -173,7 +172,5 @@ namespace Elections.Backend.Repositories.Implementations
                 Message = "Ya existe el registro que estas intentando crear."
             };
         }
-
-
     }
 }

@@ -13,6 +13,17 @@ namespace Elections.Backend.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [HttpDelete("{id}")]
+        public virtual async Task<IActionResult> DeleteAsync(int id)
+        {
+            var action = await _unitOfWork.DeleteAsync(id);
+            if (action.WasSuccess)
+            {
+                return NoContent();
+            }
+            return BadRequest(action.Message);
+        }
+
         [HttpGet("full")]
         public virtual async Task<IActionResult> GetAsync()
         {
@@ -33,39 +44,6 @@ namespace Elections.Backend.Controllers
                 return Ok(action.Result);
             }
             return NotFound();
-        }
-
-        [HttpPost]
-        public virtual async Task<IActionResult> PostAsync(T model)
-        {
-            var action = await _unitOfWork.AddAsync(model);
-            if (action.WasSuccess)
-            {
-                return Ok(action.Result);
-            }
-            return BadRequest(action.Message);
-        }
-
-        [HttpPut]
-        public virtual async Task<IActionResult> PutAsync(T model)
-        {
-            var action = await _unitOfWork.UpdateAsync(model);
-            if (action.WasSuccess)
-            {
-                return Ok(action.Result);
-            }
-            return BadRequest(action.Message);
-        }
-
-        [HttpDelete("{id}")]
-        public virtual async Task<IActionResult> DeleteAsync(int id)
-        {
-            var action = await _unitOfWork.DeleteAsync(id);
-            if (action.WasSuccess)
-            {
-                return NoContent();
-            }
-            return BadRequest(action.Message);
         }
 
         [HttpGet]
@@ -90,6 +68,27 @@ namespace Elections.Backend.Controllers
             return BadRequest();
         }
 
+        [HttpPost]
+        public virtual async Task<IActionResult> PostAsync(T model)
+        {
+            var action = await _unitOfWork.AddAsync(model);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest(action.Message);
+        }
+
+        [HttpPut]
+        public virtual async Task<IActionResult> PutAsync(T model)
+        {
+            var action = await _unitOfWork.UpdateAsync(model);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest(action.Message);
+        }
     }
 
 }

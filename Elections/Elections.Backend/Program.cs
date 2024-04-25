@@ -4,7 +4,6 @@ using Elections.Backend.Repositories.Interfaces;
 using Elections.Backend.UnitsOfWork.Implementations;
 using Elections.Backend.UnitsOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Orders.Backend.Repositories.Interfaces;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name =LocalConnection"));
@@ -24,6 +24,19 @@ builder.Services.AddScoped<IVotingStationsUnitOfWork, VotingStationsUnitOfWork>(
 
 builder.Services.AddScoped<IZoningsRepository, ZoningsRepository>();
 builder.Services.AddScoped<IZoningsUnitOfWork, ZoningsUnitOfWork>();
+
+
+// UnitOfWork
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
+builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
+builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
+
+// Repository
+builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IStatesRepository, StatesRepository>();
+
+
 
 
 var app = builder.Build();
