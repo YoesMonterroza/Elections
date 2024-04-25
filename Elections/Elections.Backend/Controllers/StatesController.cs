@@ -15,7 +15,7 @@ namespace Elections.Backend.Controllers
             _statesUnitOfWork = statesUnitOfWork;
         }
 
-        [HttpGet]
+        [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
             var response = await _statesUnitOfWork.GetAsync();
