@@ -26,9 +26,11 @@ namespace Elections.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string Code { get; set; }
 
-        //public int CityId { get; set; }
+        public City? City { get; set; }
 
-        //public City? City { get; set; }
+        [Display(Name = "Ciudad")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar una {0}.")]
+        public int CityId { get; set; }
 
         public ICollection<Zoning>? Zonings { get; set; }
 

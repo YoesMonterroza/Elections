@@ -1,5 +1,6 @@
 ﻿using Elections.Backend.UnitsOfWork.Interfaces;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -36,6 +37,13 @@ namespace Elections.Backend.Controllers
                 return Ok(response.Result);
             }
             return NotFound(response.Message);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<IActionResult> GetComboAsync()
+        {
+            return Ok(await _countriesUnitOfWork.GetComboAsync());
         }
 
     }

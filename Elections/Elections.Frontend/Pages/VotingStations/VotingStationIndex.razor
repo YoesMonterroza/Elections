@@ -18,6 +18,9 @@
             <thead>
                 <tr>
                     <th>Puesto de Votación</th>
+                    <th>Pais</th>
+                    <th>Estado/Departamento</th>
+                    <th>Ciudad</th>
                     <th>Mesas de Votación</th>
                     <th></th>
                 </tr>
@@ -28,6 +31,15 @@
                     <tr>
                         <td>
                             @votingstation.Name
+                        </td>
+                        <td>
+                            @votingstation.City.State.Country.Name
+                        </td>
+                        <td>
+                            @votingstation.City.State.Name
+                        </td>
+                        <td>
+                            @votingstation.City.Name
                         </td>
                         <td>
                             @votingstation.ZoningNumber

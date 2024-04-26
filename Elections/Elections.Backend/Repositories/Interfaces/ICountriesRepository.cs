@@ -9,6 +9,8 @@ namespace Elections.Backend.Repositories.Interfaces
         Task<ActionResponse<Country>> GetAsync(int id);
 
         Task<ActionResponse<IEnumerable<Country>>> GetAsync();
+
+        Task<IEnumerable<Country>> GetComboAsync();
     }
 }
 
