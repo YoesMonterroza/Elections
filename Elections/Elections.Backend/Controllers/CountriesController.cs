@@ -10,13 +10,15 @@ namespace Elections.Backend.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class CountriesController : GenericController<Country>
+
     {
-         private readonly ICountriesUnitOfWork _countriesUnitOfWork;
+        private readonly ICountriesUnitOfWork _countriesUnitOfWork;
 
         public CountriesController(IGenericUnitOfWork<Country> unit, ICountriesUnitOfWork countriesUnitOfWork) : base(unit)
         {
             _countriesUnitOfWork = countriesUnitOfWork;
         }
+
         [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
@@ -50,6 +52,5 @@ namespace Elections.Backend.Controllers
             }
             return NotFound(response.Message);
         }
-
     }
 }

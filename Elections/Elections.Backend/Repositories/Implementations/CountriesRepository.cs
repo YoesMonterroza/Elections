@@ -22,7 +22,7 @@ namespace Elections.Backend.Repositories.Implementations
         {
             var countries = await _context.Countries
                 .OrderBy(x => x.Name)
-                .Include(c => c.States)
+                // .Include(c => c.States)
                 .ToListAsync();
             return new ActionResponse<IEnumerable<Country>>
             {
@@ -30,6 +30,27 @@ namespace Elections.Backend.Repositories.Implementations
                 Result = countries
             };
         }
+        public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.Countries
+                .Include(c => c.States)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            return new ActionResponse<IEnumerable<Country>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                    .OrderBy(x => x.Name)
+                    .Paginate(pagination)
+                    .ToListAsync()
+            };
+        }
+
 
         public override async Task<ActionResponse<Country>> GetAsync(int id)
         {
@@ -53,20 +74,21 @@ namespace Elections.Backend.Repositories.Implementations
                 Result = country
             };
         }
-
-        public override async Task<ActionResponse<IEnumerable<Country>>>GetAsync(PaginationDTO pagination)
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
         {
-            var queryable = _context.Countries
-                .Include(c => c.States)
-                .AsQueryable();
+            var queryable = _context.Countries.AsQueryable();
 
-            return new ActionResponse<IEnumerable<Country>>
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            double count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+            return new ActionResponse<int>
             {
                 WasSuccess = true,
-                Result = await queryable
-                    .OrderBy(x => x.Name)
-                    .Paginate(pagination)
-                    .ToListAsync()
+                Result = totalPages
             };
         }
 

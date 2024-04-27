@@ -27,17 +27,6 @@ namespace Elections.Backend.Controllers
             return BadRequest();
         }
 
-        [HttpGet("{id}")]
-        public override async Task<IActionResult> GetAsync(int id)
-        {
-            var response = await _statesUnitOfWork.GetAsync(id);
-            if (response.WasSuccess)
-            {
-                return Ok(response.Result);
-            }
-            return NotFound(response.Message);
-        }
-
         [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
@@ -60,6 +49,17 @@ namespace Elections.Backend.Controllers
             return BadRequest();
         }
 
+
+        [HttpGet("{id}")]
+        public override async Task<IActionResult> GetAsync(int id)
+        {
+            var response = await _statesUnitOfWork.GetAsync(id);
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return NotFound(response.Message);
+        }
     }
 }
 

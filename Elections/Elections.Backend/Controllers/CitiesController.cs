@@ -37,6 +37,7 @@ namespace Elections.Backend.Controllers
             }
             return BadRequest();
         }
+
     }
 }
 
