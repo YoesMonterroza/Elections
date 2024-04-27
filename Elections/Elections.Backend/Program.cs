@@ -40,7 +40,7 @@ builder.Services.AddScoped<IStatesRepository, StatesRepository>();
 
 
 var app = builder.Build();
-/*SeedData(app);
+SeedData(app);
 
 void SeedData(WebApplication app)
 {
@@ -51,7 +51,7 @@ void SeedData(WebApplication app)
         var service = scope.ServiceProvider.GetService<SeedDb>();
         service!.SeedAsync().Wait();
     }
-}*/
+}
 
 
 if (app.Environment.IsDevelopment())
