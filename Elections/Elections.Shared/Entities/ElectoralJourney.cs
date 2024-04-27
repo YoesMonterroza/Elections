@@ -11,8 +11,12 @@ namespace Elections.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string Name { get; set; } = null!;
 
-        [Display(Name = "Fecha Jornada")]
+        [Display(Name = "Fecha Inicio Jornada")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public DateTime? Date { get; set; }
+
+        [Display(Name = "Fecha Fin Jornada")]
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        public DateTime? DateFinish { get; set; }
     }
 }
