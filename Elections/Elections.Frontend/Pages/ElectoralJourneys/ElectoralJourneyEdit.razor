@@ -1,0 +1,10 @@
+﻿@page "/electoralJourneys/edit/{Id:int}"
+<h3>Editar Puesto de Votación</h3>
+@if (electoralJourney is null)
+{
+    <Loading/>
+}
+else
+{
+    <ElectoralJourneyForm @ref="electoralJourneyForm" ElectoralJourney="electoralJourney" OnValidSubmit="EditAsync" ReturnAction="Return"/>
+}

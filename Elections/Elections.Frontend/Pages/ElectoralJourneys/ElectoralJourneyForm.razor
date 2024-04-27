@@ -1,0 +1,27 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Jornada electoral:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@ElectoralJourney.Name" />
+            <ValidationMessage For="@(() => ElectoralJourney.Name)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Inicio Jornada:</label>
+        <div>
+            <InputDate class="form-control" Type="InputDateType.DateTimeLocal" @bind-Value="@ElectoralJourney.Date" />
+            <ValidationMessage For="@(() => ElectoralJourney.Date)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Fin jornada:</label>
+        <div>
+            <InputDate class="form-control" Type="InputDateType.DateTimeLocal" @bind-Value="@ElectoralJourney.DateFinish" />
+            <ValidationMessage For="@(() => ElectoralJourney.DateFinish)" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>
