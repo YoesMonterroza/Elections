@@ -1,0 +1,42 @@
+﻿@page "/electoralPositions"
+
+<h3>Posiciones electorales</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/electoralPositions/create">Nueva Posición Electoral</a>
+</div>
+
+<GenericList MyList="ElectoralPositions">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Posición Electoral
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var electoralPosition in ElectoralPositions!)
+                {
+                    <tr>
+                        <td>
+                            @electoralPosition.Name
+                        </td>
+                        <td>
+                            <a href="/categories/edit/@electoralPosition.Id" class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger">Borrar</button> <!--  @onclick=@(() => DeleteAsycn(electoralPosition)) -->
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </Body>
+</GenericList>
+
+@code {
+}
