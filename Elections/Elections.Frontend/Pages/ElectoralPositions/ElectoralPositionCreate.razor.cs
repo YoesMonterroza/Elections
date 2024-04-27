@@ -1,6 +1,7 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Pages.VotingStations;
 using Elections.Frontend.Repositories;
+using Elections.Frontend.Shared;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
@@ -8,7 +9,7 @@ namespace Elections.Frontend.Pages.ElectoralPositions
 {
     public partial class ElectoralPositionCreate
     {
-        private ElectoralPositionForm? electoralPositionForm;
+        private FormWithName<ElectoralPosition>? electoralPositionForm;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;

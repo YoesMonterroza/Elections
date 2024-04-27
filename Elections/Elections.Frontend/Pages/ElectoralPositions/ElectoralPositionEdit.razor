@@ -1,10 +1,10 @@
 ﻿@page "/electoralPositions/edit/{Id:int}"
-<h3>Editar Puesto de Votación</h3>
+<h3>Editar Posición Electoral</h3>
 @if (electoralPosition is null)
 {
     <Loading/>
 }
 else
 {
-    <ElectoralPositionForm @ref="electoralPositionForm" ElectoralPosition="electoralPosition" OnValidSubmit="EditAsync" ReturnAction="Return"/>
+    <FormWithName @ref="electoralPositionForm" Label="Cargo electoral:" Model="electoralPosition" OnValidSubmit="EditAsync" ReturnAction="Return" />
 }

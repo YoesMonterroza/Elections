@@ -2,4 +2,4 @@
 
 <h3>Crear posición electoral</h3>
 
-<ElectoralPositionForm @ref="electoralPositionForm" ElectoralPosition="electoralPosition" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<FormWithName @ref="electoralPositionForm" Label="Cargo electoral:" Model="electoralPosition" OnValidSubmit="CreateAsync" ReturnAction="Return" />
