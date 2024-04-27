@@ -1,5 +1,7 @@
 ﻿using Elections.Backend.Data;
+using Elections.Backend.Helpers;
 using Elections.Backend.Repositories.Interfaces;
+using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,7 @@ namespace Elections.Backend.Repositories.Implementations
         public override async Task<ActionResponse<IEnumerable<State>>> GetAsync()
         {
             var states = await _context.States
+                .OrderBy(x => x.Name)
                 .Include(s => s.Cities)
                 .ToListAsync();
             return new ActionResponse<IEnumerable<State>>
@@ -51,5 +54,41 @@ namespace Elections.Backend.Repositories.Implementations
                 Result = state
             };
         }
+
+        public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.States
+                .Include(x => x.Cities)
+                .Where(x => x.Country!.Id == pagination.Id)
+                .AsQueryable();
+
+            return new ActionResponse<IEnumerable<State>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                    .OrderBy(x => x.Name)
+                    .Paginate(pagination)
+                    .ToListAsync()
+            };
+        }
+
+        public async override Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.States
+                .Where(x => x.Country!.Id == pagination.Id)
+                .AsQueryable();
+
+            double count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
+            };
+        }
+
     }
+
+
+
 }

@@ -41,7 +41,7 @@ namespace Elections.Frontend.Pages.VotingStations
             {
                 return;
             }            
-            var responseHTTP = await Repository.DeleteAsync(string.Concat(VOTING_STATION_PATH, $"/{votingStation.Id}"));
+           var responseHTTP = await Repository.DeleteAsync(string.Concat(VOTING_STATION_PATH, $"/{votingStation.Id}"));
             if (responseHTTP.Error)
             {
                 if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -55,6 +55,7 @@ namespace Elections.Frontend.Pages.VotingStations
                 }
                 return;
             }
+            
             await LoadAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {

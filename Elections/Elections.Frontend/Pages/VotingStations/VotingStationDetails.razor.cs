@@ -63,7 +63,7 @@ namespace Elections.Frontend.Pages.VotingStations
                     return;
                 }
             }
-
+           
             await LoadAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {

@@ -1,28 +1,30 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
-using Elections.Frontend.Repositories;
-using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components;
+using Elections.Frontend.Repositories;
+using Elections.Frontend.Shared;
+using Elections.Shared.Entities;
 
-namespace Elections.Frontend.Pages.VotingStations
+namespace Elections.Frontend.Pages.Countries
 {
-    public partial class VotingStationEdit
+    public partial class CountryEdit
     {
-        private VotingStation? votingStation;
-        private VotingStationForm? votingStationForm;
+        private Country? country;
+        private FormWithName<Country>? countryForm;
+
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Parameter] public int Id { get; set; }
 
-        private readonly String VOTING_STATION_PATH = "api/votingstations";
-        protected override async Task OnInitializedAsync()
-        {            
-            var responseHttp = await Repository.GetAsync<VotingStation>(string.Concat(VOTING_STATION_PATH, $"/{Id}"));
+        protected override async Task OnParametersSetAsync()
+        {
+            var responseHttp = await Repository.GetAsync<Country>($"api/countries/{Id}");
+
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("votingstations");
+                    NavigationManager.NavigateTo("countries");
                 }
                 else
                 {
@@ -32,18 +34,21 @@ namespace Elections.Frontend.Pages.VotingStations
             }
             else
             {
-                votingStation = responseHttp.Response;
+                country = responseHttp.Response;
             }
         }
-       private async Task EditAsync()
+
+        private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync(VOTING_STATION_PATH, votingStation);
+            var responseHttp = await Repository.PutAsync("api/countries", country);
+
             if (responseHttp.Error)
             {
-            var mensajeError = await responseHttp.GetErrorMessageAsync();
+                var mensajeError = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
                 return;
             }
+
             Return();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
@@ -54,12 +59,11 @@ namespace Elections.Frontend.Pages.VotingStations
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
-        
+
         private void Return()
         {
-            votingStationForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("votingstations");
+            countryForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo("countries");
         }
-
     }
 }

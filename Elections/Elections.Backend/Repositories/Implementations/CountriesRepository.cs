@@ -1,6 +1,7 @@
 ﻿using Elections.Backend.Data;
-using Elections.Backend.Repositories.Implementations;
+using Elections.Backend.Helpers;
 using Elections.Backend.Repositories.Interfaces;
+using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace Elections.Backend.Repositories.Implementations
         public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
         {
             var countries = await _context.Countries
+                .OrderBy(x => x.Name)
                 .Include(c => c.States)
                 .ToListAsync();
             return new ActionResponse<IEnumerable<Country>>
@@ -51,5 +53,22 @@ namespace Elections.Backend.Repositories.Implementations
                 Result = country
             };
         }
+
+        public override async Task<ActionResponse<IEnumerable<Country>>>GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.Countries
+                .Include(c => c.States)
+                .AsQueryable();
+
+            return new ActionResponse<IEnumerable<Country>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                    .OrderBy(x => x.Name)
+                    .Paginate(pagination)
+                    .ToListAsync()
+            };
+        }
+
     }
 }

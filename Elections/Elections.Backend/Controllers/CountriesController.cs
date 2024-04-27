@@ -1,4 +1,5 @@
 ﻿using Elections.Backend.UnitsOfWork.Interfaces;
+using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,18 @@ namespace Elections.Backend.Controllers
             }
             return BadRequest();
         }
+
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
+        {
+            var response = await _countriesUnitOfWork.GetAsync(pagination);
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
+        }
+
 
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)

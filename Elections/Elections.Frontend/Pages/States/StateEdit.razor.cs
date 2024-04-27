@@ -1,26 +1,26 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
-using Elections.Frontend.Repositories;
-using Elections.Shared.Entities;
+﻿using System.Net;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
-using System.Net;
+using Elections.Frontend.Repositories;
+using Elections.Frontend.Shared;
+using Elections.Shared.Entities;
 
-namespace Elections.Frontend.Pages.Zonings
+namespace Elections.Frontend.Pages.States
 {
-    public partial class ZoningEdit
+    public partial class StateEdit
     {
-        private Zoning? zoning;
-        private ZoningForm? zoningForm;
+        private State? state;
+        private FormWithName<State>? stateForm;
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
 
-        [Parameter] public int ZoningId { get; set; }
-        private readonly String ZONING_PATH = "api/zonings";
+        [Parameter] public int StateId { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<Zoning>(string.Concat(ZONING_PATH, $"/{ZoningId}"));
+            var responseHttp = await Repository.GetAsync<State>($"/api/states/{StateId}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -31,12 +31,12 @@ namespace Elections.Frontend.Pages.Zonings
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-            zoning = responseHttp.Response;
+            state = responseHttp.Response;
         }
-/*
+
         private async Task SaveAsync()
         {
-            var responseHttp = await Repository.PutAsync(ZONING_PATH, zoning);
+            var responseHttp = await Repository.PutAsync($"/api/states", state);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -53,12 +53,12 @@ namespace Elections.Frontend.Pages.Zonings
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
-        */
+
         private void Return()
         {
-            zoningForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo($"/votingstations/details/{zoning!.VotingStationId}");
+            stateForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo($"/countries/details/{state!.CountryId}");
         }
-
     }
 }
+

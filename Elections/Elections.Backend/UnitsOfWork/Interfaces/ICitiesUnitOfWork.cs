@@ -4,13 +4,9 @@ using Elections.Shared.Responses;
 
 namespace Elections.Backend.UnitsOfWork.Interfaces
 {
-    public interface IStatesUnitOfWork
+    public interface ICitiesUnitOfWork
     {
-        Task<ActionResponse<State>> GetAsync(int id);
-
-        Task<ActionResponse<IEnumerable<State>>> GetAsync();
-
-        Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination);
+        Task<ActionResponse<IEnumerable<City>>> GetAsync(PaginationDTO pagination);
 
         Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
 
