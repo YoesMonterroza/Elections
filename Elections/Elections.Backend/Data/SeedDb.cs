@@ -27,6 +27,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Cafeteria",
                     Description = "Puesto ubicado en la Cafeteria",
                     Code = "CF",
+                    CityId = 1,
                     Zonings = [
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -47,6 +48,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Biblioteca",
                     Description = "Puesto ubicado en la Biblioteca",
                     Code = "BBL",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -66,6 +68,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Plataforma",
                     Description = "Puesto ubicado en la Plataforma",
                     Code = "PLT",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -85,6 +88,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Edificio A",
                     Description = "Puesto ubicado en el Edificio A",
                     Code = "EDFA",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -104,6 +108,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Edificio B",
                     Description = "Puesto ubicado en el Edificio B",
                     Code = "EDFB",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -123,6 +128,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Edificio C",
                     Description = "Puesto ubicado en el Edificio C",
                     Code = "EDFC",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -142,6 +148,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Edificio D",
                     Description = "Puesto ubicado en el Edificio D",
                     Code = "EDFD",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -161,6 +168,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Observatiorio",
                     Description = "Puesto ubicado en el Observatiorio",
                     Code = "OBV",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -180,6 +188,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Plaza Colores",
                     Description = "Puesto ubicado en la Plaza Colores",
                     Code = "PLCL",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -199,6 +208,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Sistemas",
                     Description = "Puesto ubicado en la oficina de Sistemas",
                     Code = "ST",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -218,6 +228,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Parqueadero",
                     Description = "Puesto ubicado en el Parqueadero",
                     Code = "PRQ",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},
@@ -237,6 +248,7 @@ namespace Elections.Backend.Data
                     Name = "Puesto Terraza",
                     Description = "Puesto ubicado en la Terraza",
                     Code = "TRR",
+                    CityId = 1,
                     Zonings = new List<Zoning>(){
                     new Zoning() { ZoningNumber = "01" },
                     new Zoning() { ZoningNumber = "02"},

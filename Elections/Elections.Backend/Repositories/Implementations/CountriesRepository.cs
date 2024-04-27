@@ -51,5 +51,12 @@ namespace Elections.Backend.Repositories.Implementations
                 Result = country
             };
         }
+
+        public async Task<IEnumerable<Country>> GetComboAsync()
+        {
+            return await _context.Countries
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+        }
     }
 }

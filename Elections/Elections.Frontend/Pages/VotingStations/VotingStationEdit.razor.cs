@@ -37,7 +37,8 @@ namespace Elections.Frontend.Pages.VotingStations
         }
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync(VOTING_STATION_PATH, votingStation);
+
+            var responseHttp = await Repository.PutAsync(VOTING_STATION_PATH, prepareVotingStation(votingStation!));
             if (responseHttp.Error)
             {
             var mensajeError = await responseHttp.GetErrorMessageAsync();
@@ -48,7 +49,7 @@ namespace Elections.Frontend.Pages.VotingStations
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
+                Position = SweetAlertPosition.Center,
                 ShowConfirmButton = true,
                 Timer = 3000
             });
@@ -58,6 +59,11 @@ namespace Elections.Frontend.Pages.VotingStations
         {
             votingStationForm!.FormPostedSuccessfully = true;
             NavigationManager.NavigateTo("votingstations");
+        }
+        private VotingStation prepareVotingStation(VotingStation votingStation)
+        {
+            votingStation.City = null;
+            return votingStation;
         }
 
     }
