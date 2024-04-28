@@ -22,8 +22,8 @@ builder.Services.AddTransient<SeedDb>();
 
 // UnitOfWork
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
-//builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
-//builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
+builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
+builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 builder.Services.AddScoped<IZoningsUnitOfWork, ZoningsUnitOfWork>();
 builder.Services.AddScoped<IVotingStationsUnitOfWork, VotingStationsUnitOfWork>();
