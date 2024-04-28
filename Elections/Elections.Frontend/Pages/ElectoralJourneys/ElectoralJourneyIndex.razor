@@ -9,6 +9,14 @@
 
 <GenericList MyList="ElectoralJourneys">
     <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync"
+                    RecordsNumber="SelectedRecordsNumberAsync" />
+
+        <GenericFilter PlaceHolder="Buscar Puesto de votación..."
+                       SelectedFilter="ApplyFilterAsync" />
+
         <table class="table table-striped">
             <thead>
                 <tr>

@@ -2,7 +2,7 @@
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Posición electoral:</label>
+        <label>Cargo electoral:</label>
         <div>
             <InputText class="form-control" @bind-Value="@ElectoralPosition.Name" />
             <ValidationMessage For="@(() => ElectoralPosition.Name)" />
