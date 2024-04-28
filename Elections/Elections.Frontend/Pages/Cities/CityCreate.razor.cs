@@ -10,7 +10,6 @@ namespace Elections.Frontend.Pages.Cities
     {
         private City city = new();
         private FormWithName<City>? cityForm;
-
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;

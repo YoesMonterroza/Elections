@@ -1,7 +1,6 @@
-﻿
-namespace Elections.Shared.Interfaces
+﻿namespace Elections.Shared.Interfaces
 {
-    internal interface IEntityWithName
+    public interface IEntityWithName
     {
         string Name { get; set; }
     }

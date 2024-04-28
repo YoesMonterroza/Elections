@@ -33,7 +33,7 @@ namespace Elections.Frontend.Pages.Zonings
             }
             zoning = responseHttp.Response;
         }
-/*
+
         private async Task SaveAsync()
         {
             var responseHttp = await Repository.PutAsync(ZONING_PATH, zoning);
@@ -53,7 +53,7 @@ namespace Elections.Frontend.Pages.Zonings
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
-        */
+        
         private void Return()
         {
             zoningForm!.FormPostedSuccessfully = true;
