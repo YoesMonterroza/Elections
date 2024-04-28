@@ -1,14 +1,11 @@
-﻿@typeparam TModel where TModel : IEntityWithName
-
-<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
-
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>@Label</label>
+        <label>Posición electoral:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Model.Name" />
-            <ValidationMessage For="@(() => Model.Name)" />
+            <InputText class="form-control" @bind-Value="@ElectoralPosition.Name" />
+            <ValidationMessage For="@(() => ElectoralPosition.Name)" />
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>

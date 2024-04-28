@@ -1,28 +1,28 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
-using Elections.Shared.Interfaces;
-using Microsoft.AspNetCore.Components;
+using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 
-
-namespace Elections.Frontend.Shared
+namespace Elections.Frontend.Pages.ElectoralJourneys
 {
-    public partial class FormWithName<TModel> where TModel : IEntityWithName
+    public partial class ElectoralJourneyForm
     {
         private EditContext editContext = null!;
+        public bool FormPostedSuccessfully { get; set; } = false;
 
-        [EditorRequired, Parameter] public TModel Model { get; set; } = default!;
-        [EditorRequired, Parameter] public string Label { get; set; } = null!;
         [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }
+
         [EditorRequired, Parameter] public EventCallback ReturnAction { get; set; }
-        [Inject] public SweetAlertService SweetAlertService { get; set; } = null!;
-        public bool FormPostedSuccessfully { get; set; }
+
+        [EditorRequired, Parameter] public ElectoralJourney ElectoralJourney { get; set; } = null!;
+
+        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
 
         protected override void OnInitialized()
         {
-            editContext = new(Model!);
+            editContext = new(ElectoralJourney);
         }
-
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
         {
             var formWasEdited = editContext.IsModified();
@@ -30,21 +30,20 @@ namespace Elections.Frontend.Shared
             {
                 return;
             }
-
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
                 Text = "¿Deseas abandonar la página y perder los cambios?",
-                Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true,
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
             });
             var confirm = !string.IsNullOrEmpty(result.Value);
             if (confirm)
             {
                 return;
             }
-
             context.PreventNavigation();
         }
+
     }
 }

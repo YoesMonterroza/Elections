@@ -13,6 +13,7 @@ namespace Elections.Backend.Repositories.Interfaces
 
         Task<ActionResponse<IEnumerable<State>>> GetAsync();
 
+        Task<IEnumerable<State>> GetComboAsync(int countryId);
         Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination);
 
         Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);

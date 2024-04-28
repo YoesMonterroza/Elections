@@ -1,28 +1,29 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Elections.Frontend.Pages.VotingStations;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
-namespace Elections.Frontend.Pages.VotingStations
+namespace Elections.Frontend.Pages.ElectoralPositions
 {
-    public partial class VotingStationEdit
+    public partial class ElectoralPositionEdit
     {
-        private VotingStation? votingStation;
-        private VotingStationForm? votingStationForm;
+        private ElectoralPosition? electoralPosition;
+        private ElectoralPositionForm? electoralPositionForm;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Parameter] public int Id { get; set; }
 
-        private readonly String VOTING_STATION_PATH = "api/votingstations";
+        private readonly String VOTING_STATION_PATH = "api/electoralPositions";
         protected override async Task OnInitializedAsync()
-        {            
-            var responseHttp = await Repository.GetAsync<VotingStation>(string.Concat(VOTING_STATION_PATH, $"/{Id}"));
+        {
+            var responseHttp = await Repository.GetAsync<ElectoralPosition>(string.Concat(VOTING_STATION_PATH, $"/{Id}"));
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("votingstations");
+                    NavigationManager.NavigateTo("electoralPositions");
                 }
                 else
                 {
@@ -32,16 +33,15 @@ namespace Elections.Frontend.Pages.VotingStations
             }
             else
             {
-                votingStation = responseHttp.Response;
+                electoralPosition = responseHttp.Response;
             }
         }
-       private async Task EditAsync()
+        private async Task EditAsync()
         {
-
-            var responseHttp = await Repository.PutAsync(VOTING_STATION_PATH, prepareVotingStation(votingStation!));
+            var responseHttp = await Repository.PutAsync(VOTING_STATION_PATH, electoralPosition);
             if (responseHttp.Error)
             {
-            var mensajeError = await responseHttp.GetErrorMessageAsync();
+                var mensajeError = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
                 return;
             }
@@ -49,22 +49,16 @@ namespace Elections.Frontend.Pages.VotingStations
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
-                Position = SweetAlertPosition.Center,
+                Position = SweetAlertPosition.BottomEnd,
                 ShowConfirmButton = true,
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
-        
         private void Return()
         {
-            votingStationForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("votingstations");
-        }
-        private VotingStation prepareVotingStation(VotingStation votingStation)
-        {
-            votingStation.City = null;
-            return votingStation;
+            electoralPositionForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo("electoralPositions");
         }
 
     }

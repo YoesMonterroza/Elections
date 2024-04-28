@@ -12,7 +12,7 @@ namespace Elections.Backend.UnitsOfWork.Interfaces
 
         Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination);
 
+        Task<IEnumerable<State>> GetComboAsync(int countryId);
         Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
-
     }
 }

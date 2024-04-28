@@ -1,38 +1,37 @@
-﻿using Elections.Frontend.Repositories;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components;
-using CurrieTechnologies.Razor.SweetAlert2;
-using System.Diagnostics.Metrics;
 
-namespace Elections.Frontend.Pages.VotingStations
+namespace Elections.Frontend.Pages.ElectoralJourneys
 {
-    partial class VotingStationIndex
+    public partial class ElectoralJourneyIndex
     {
-        public List<VotingStation>? VotingStations { get; set; }
+
+        [Inject] private IRepository Repository { get; set; } = null!;
+        public List<ElectoralJourney>? ElectoralJourneys { get; set; }
         private int currentPage = 1;
         private int totalPages;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
-
-        private readonly String VOTING_STATION_PATH = "api/votingstations";
-        protected override async Task OnInitializedAsync()
+        private readonly String ELECTORAL_JOURNEY_PATH = "api/electoralJourneys";
+        protected async override Task OnInitializedAsync()
         {
             await LoadAsync();
         }
 
-        private async Task DeleteAsync(VotingStation votingStation)
+        private async Task DeleteAsync(ElectoralJourney electoralJourney)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Esta seguro que quieres borrar el puesto de votación: {votingStation.Name}?",
+                Text = $"¿Esta seguro que quieres borrar la jornada electoral: {electoralJourney.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true
             });
@@ -40,8 +39,8 @@ namespace Elections.Frontend.Pages.VotingStations
             if (confirm)
             {
                 return;
-            }            
-           var responseHTTP = await Repository.DeleteAsync(string.Concat(VOTING_STATION_PATH, $"/{votingStation.Id}"));
+            }
+            var responseHTTP = await Repository.DeleteAsync(string.Concat(ELECTORAL_JOURNEY_PATH, $"/{electoralJourney.Id}"));
             if (responseHTTP.Error)
             {
                 if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -55,12 +54,11 @@ namespace Elections.Frontend.Pages.VotingStations
                 }
                 return;
             }
-            
             await LoadAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
-                Position = SweetAlertPosition.Center,
+                Position = SweetAlertPosition.BottomEnd,
                 ShowConfirmButton = true,
                 Timer = 3000
             });
@@ -69,7 +67,7 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task SelectedPageAsync(int page)
         {
-            currentPage = page;           
+            currentPage = page;
             await LoadAsync(page);
         }
 
@@ -90,26 +88,26 @@ namespace Elections.Frontend.Pages.VotingStations
         private async Task<bool> LoadListAsync(int page)
         {
             validateRecordsNumber(RecordsNumber);
-            var url = string.Concat(VOTING_STATION_PATH, $"?page={page}", $"&recordsnumber={RecordsNumber}");
+            var url = string.Concat(ELECTORAL_JOURNEY_PATH, $"?page={page}", $"&recordsnumber={RecordsNumber}");
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
             }
 
-            var responseHttp = await Repository.GetAsync<List<VotingStation>>(url);
+            var responseHttp = await Repository.GetAsync<List<ElectoralJourney>>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return false;
             }
-            VotingStations = responseHttp.Response;
+            ElectoralJourneys = responseHttp.Response;
             return true;
         }
 
         private async Task LoadPagesAsync()
         {
-            var url = string.Concat(VOTING_STATION_PATH, "/totalPages", $"?recordsnumber={RecordsNumber}");
+            var url = string.Concat(ELECTORAL_JOURNEY_PATH, "/totalPages", $"?recordsnumber={RecordsNumber}");
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -127,7 +125,7 @@ namespace Elections.Frontend.Pages.VotingStations
 
         private async Task ApplyFilterAsync(string filter)
         {
-            Filter = filter;            
+            Filter = filter;
             int page = 1;
             await LoadAsync(page);
             await SelectedPageAsync(page);
@@ -148,7 +146,6 @@ namespace Elections.Frontend.Pages.VotingStations
                 RecordsNumber = 10;
             }
         }
-
 
     }
 }

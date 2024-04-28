@@ -1,28 +1,27 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
-using Microsoft.AspNetCore.Components;
+using Elections.Frontend.Pages.ElectoralPositions;
 using Elections.Frontend.Repositories;
-using Elections.Frontend.Shared;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Components;
 
-namespace Elections.Frontend.Pages.Cities
+namespace Elections.Frontend.Pages.ElectoralJourneys
 {
-    public partial class CityCreate
+    public partial class ElectoralJourneyCreate
     {
-        private City city = new();
-        private FormWithName<City>? cityForm;
+        private ElectoralJourney electoralJourney = new();
+        private ElectoralJourneyForm? electoralJourneyForm;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
-        [Parameter] public int StateId { get; set; }
 
+        private readonly String ELECTORAL_JOURNEY_PATH = "api/electoralJourneys";
         private async Task CreateAsync()
         {
-            city.StateId = StateId;
-            var responseHttp = await Repository.PostAsync("/api/cities", city);
+            var responseHttp = await Repository.PostAsync(ELECTORAL_JOURNEY_PATH, electoralJourney);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                await SweetAlertService.FireAsync("Error", message);
                 return;
             }
             Return();
@@ -35,11 +34,10 @@ namespace Elections.Frontend.Pages.Cities
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito.");
         }
-
         private void Return()
         {
-            cityForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo($"/states/details/{StateId}");
+            electoralJourneyForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo("electoralJourneys");
         }
     }
 }

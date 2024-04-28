@@ -1,12 +1,12 @@
-﻿using Elections.Backend.Data;
-using Elections.Backend.Helpers;
-using Elections.Backend.Repositories.Implementations;
-using Elections.Shared.DTOs;
+using Microsoft.EntityFrameworkCore;
+using Elections.Backend.Data;
+using Elections.Backend.Repositories.Interfaces;
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
-using Microsoft.EntityFrameworkCore;
+using Elections.Shared.DTOs;
+using Elections.Backend.Helpers;
 
-namespace Elections.Backend.Repositories
+namespace Elections.Backend.Repositories.Implementations
 {
     public class CitiesRepository : GenericRepository<City>, ICitiesRepository
     {
@@ -38,6 +38,13 @@ namespace Elections.Backend.Repositories
             };
         }
 
+        public async Task<IEnumerable<City>> GetComboAsync(int stateId)
+        {
+            return await _context.Cities
+                .Where(c => c.StateId == stateId)
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+        }
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
         {
             var queryable = _context.Cities
