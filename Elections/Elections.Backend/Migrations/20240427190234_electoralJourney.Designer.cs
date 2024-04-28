@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elections.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240427064026_AddElectoralJourneyEntity")]
-    partial class AddElectoralJourneyEntity
+    [Migration("20240427190234_electoralJourney")]
+    partial class electoralJourney
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
