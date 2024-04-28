@@ -34,6 +34,9 @@ namespace Elections.Backend.Repositories.Implementations
         {
             var votingStation = await _context.VotingStations
                  .Include(c => c.Zonings!)
+                 .Include(c => c.City!)
+                 .ThenInclude(s => s.State!)
+                 .ThenInclude(x => x.Country!)
                  .FirstOrDefaultAsync(c => c.Id == id);
 
             if (votingStation == null)
@@ -56,6 +59,9 @@ namespace Elections.Backend.Repositories.Implementations
         {
             var queryable = _context.VotingStations
                 .Include(c => c.Zonings)
+                .Include(c => c.City!)
+                .ThenInclude(s => s.State!)
+                .ThenInclude(x => x.Country!)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
@@ -91,7 +97,7 @@ namespace Elections.Backend.Repositories.Implementations
             double count = await queryable.CountAsync();
             if (pagination.RecordsNumber == -1)
             {
-                pagination.RecordsNumber = (int) count;
+                pagination.RecordsNumber = (int)count;
             }
             int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
             return new ActionResponse<int>

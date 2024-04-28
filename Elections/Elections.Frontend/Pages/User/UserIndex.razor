@@ -1,0 +1,63 @@
+﻿@page "/Users"
+
+<h3>Usuarios</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/User/create">Nueva Usuario</a>
+</div>
+
+<GenericList MyList="listUsers">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages" />  
+                          
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Apellido
+                    </th>
+                    <th>
+                       Fecha Nacimiento
+                    </th>
+                    <th>
+                        Sexo
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var _user in listUsers!)
+                {
+                    <tr>
+                        <td>
+                            @_user.Name
+                        </td>
+                        <td>
+                            @_user.LastName
+                        </td>
+                        <td>
+                            @_user.BirthDate
+                        </td>
+                        <td>
+                            @_user.SexId
+                        </td>
+                        <td>
+                         @*    <a href="/electoralJourneys/edit/@electoralJourney.Id" class="btn btn-warning">Editar</a> *@
+                            @*   <button class="btn btn-danger" @onclick=@(() => DeleteAsync(electoralJourney))>Borrar</button>*@
+                        </td> 
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </Body>
+</GenericList>
+
+ 
