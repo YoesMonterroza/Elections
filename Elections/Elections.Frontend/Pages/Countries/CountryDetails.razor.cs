@@ -113,14 +113,9 @@ namespace Elections.Frontend.Pages.Countries
             return true;
         }
 
-        private async Task CleanFilterAsync()
+        private async Task ApplyFilterAsync(string filter)
         {
-            Filter = string.Empty;
-            await ApplyFilterAsync();
-        }
-
-        private async Task ApplyFilterAsync()
-        {
+            Filter = filter;
             int page = 1;
             await LoadAsync(page);
             await SelectedPageAsync(page);
