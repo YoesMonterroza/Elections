@@ -1,4 +1,7 @@
 ﻿using Elections.Backend.Data;
+using Elections.Backend.UnitsOfWork.Implementations;
+using Elections.Backend.UnitsOfWork.Interfaces;
+using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,59 +10,56 @@ namespace Elections.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ElectoralPositionsController : ControllerBase
+    public class ElectoralPositionsController : GenericController<ElectoralPosition>
     {
-        private readonly DataContext _context;
-
-        public ElectoralPositionsController(DataContext context)
+        private readonly IElectoralPositionsUnitOfWork _electoralPositionsUnitOfWork;
+        public ElectoralPositionsController(IGenericUnitOfWork<ElectoralPosition> unitOfWork, IElectoralPositionsUnitOfWork electoralPositionsUnitOfWork) : base(unitOfWork)
         {
-            _context = context;
+            _electoralPositionsUnitOfWork = electoralPositionsUnitOfWork;
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        [HttpGet("full")]
+        public override async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.ElectoralPositions.ToListAsync());
+            var response = await _electoralPositionsUnitOfWork.GetAsync();
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        public override async Task<IActionResult> GetAsync(int id)
         {
-            var electoralPosition = await _context.ElectoralPositions.FindAsync(id);
-            if(electoralPosition == null)
+            var response = await _electoralPositionsUnitOfWork.GetAsync(id);
+            if (response.WasSuccess)
             {
-                return NotFound();
+                return Ok(response.Result);
             }
-            return Ok(electoralPosition);
+            return NotFound(response.Message);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostAsync(ElectoralPosition electoralPosition)
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
         {
-            _context.Add(electoralPosition);
-            await _context.SaveChangesAsync();
-            return Ok(electoralPosition);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> PutAsync(ElectoralPosition electoralPosition)
-        {
-            _context.Update(electoralPosition);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var electoralPosition = await _context.ElectoralPositions.FindAsync(id);
-            if (electoralPosition == null)
+            var response = await _electoralPositionsUnitOfWork.GetAsync(pagination);
+            if (response.WasSuccess)
             {
-                return NotFound();
+                return Ok(response.Result);
             }
-            _context.Remove(electoralPosition);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            return BadRequest();
         }
+
+        [HttpGet("totalPages")]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _electoralPositionsUnitOfWork.GetTotalPagesAsync(pagination);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
     }
 }

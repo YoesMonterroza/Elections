@@ -1,4 +1,7 @@
 ﻿using Elections.Backend.Data;
+using Elections.Backend.UnitsOfWork.Implementations;
+using Elections.Backend.UnitsOfWork.Interfaces;
+using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,59 +10,57 @@ namespace Elections.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ElectoralJourneysController : ControllerBase
+    public class ElectoralJourneysController : GenericController<ElectoralJourney>
     {
-        private readonly DataContext _context;
-
-        public ElectoralJourneysController(DataContext context)
+        private readonly IElectoralJourneysUnitOfWork _electoralJourneysUnitOfWork;
+        public ElectoralJourneysController(IGenericUnitOfWork<ElectoralJourney> unitOfWork, IElectoralJourneysUnitOfWork electoralJourneysUnitOfWork) : base(unitOfWork)
         {
-            _context = context;
+            _electoralJourneysUnitOfWork = electoralJourneysUnitOfWork;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        [HttpGet("full")]
+        public override async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.ElectoralJourneys.ToListAsync());
+            var response = await _electoralJourneysUnitOfWork.GetAsync();
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
-        { 
-            var electoralJourney  = await _context.ElectoralJourneys.FindAsync(id);
-            if(electoralJourney == null)
+        public override async Task<IActionResult> GetAsync(int id)
+        {
+            var response = await _electoralJourneysUnitOfWork.GetAsync(id);
+            if (response.WasSuccess)
             {
-                return NotFound();
+                return Ok(response.Result);
             }
-            return Ok(electoralJourney);
+            return NotFound(response.Message);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostAsync(ElectoralJourney electoralJourney)
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
         {
-            _context.Add(electoralJourney);
-            await _context.SaveChangesAsync();
-            return Ok(electoralJourney);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> PutAsync(ElectoralJourney electoralJourney)
-        {
-            _context.Update(electoralJourney);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var electoralJourney = await _context.ElectoralJourneys.FindAsync(id);
-            if (electoralJourney == null)
+            var response = await _electoralJourneysUnitOfWork.GetAsync(pagination);
+            if (response.WasSuccess)
             {
-                return NotFound();
+                return Ok(response.Result);
             }
-            _context.Remove(electoralJourney);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            return BadRequest();
         }
+
+        [HttpGet("totalPages")]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _electoralJourneysUnitOfWork.GetTotalPagesAsync(pagination);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
     }
 }

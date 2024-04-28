@@ -1,18 +1,25 @@
 ﻿@page "/electoralPositions"
 
-<h3>Posiciones electorales</h3>
+<h3>Cargos electorales</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/electoralPositions/create">Nueva Posición Electoral</a>
+    <a class="btn btn-primary" href="/electoralPositions/create">Nuevo Cargo Electoral</a>
 </div>
 
 <GenericList MyList="ElectoralPositions">
     <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync"
+                    RecordsNumber="SelectedRecordsNumberAsync" />
+
+        <GenericFilter PlaceHolder="Buscar Puesto de votación..."
+                       SelectedFilter="ApplyFilterAsync" />
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>
-                        Posición Electoral
+                        Cargo Electoral
                     </th>
                     <th>
 

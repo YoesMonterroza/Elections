@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elections.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240420205542_InitialDb")]
-    partial class InitialDb
+    [Migration("20240428061917_createdatabase")]
+    partial class createdatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,51 @@ namespace Elections.Backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Elections.Shared.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("Elections.Shared.Entities.ElectoralJourney", b =>
                 {
                     b.Property<int>("Id")
@@ -34,6 +79,10 @@ namespace Elections.Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("Date")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateFinish")
                         .IsRequired()
                         .HasColumnType("datetime2");
 
@@ -69,6 +118,30 @@ namespace Elections.Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("ElectoralPositions");
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.VotingStation", b =>
@@ -126,10 +199,32 @@ namespace Elections.Backend.Migrations
                     b.ToTable("Zonings");
                 });
 
+            modelBuilder.Entity("Elections.Shared.Entities.City", b =>
+                {
+                    b.HasOne("Elections.Shared.Entities.State", "State")
+                        .WithMany("Cities")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.State", b =>
+                {
+                    b.HasOne("Elections.Shared.Entities.Country", "Country")
+                        .WithMany("States")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+                });
+
             modelBuilder.Entity("Elections.Shared.Entities.Zoning", b =>
                 {
                     b.HasOne("Elections.Shared.Entities.VotingStation", "VotingStation")
-                        .WithMany("Zoning")
+                        .WithMany("Zonings")
                         .HasForeignKey("VotingStationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -137,9 +232,19 @@ namespace Elections.Backend.Migrations
                     b.Navigation("VotingStation");
                 });
 
+            modelBuilder.Entity("Elections.Shared.Entities.Country", b =>
+                {
+                    b.Navigation("States");
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.State", b =>
+                {
+                    b.Navigation("Cities");
+                });
+
             modelBuilder.Entity("Elections.Shared.Entities.VotingStation", b =>
                 {
-                    b.Navigation("Zoning");
+                    b.Navigation("Zonings");
                 });
 #pragma warning restore 612, 618
         }
