@@ -18,7 +18,7 @@ namespace Elections.Backend.Repositories.Implementations
         public override async Task<ActionResponse<IEnumerable<ElectoralJourney>>> GetAsync()
         {
             var electoralJourneys = await _context.ElectoralJourneys
-                .OrderBy(c => c.Date)
+                .OrderByDescending(c => c.Date)
                 .ToListAsync();
             return new ActionResponse<IEnumerable<ElectoralJourney>>
             {
@@ -68,7 +68,7 @@ namespace Elections.Backend.Repositories.Implementations
             {
                 WasSuccess = true,
                 Result = await queryable
-                    .OrderBy(x => x.Name)
+                    .OrderByDescending(x => x.Date)
                     .Paginate(pagination)
                     .ToListAsync()
             };
