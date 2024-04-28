@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elections.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240428061917_createdatabase")]
+    [Migration("20240428064827_createdatabase")]
     partial class createdatabase
     {
         /// <inheritdoc />
@@ -152,6 +152,9 @@ namespace Elections.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(80)
@@ -168,6 +171,8 @@ namespace Elections.Backend.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.HasIndex("Name", "Code")
                         .IsUnique();
@@ -219,6 +224,17 @@ namespace Elections.Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.VotingStation", b =>
+                {
+                    b.HasOne("Elections.Shared.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.Zoning", b =>
