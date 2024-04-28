@@ -6,6 +6,10 @@ namespace Elections.Shared.Entities
     {
         public int Id { get; set; }
 
+        [Display(Name = "Tipos de Identificación")]        
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        public int IdType { get; set; }
+
         [Display(Name = "Nombre ")]
         [MaxLength(50, ErrorMessage = "El campo {0} no puede tener mas de {1} caracteres")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
@@ -25,6 +29,6 @@ namespace Elections.Shared.Entities
 
         [Display(Name = "Sexo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public DateTime? Sex { get; set; }
+        public int SexId { get; set; }
     }
 }

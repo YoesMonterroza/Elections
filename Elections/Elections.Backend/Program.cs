@@ -22,13 +22,15 @@ builder.Services.AddTransient<SeedDb>();
 
 // UnitOfWork
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
-builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
-builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
+//builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
+//builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 builder.Services.AddScoped<IZoningsUnitOfWork, ZoningsUnitOfWork>();
 builder.Services.AddScoped<IVotingStationsUnitOfWork, VotingStationsUnitOfWork>();
 builder.Services.AddScoped<IElectoralJourneysUnitOfWork, ElectoralJourneysUnitOfWork>();
 builder.Services.AddScoped<IElectoralPositionsUnitOfWork, ElectoralPositionsUnitOfWork>();
+builder.Services.AddScoped<ISexesUnitOfWork, SexesUnitOfWork>();
+
 // Repository
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -38,6 +40,7 @@ builder.Services.AddScoped<IZoningsRepository, ZoningsRepository>();
 builder.Services.AddScoped<IVotingStationsRepository, VotingStationsRepository>();
 builder.Services.AddScoped<IElectoralJourneysRepository, ElectoralJourneysRepository>();
 builder.Services.AddScoped<IElectoralPositionsRepository, ElectoralPositionsRepository>();
+builder.Services.AddScoped<ISexesRepository, SexesRepository>();
 
 
 
