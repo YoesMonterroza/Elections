@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Elections.Shared\Elections.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
