@@ -4,6 +4,8 @@ using Elections.Backend.Repositories.Implementations;
 using Elections.Backend.Repositories.Interfaces;
 using Elections.Backend.UnitsOfWork.Implementations;
 using Elections.Backend.UnitsOfWork.Interfaces;
+using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -30,6 +32,7 @@ builder.Services.AddScoped<IVotingStationsUnitOfWork, VotingStationsUnitOfWork>(
 builder.Services.AddScoped<IElectoralJourneysUnitOfWork, ElectoralJourneysUnitOfWork>();
 builder.Services.AddScoped<IElectoralPositionsUnitOfWork, ElectoralPositionsUnitOfWork>();
 builder.Services.AddScoped<ISexesUnitOfWork, SexesUnitOfWork>();
+builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 
 // Repository
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
@@ -41,8 +44,24 @@ builder.Services.AddScoped<IVotingStationsRepository, VotingStationsRepository>(
 builder.Services.AddScoped<IElectoralJourneysRepository, ElectoralJourneysRepository>();
 builder.Services.AddScoped<IElectoralPositionsRepository, ElectoralPositionsRepository>();
 builder.Services.AddScoped<ISexesRepository, SexesRepository>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
-
+builder.Services.AddIdentity<User, IdentityRole>(x =>
+{
+    x.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+    x.SignIn.RequireConfirmedEmail = true;
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequireDigit = false;
+    x.Password.RequiredUniqueChars = 0;
+    x.Password.RequireLowercase = false;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequireUppercase = false;
+    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    x.Lockout.MaxFailedAccessAttempts = 5;
+    x.Lockout.AllowedForNewUsers = true;
+})
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 SeedData(app);

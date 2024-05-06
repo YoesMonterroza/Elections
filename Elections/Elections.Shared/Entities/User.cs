@@ -1,34 +1,44 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Elections.Shared.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace Elections.Shared.Entities
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
+        [Display(Name = "Documento")]
+        [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public string Document { get; set; } = null!;
 
-        [Display(Name = "Tipos de Identificación")]        
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int IdType { get; set; }
+        [Display(Name = "Nombres")]
+        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public string FirstName { get; set; } = null!;
 
-        [Display(Name = "Nombre ")]
-        [MaxLength(50, ErrorMessage = "El campo {0} no puede tener mas de {1} caracteres")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public string Name { get; set; } = null!;
-
-
-        [Display(Name = "Apellido ")]
-        [MaxLength(50, ErrorMessage = "El campo {0} no puede tener mas de {1} caracteres")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [Display(Name = "Apellidos")]
+        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string LastName { get; set; } = null!;
 
+        [Display(Name = "Dirección")]
+        [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public string Address { get; set; } = null!;
 
-        [Display(Name = "Fecha Nacimiento")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public DateTime? BirthDate { get; set; }
+        [Display(Name = "Foto")]
+        public string? Photo { get; set; }
 
+        [Display(Name = "Tipo de usuario")]
+        public UserType UserType { get; set; }
 
-        [Display(Name = "Sexo")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int SexId { get; set; }
+        public City? City { get; set; }
+
+        [Display(Name = "Ciudad")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar una {0}.")]
+        public int CityId { get; set; }
+
+        [Display(Name = "Usuario")]
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
