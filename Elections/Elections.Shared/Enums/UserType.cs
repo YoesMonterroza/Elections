@@ -13,6 +13,9 @@ namespace Elections.Shared.Enums
         Admin,
 
         [Description("Usuario")]
-        User        
+        User,
+
+        [Description("Sufragante")]
+        Voter
     }
 }
