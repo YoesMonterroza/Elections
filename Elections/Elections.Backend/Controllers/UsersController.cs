@@ -14,42 +14,16 @@ namespace Elections.Backend.Controllers
     [Route("api/user")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUsersRepository _userRepository;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUsersRepository userRepository)
         {
             _userRepository = userRepository;
         }         
 
 
-        [HttpGet]       
-        public async Task<IActionResult> Get(PaginationDTO pagination)
-        {
-             var result = await _userRepository.GetAsync(pagination);
-            return Ok(result);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Post(UserDTO model)
-        {
-            var result = await _userRepository.PostAsync(model);
-            return Ok(result);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Put(User model)
-        {
-            var result = await _userRepository.UpdateAsync(model);
-            return Ok(result);
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int Id)
-        {
-            var result = await _userRepository.DeleteAsync(Id);
-            return Ok(result);
-        }
-
+        
+ 
 
     }
 }

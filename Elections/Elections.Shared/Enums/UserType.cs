@@ -13,6 +13,6 @@ namespace Elections.Shared.Enums
         Admin,
 
         [Description("Usuario")]
-        User
+        User        
     }
 }
