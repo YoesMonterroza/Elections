@@ -1,9 +1,11 @@
 ﻿using Elections.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Elections.Backend.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>  
     {
         public DataContext(DbContextOptions<DataContext> options) :base(options)
         {
@@ -20,13 +22,16 @@ namespace Elections.Backend.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
 
+        public DbSet<User> Users { get; set; }
+        public DbSet<Sex> Sexes { get; set; }
+        public DbSet<IdentificationType> IdentificationTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ElectoralJourney>().HasIndex(x => x.Date).IsUnique();
             modelBuilder.Entity<ElectoralPosition>().HasIndex(x => x.Name).IsUnique();
-
             modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();
             modelBuilder.Entity<State>().HasIndex(s => new { s.CountryId, s.Name }).IsUnique();
             modelBuilder.Entity<City>().HasIndex(c => new { c.StateId, c.Name }).IsUnique();

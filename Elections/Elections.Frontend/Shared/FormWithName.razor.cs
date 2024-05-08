@@ -1,8 +1,9 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Elections.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
-using Elections.Shared.Interfaces;
+
 
 namespace Elections.Frontend.Shared
 {
@@ -19,7 +20,7 @@ namespace Elections.Frontend.Shared
 
         protected override void OnInitialized()
         {
-            editContext = new(Model);
+            editContext = new(Model!);
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)

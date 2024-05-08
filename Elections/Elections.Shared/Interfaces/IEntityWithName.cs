@@ -1,5 +1,4 @@
-﻿
-namespace Elections.Shared.Interfaces
+﻿namespace Elections.Shared.Interfaces
 {
     public interface IEntityWithName
     {

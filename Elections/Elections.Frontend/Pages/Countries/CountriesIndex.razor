@@ -1,0 +1,51 @@
+﻿@page "/countries"
+
+<h3>Países</h3>
+
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/countries/create">Nuevo País</a>
+</div>
+
+
+<GenericList MyList="Countries">
+    <Body>
+
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+
+        <GenericFilter PlaceHolder="Buscar Paises..."
+                       SelectedFilter="ApplyFilterAsync" />
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>País</th>
+                    <th style="width:210px">Estados / Departamentos</th>
+                    <th style="width:210px"></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var country in Countries!)
+                {
+                    <tr>
+                        <td>@country.Name</td>
+                        <td>@country.StatesNumber</td>
+
+                        <td>
+                            <a href="/countries/edit/@country.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <a class="btn btn-info btn-sm" href="/countries/details/@country.Id">Detalles</a>
+                            <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(country))>Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+
+</GenericList>
+  
+
+

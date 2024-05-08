@@ -53,7 +53,7 @@ namespace Elections.Frontend.Pages.Zonings
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
-
+        
         private void Return()
         {
             zoningForm!.FormPostedSuccessfully = true;
