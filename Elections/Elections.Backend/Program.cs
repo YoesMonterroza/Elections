@@ -1,4 +1,5 @@
 using Elections.Backend.Data;
+using Elections.Backend.Helpers;
 using Elections.Backend.Repositories;
 using Elections.Backend.Repositories.Implementations;
 using Elections.Backend.Repositories.Interfaces;
@@ -7,6 +8,7 @@ using Elections.Backend.UnitsOfWork.Interfaces;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Orders.Backend.Helpers;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +22,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name =LocalConnection"));
 builder.Services.AddTransient<SeedDb>();
 
-
+//Helpers
+builder.Services.AddScoped<IMailHelper, MailHelper>();
 
 // UnitOfWork
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
