@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Elections.Shared.Responses;
 using Elections.Shared.DTOs;
 using Elections.Backend.Helpers;
- 
+using Orders.Shared.DTOs;
+
 namespace Elections.Backend.Repositories.Implementations
 {
     public class UsersRepository : IUsersRepository
@@ -95,7 +96,11 @@ namespace Elections.Backend.Repositories.Implementations
         {
             return await _userManager.IsInRoleAsync(user, roleName);
         }
- 
+
+        public async Task<SignInResult> LoginAsync(LoginDTO model)
+        {
+            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
+        }
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
