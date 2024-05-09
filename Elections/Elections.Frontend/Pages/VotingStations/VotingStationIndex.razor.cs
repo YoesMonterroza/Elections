@@ -3,9 +3,11 @@ using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using CurrieTechnologies.Razor.SweetAlert2;
 using System.Diagnostics.Metrics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.VotingStations
 {
+    [Authorize(Roles = "Admin")]
     partial class VotingStationIndex
     {
         public List<VotingStation>? VotingStations { get; set; }
