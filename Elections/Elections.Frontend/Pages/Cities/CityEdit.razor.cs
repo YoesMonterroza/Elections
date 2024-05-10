@@ -4,9 +4,11 @@ using Elections.Frontend.Repositories;
 using Elections.Frontend.Shared;
 using Elections.Shared.Entities;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.Cities
 {
+    [Authorize(Roles = "Admin")]
     public partial class CityEdit
     {
         private City? city;

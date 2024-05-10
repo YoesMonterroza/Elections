@@ -2,10 +2,12 @@
 using Elections.Frontend.Pages.ElectoralPositions;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace Elections.Frontend.Pages.ElectoralJourneys
 {
+    [Authorize(Roles = "Admin")]
     public partial class ElectoralJourneyEdit
     {
         private ElectoralJourney? electoralJourney;

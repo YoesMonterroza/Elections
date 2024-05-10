@@ -3,9 +3,11 @@ using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.Countries
 {
+    [Authorize(Roles = "Admin")]
     public partial class CountryDetails
     {
         private Country? country;

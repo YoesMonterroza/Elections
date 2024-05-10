@@ -3,10 +3,12 @@ using Elections.Frontend.Pages.VotingStations;
 using Elections.Frontend.Repositories;
 using Elections.Frontend.Shared;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace Elections.Frontend.Pages.ElectoralPositions
 {
+    [Authorize(Roles = "Admin")]
     public partial class ElectoralPositionCreate
     {
         private FormWithName<ElectoralPosition>? electoralPositionForm;

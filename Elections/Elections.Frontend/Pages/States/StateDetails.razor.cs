@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Components;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.States
 {
+    [Authorize(Roles = "Admin")]
     public partial class StateDetails
     {
         private State? state;

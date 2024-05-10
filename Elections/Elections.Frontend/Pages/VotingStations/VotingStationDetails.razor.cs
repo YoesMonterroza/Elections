@@ -1,12 +1,14 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.Metrics;
 using System.Net;
 
 namespace Elections.Frontend.Pages.VotingStations
 {
+    [Authorize(Roles = "Admin")]
     public partial class VotingStationDetails
     {
         private VotingStation? votingStation;

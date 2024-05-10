@@ -1,11 +1,13 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
 namespace Elections.Frontend.Pages.Zonings
 {
+    [Authorize(Roles = "Admin")]
     public partial class ZoningEdit
     {
         private Zoning? zoning;
