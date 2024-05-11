@@ -1,4 +1,6 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Pages.VotingStations;
 using Elections.Frontend.Repositories;
 using Elections.Frontend.Shared;
@@ -17,6 +19,7 @@ namespace Elections.Frontend.Pages.ElectoralPositions
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Parameter] public int Id { get; set; }
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         private readonly String VOTING_STATION_PATH = "api/electoralPositions";
         protected override async Task OnInitializedAsync()
@@ -48,6 +51,7 @@ namespace Elections.Frontend.Pages.ElectoralPositions
                 await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
                 return;
             }
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
             Return();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {

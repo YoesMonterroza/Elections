@@ -3,7 +3,7 @@
 <h3>Cargos electorales</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/electoralPositions/create">Nuevo Cargo Electoral</a>
+    <a class="btn btn-primary" @onclick =@(()=> ShowModalAsync())>Nuevo Cargo Electoral</a>
 </div>
 
 <GenericList MyList="ElectoralPositions">
@@ -34,7 +34,7 @@
                             @electoralPosition.Name
                         </td>
                         <td>
-                            <a href="/electoralPositions/edit/@electoralPosition.Id" class="btn btn-warning">Editar</a>
+                            <a h @onclick =@(()=> ShowModalAsync(@electoralPosition.Id,true)) class="btn btn-warning">Editar</a>
                             <button class="btn btn-danger" @onclick=@(() => DeleteAsync(electoralPosition))>Borrar</button>
                         </td>
                     </tr>
