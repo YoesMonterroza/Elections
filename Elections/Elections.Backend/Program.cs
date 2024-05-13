@@ -48,6 +48,7 @@ builder.Services.AddScoped<IElectoralJourneysRepository, ElectoralJourneysReposi
 builder.Services.AddScoped<IElectoralPositionsRepository, ElectoralPositionsRepository>();
 builder.Services.AddScoped<ISexesRepository, SexesRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IFileStorage, FileStorage>();
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
