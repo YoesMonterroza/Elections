@@ -22,13 +22,15 @@ namespace Elections.Backend.Controllers
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly IConfiguration _configuration;
         private readonly IMailHelper _mailHelper;
+        private readonly IFileStorage _fileStorage;
         private readonly string _container;
 
-        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IMailHelper mailHelper)
+        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IMailHelper mailHelper, IFileStorage fileStorage)
         {
             _usersUnitOfWork = usersUnitOfWork;
             _configuration = configuration;
-            _mailHelper = mailHelper;
+            _mailHelper = mailHelper;           
+            _fileStorage = fileStorage;
             _container = "users";
         }
 
@@ -90,11 +92,11 @@ namespace Elections.Backend.Controllers
         public async Task<IActionResult> CreateUser([FromBody] UserDTO model)
         {
             User user = model;
-            //if (!string.IsNullOrEmpty(model.Photo))
-            //{
-            //    var photoUser = Convert.FromBase64String(model.Photo);
-            //    model.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
-            //}
+            if (!string.IsNullOrEmpty(model.Photo))
+            {
+                var photoUser = Convert.FromBase64String(model.Photo);
+                model.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
+            }
 
             var result = await _usersUnitOfWork.AddUserAsync(user, model.Password);
             if (result.Succeeded)

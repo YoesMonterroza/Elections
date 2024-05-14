@@ -21,4 +21,12 @@
     <ProjectReference Include="..\Elections.Shared\Elections.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\inputImg.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\inputImg.razor" />
+  </ItemGroup>
+
 </Project>
