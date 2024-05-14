@@ -1,3 +1,4 @@
+using Blazorise;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Frontend.Services;
@@ -10,6 +11,7 @@ namespace Elections.Frontend.Pages.Auth
     public partial class Login
     {
         private LoginDTO loginDTO = new();
+        private Validations validations;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -18,16 +20,19 @@ namespace Elections.Frontend.Pages.Auth
 
         private async Task LoginAsync()
         {
-            var responseHttp = await Repository.PostAsync<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);
-            if (responseHttp.Error)
+            if (await validations.ValidateAll())
             {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
-            }
+                var responseHttp = await Repository.PostAsync<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);
+                if (responseHttp.Error)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return;
+                }
 
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
-            NavigationManager.NavigateTo("/");
+                await LoginService.LoginAsync(responseHttp.Response!.Token);
+                NavigationManager.NavigateTo("/");
+            }
         }
 
     }

@@ -1,39 +1,59 @@
 ﻿@page "/Login"
 
-<div class="row mt-5">
-    <div class="col-md-4 offset-md-4">
+<Div Margin="Margin.IsAuto.OnX" Width="Width.Is50">
+    <Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromBottom" TextAlignment="TextAlignment.Center">
+        Inicia sesión en tu Cuenta
+    </Heading>
 
-        <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
-            <DataAnnotationsValidator />
+    <Card Shadow="Shadow.Default">
+        <CardBody>
+            <Validations @ref="validations" Mode="ValidationMode.Auto" Model="@loginDTO" ValidateOnLoad="false">
+                <Validation>
+                    <Field>
+                        <FieldLabel>
+                            Email
+                        </FieldLabel>
+                        <FieldBody>
+                            <TextEdit Placeholder="name@email.com" Role="TextRole.Email" @bind-Text="@loginDTO.Email">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </FieldBody>
+                    </Field>
+                </Validation>
+                <Validation>
+                    <Field>
+                        <FieldLabel>
+                            Password
+                        </FieldLabel>
+                        <FieldBody>
+                            <TextEdit Placeholder="********" Role="TextRole.Password" @bind-Text="@loginDTO.Password">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </FieldBody>
+                    </Field>
+                </Validation>
 
-            <div class="card bg-light">
-                <div class="card-header justify-content-center">
-                    <span>
-                        <i class="oi oi-account-login" /> Iniciar Sesión
-                        <button class="btn btn-sm btn-primary float-end" type="submit"><i class="bi bi-box-arrow-in-right" /> Iniciar Sesión</button>
-                    </span>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label>Email:</label>
-                        <div>
-                            <InputText class="form-control" @bind-Value="@loginDTO.Email" />
-                            <ValidationMessage For="@(() => loginDTO.Email)" />
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label>Contraseña:</label>
-                        <div>
-                            <InputText type="password" class="form-control" @bind-Value="@loginDTO.Password" />
-                            <ValidationMessage For="@(() => loginDTO.Password)" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <p><a class="btn btn-link" href="/ResendToken">Reenviar correro de activación de cuenta</a></p>
-                    <p><a class="btn btn-link" href="/RecoverPassword">¿Has olvidado tu contraseña?</a></p>
-                </div>
-            </div>
-        </EditForm>
-    </div>
-</div>
+                <Field Flex="Flex.Wrap.JustifyContent.Between">
+                    <Anchor To="/RecoverPassword" TextColor="TextColor.Primary">
+                        ¿Olvidaste tu contraseña?
+                    </Anchor>
+                </Field>
+                <Field>
+                    <Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit Clicked="LoginAsync">
+                        Iniciar Sesión
+                    </Button>
+                </Field>
+                <Field>
+                    ¿Aún no tienes cuenta? <Anchor To="#" TextColor="TextColor.Primary">Regístrate!</Anchor>
+                </Field>
+                <Field>
+                    ¿Necesitas activar tu cuenta? <Anchor To="/ResendToken" TextColor="TextColor.Primary">Reenviar correo de activación</Anchor>
+                </Field>
+            </Validations>
+        </CardBody>
+    </Card>
+</Div>
