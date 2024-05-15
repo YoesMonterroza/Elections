@@ -1,16 +1,11 @@
-﻿using Blazored.Modal;
-using Blazored.Modal.Services;
-using CurrieTechnologies.Razor.SweetAlert2;
-using Microsoft.AspNetCore.Authorization;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
-using Elections.Frontend.Pages.Cities;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
 using System.Net;
 
 namespace Elections.Frontend.Pages.States
 {
-    [Authorize(Roles = "Admin")]
     public partial class StateDetails
     {
         private State? state;
@@ -18,68 +13,33 @@ namespace Elections.Frontend.Pages.States
         private int currentPage = 1;
         private int totalPages;
 
+
+        [Parameter] public int StateId { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
-
-        [Parameter] public int StateId { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
-        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
-        [CascadingParameter] IModalService Modal { get; set; } = default!;
+
 
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
 
-        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
-        {
-            IModalReference modalReference;
-
-            if (isEdit)
-            {
-                modalReference = Modal.Show<CityEdit>(string.Empty, new ModalParameters().Add("CityId", id));
-            }
-            else
-            {
-                modalReference = Modal.Show<CityCreate>(string.Empty, new ModalParameters().Add("StateId", StateId));
-            }
-
-            var result = await modalReference.Result;
-            if (result.Confirmed)
-            {
-                await LoadAsync();
-            }
-        }
-
-        private async Task SelectedRecordsNumberAsync(int recordsnumber)
-        {
-            RecordsNumber = recordsnumber;
-            int page = 1;
-            await LoadAsync(page);
-            await SelectedPageAsync(page);
-        }
-
-        private async Task FilterCallBack(string filter)
-        {
-            Filter = filter;
-            await ApplyFilterAsync();
-            StateHasChanged();
-        }
         private async Task SelectedPageAsync(int page)
         {
-            if (!string.IsNullOrWhiteSpace(Page))
-            {
-                page = Convert.ToInt32(Page);
-            }
-
             currentPage = page;
             await LoadAsync(page);
         }
 
         private async Task LoadAsync(int page = 1)
         {
+           if (!string.IsNullOrWhiteSpace(Page))
+            {
+                page = Convert.ToInt32(Page);
+            }
+           
             var ok = await LoadStateAsync();
             if (ok)
             {
@@ -91,22 +51,15 @@ namespace Elections.Frontend.Pages.States
             }
         }
 
-        private void ValidateRecordsNumber()
-        {
-            if (RecordsNumber == 0)
-            {
-                RecordsNumber = 10;
-            }
-        }
-
         private async Task LoadPagesAsync()
         {
-            ValidateRecordsNumber();
-            var url = $"api/cities/totalPages?id={StateId}&recordsnumber={RecordsNumber}";
+            var url = $"api/cities/totalPages?id={StateId}";
+           
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
             }
+
 
             var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
@@ -120,14 +73,15 @@ namespace Elections.Frontend.Pages.States
 
         private async Task<bool> LoadCitiesAsync(int page)
         {
-            ValidateRecordsNumber();
-            var url = $"api/cities?id={StateId}&page={page}&recordsnumber={RecordsNumber}";
+            var url = $"api/cities?id={StateId}&page={page}";
+           
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
             }
 
             var responseHttp = await Repository.GetAsync<List<City>>(url);
+            
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -136,13 +90,6 @@ namespace Elections.Frontend.Pages.States
             }
             cities = responseHttp.Response;
             return true;
-        }
-
-        private async Task ApplyFilterAsync()
-        {
-            int page = 1;
-            await LoadAsync(page);
-            await SelectedPageAsync(page);
         }
 
         private async Task<bool> LoadStateAsync()
@@ -164,6 +111,15 @@ namespace Elections.Frontend.Pages.States
             return true;
         }
 
+        private async Task ApplyFilterAsync(string filter)
+        {
+            Filter = filter;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
+
         private async Task DeleteAsync(City city)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
@@ -182,7 +138,7 @@ namespace Elections.Frontend.Pages.States
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<City>($"/api/cities/{city.Id}");
+            var responseHttp = await Repository.DeleteAsync($"/api/cities/{city.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
@@ -205,3 +161,4 @@ namespace Elections.Frontend.Pages.States
         }
     }
 }
+

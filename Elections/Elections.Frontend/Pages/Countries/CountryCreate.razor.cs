@@ -1,7 +1,4 @@
-﻿using Blazored.Modal;
-using Blazored.Modal.Services;
-using CurrieTechnologies.Razor.SweetAlert2;
-using Microsoft.AspNetCore.Authorization;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Elections.Frontend.Repositories;
 using Elections.Frontend.Shared;
@@ -9,15 +6,15 @@ using Elections.Shared.Entities;
 
 namespace Elections.Frontend.Pages.Countries
 {
-    [Authorize(Roles = "Admin")]
     public partial class CountryCreate
     {
         private Country country = new();
         private FormWithName<Country>? countryForm;
+
         [Inject] private IRepository Repository { get; set; } = null!;
-        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+
 
         private async Task CreateAsync()
         {
@@ -25,13 +22,11 @@ namespace Elections.Frontend.Pages.Countries
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                await SweetAlertService.FireAsync("Error", message);
                 return;
             }
 
-            await BlazoredModal.CloseAsync(ModalResult.Ok());
             Return();
-
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
