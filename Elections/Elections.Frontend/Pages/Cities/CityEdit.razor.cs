@@ -1,4 +1,7 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Elections.Frontend.Repositories;
 using Elections.Frontend.Shared;
@@ -7,6 +10,7 @@ using System.Net;
 
 namespace Elections.Frontend.Pages.Cities
 {
+    [Authorize(Roles = "Admin")]
     public partial class CityEdit
     {
         private City? city;
@@ -17,6 +21,7 @@ namespace Elections.Frontend.Pages.Cities
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
 
         [Parameter] public int CityId { get; set; }
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -43,7 +48,10 @@ namespace Elections.Frontend.Pages.Cities
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
+
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
             Return();
+
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

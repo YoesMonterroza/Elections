@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend;
 using Elections.Frontend.AuthenticationProviders;
@@ -15,5 +16,6 @@ builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddSweetAlert2();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProvider>();
+builder.Services.AddBlazoredModal();
 
 await builder.Build().RunAsync();

@@ -1,4 +1,7 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Elections.Frontend.Repositories;
 using Elections.Frontend.Shared;
@@ -6,6 +9,7 @@ using Elections.Shared.Entities;
 
 namespace Elections.Frontend.Pages.States
 {
+    [Authorize(Roles = "Admin")]
     public partial class StateCreate
     {
         private State state = new();
@@ -15,6 +19,7 @@ namespace Elections.Frontend.Pages.States
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         private async Task CreateAsync()
         {
@@ -26,7 +31,10 @@ namespace Elections.Frontend.Pages.States
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
+
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
             Return();
+
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -44,4 +52,3 @@ namespace Elections.Frontend.Pages.States
         }
     }
 }
-
