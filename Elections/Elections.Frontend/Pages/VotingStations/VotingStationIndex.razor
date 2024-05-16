@@ -1,7 +1,7 @@
 ﻿@page "/votingstations"
 <h3>Puestos de Votación</h3>
 <div class="mb-3">
-    <a class="btn btn-primary" href="/votingstations/create">Nuevo Puesto de Votación</a>
+    <a class="btn btn-primary" @onclick=@(() => ShowModalAsync())>Nuevo Puesto de Votación</a>
 </div>
 <GenericList MyList="VotingStations">
     <Body>
@@ -45,7 +45,7 @@
                             @votingstation.ZoningNumber
                         </td>
                         <td>
-                            <a href="/votingstations/edit/@votingstation.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <a @onclick=@(() => ShowModalAsync(votingstation.Id, true)) class="btn btn-warning btn-sm">Editar</a>
                             <a href="/votingstations/details/@votingstation.Id" class="btn btn-info btn-sm">Detalles</a>
                             <button class="btn btn-danger" @onclick=@(() => DeleteAsync(votingstation))>Borrar</button>
                         </td>

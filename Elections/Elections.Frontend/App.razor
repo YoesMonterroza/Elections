@@ -1,14 +1,17 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />    
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <CascadingAuthenticationState>
-            <PageTitle>No encontrado</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">No se encontró resultados en esta Ruta.</p>
-            </LayoutView>
-        </CascadingAuthenticationState>
-    </NotFound>
-</Router>
+﻿<CascadingBlazoredModal Position="ModalPosition.Middle" Size="Blazored.Modal.ModalSize.Large" HideHeader="true"
+                        DisableBackgroundCancel="true" AnimationType="ModalAnimationType.FadeInOut">
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <CascadingAuthenticationState>
+                <PageTitle>No encontrado</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p role="alert">No se encontró resultados en esta Ruta.</p>
+                </LayoutView>
+            </CascadingAuthenticationState>
+        </NotFound>
+    </Router>
+</CascadingBlazoredModal>
