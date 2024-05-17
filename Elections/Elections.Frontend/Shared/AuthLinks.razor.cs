@@ -8,6 +8,7 @@ namespace Elections.Frontend.Shared
     public partial class AuthLinks
     {
         private string? photoUser;
+        private string nameUser = "Usuario";
 
         [CascadingParameter] private Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
         [CascadingParameter] IModalService Modal { get; set; } = default!;
@@ -20,6 +21,12 @@ namespace Elections.Frontend.Shared
             if (photoClaim is not null)
             {
                 photoUser = photoClaim.Value;
+            }
+            var nameClaim = claims.FirstOrDefault(x => x.Type == "FirstName");
+            var lastNameClaim = claims.FirstOrDefault(x => x.Type == "LastName");
+            if (nameClaim is not null && lastNameClaim is not null)
+            {
+                nameUser = string.Concat(nameClaim.Value, " ", lastNameClaim.Value);
             }
         }
 
