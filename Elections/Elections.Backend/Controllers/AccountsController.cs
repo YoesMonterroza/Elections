@@ -15,6 +15,7 @@ using Elections.Backend.UnitsOfWork.Interfaces;
 using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
+using Orders.Shared.DTOs;
 
 namespace Elections.Backend.Controllers
 {
@@ -220,28 +221,28 @@ namespace Elections.Backend.Controllers
         //}
 
 
-        //[HttpPost("Login")]
-        //public async Task<IActionResult> LoginAsync([FromBody] LoginDTO model)
-        //{
-        //    var result = await _usersUnitOfWork.LoginAsync(model);
-        //    if (result.Succeeded)
-        //    {
-        //        var user = await _usersUnitOfWork.GetUserAsync(model.Email);
-        //        return Ok(BuildToken(user));
-        //    }
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginDTO model)
+        {
+            var result = await _usersUnitOfWork.LoginAsync(model);
+            if (result.Succeeded)
+            {
+                var user = await _usersUnitOfWork.GetUserAsync(model.Email);
+                return Ok(BuildToken(user));
+            }
 
-        //    if (result.IsLockedOut)
-        //    {
-        //        return BadRequest("Ha superado el máximo número de intentos, su cuenta está bloqueada, intente de nuevo en 5 minutos.");
-        //    }
+            if (result.IsLockedOut)
+            {
+                return BadRequest("Ha superado el máximo número de intentos, su cuenta está bloqueada, intente de nuevo en 5 minutos.");
+            }
 
-        //    if (result.IsNotAllowed)
-        //    {
-        //        return BadRequest("El usuario no ha sido habilitado, debes de seguir las instrucciones del correo enviado para poder habilitar el usuario.");
-        //    }
+            if (result.IsNotAllowed)
+            {
+                return BadRequest("El usuario no ha sido habilitado, debes de seguir las instrucciones del correo enviado para poder habilitar el usuario.");
+            }
 
-        //    return BadRequest("Email o contraseña incorrectos.");
-        //}
+            return BadRequest("Email o contraseña incorrectos.");
+        }
 
         private async Task<ActionResponse<string>> SendConfirmationEmailAsync(User user)
         {

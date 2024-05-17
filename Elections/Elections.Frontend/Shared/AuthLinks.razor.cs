@@ -1,4 +1,5 @@
-﻿using Elections.Frontend.Pages.Auth;
+﻿using Blazored.Modal.Services;
+using Elections.Frontend.Pages.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 
@@ -9,8 +10,7 @@ namespace Elections.Frontend.Shared
         private string? photoUser;
 
         [CascadingParameter] private Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
-        //[CascadingParameter] IModalService Modal { get; set; } = default!;
-
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -23,9 +23,9 @@ namespace Elections.Frontend.Shared
             }
         }
 
-        //private void ShowModal()
-        //{
-        //    Modal.Show<Login>();
-        //}
+        private void ShowModal()
+        {
+            Modal.Show<Login>();
+        }
     }
 }

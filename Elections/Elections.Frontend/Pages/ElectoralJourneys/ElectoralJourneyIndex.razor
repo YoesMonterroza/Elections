@@ -4,7 +4,7 @@
 <h3>Jornadas electorales</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/electoralJourneys/create">Nueva Jornada Electoral</a>
+    <a class="btn btn-primary" @onclick =@(()=> ShowModalAsync())>Nueva Jornada Electoral</a>
 </div>
 
 <GenericList MyList="ElectoralJourneys">
@@ -48,7 +48,7 @@
                             @electoralJourney.DateFinish
                         </td>
                         <td>
-                            <a href="/electoralJourneys/edit/@electoralJourney.Id" class="btn btn-warning">Editar</a>
+                            <a  @onclick =@(()=> ShowModalAsync(@electoralJourney.Id,true)) class="btn btn-warning">Editar</a>
                             <button class="btn btn-danger" @onclick=@(() => DeleteAsync(electoralJourney))>Borrar</button> 
                         </td>
                     </tr>
