@@ -183,7 +183,7 @@ namespace Elections.Frontend.Pages.States
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<City>($"/api/cities/{city.Id}");
+            var responseHttp = await Repository.DeleteAsync($"/api/cities/{city.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)

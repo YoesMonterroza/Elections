@@ -157,7 +157,7 @@ namespace Elections.Frontend.Pages.Countries
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Country>($"api/countries/{country.Id}");
+            var responseHttp = await Repository.DeleteAsync($"api/countries/{country.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)

@@ -9,7 +9,7 @@ using Elections.Frontend.Shared;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Orders.Frontend.Pages.States
+namespace Elections.Frontend.Pages.States
 {
     [Authorize(Roles = "Admin")]
     public partial class StateEdit
