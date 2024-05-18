@@ -8,14 +8,14 @@ else
 {
     <h3>@votingStation.Name - @votingStation.City.Name</h3>
     <div class="mb-2">
-        <a class="btn btn-primary" href="/zoning/create/@votingStation.Id">Nueva mesa de votación</a>
+        <a class="btn btn-primary" @onclick=@(() => ShowModalAsync())>Nueva mesa de votación</a>
         <a class="btn btn-success" href="/votingstations">Regresar</a>
     </div>
 
     <h4>Mesas de votación</h4>
     <GenericList MyList="zonings!">
         <Body>
-            <Pagination CurrentPage="currentPage"
+            <GenericPagination CurrentPage="currentPage"
                         TotalPages="totalPages"
                         SelectedPage="SelectedPageAsync"
                         RecordsNumber="SelectedRecordsNumberAsync"/>
@@ -38,7 +38,7 @@ else
                                 @zoning.ZoningNumber
                             </td>
                             <td>
-                                <a class="btn btn-warning btn-sm" href="/zoning/edit/@zoning.Id">Editar</a>
+                                <a class="btn btn-warning btn-sm" @onclick=@(() => ShowModalAsync(zoning.Id, true))>Editar</a>
                                 <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(zoning))>Borrar</button>
                             </td>
                         </tr>

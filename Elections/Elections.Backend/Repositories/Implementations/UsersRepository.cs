@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Elections.Shared.Responses;
 using Elections.Shared.DTOs;
 using Elections.Backend.Helpers;
- 
+using Orders.Shared.DTOs;
+using System.Collections.Generic;
+
 namespace Elections.Backend.Repositories.Implementations
 {
     public class UsersRepository : IUsersRepository
@@ -81,6 +83,11 @@ namespace Elections.Backend.Repositories.Implementations
             return user!;
         }
 
+        public async Task<IEnumerable<User>> GetAllUserAsync()
+        {
+            return await _context.Users.ToListAsync();              
+        }
+         
         public async Task<User> GetUserAsync(Guid userId)
         {
             var user = await _context.Users
@@ -95,7 +102,11 @@ namespace Elections.Backend.Repositories.Implementations
         {
             return await _userManager.IsInRoleAsync(user, roleName);
         }
- 
+
+        public async Task<SignInResult> LoginAsync(LoginDTO model)
+        {
+            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
+        }
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Elections.Shared.Enums;
 using Microsoft.AspNetCore.Identity;
 
@@ -40,5 +41,9 @@ namespace Elections.Shared.Entities
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";
+
+       
+        //LLAVE FORANEA 
+        public ICollection<ElectoralCandidate>? ElectoralCandidate { get; set; }
     }
 }

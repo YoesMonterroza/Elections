@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Elections.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class adduserentities : Migration
+    public partial class createdatabase20240517 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -300,6 +300,39 @@ namespace Elections.Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ElectoralCandidate",
+                columns: table => new
+                {
+                    ElectoralJourneyId = table.Column<int>(type: "int", nullable: false),
+                    Document = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    ElectoralPositionId = table.Column<int>(type: "int", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ElectoralCandidate", x => new { x.ElectoralJourneyId, x.Document });
+                    table.ForeignKey(
+                        name: "FK_ElectoralCandidate_AspNetUsers_Document",
+                        column: x => x.Document,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ElectoralCandidate_ElectoralJourneys_ElectoralJourneyId",
+                        column: x => x.ElectoralJourneyId,
+                        principalTable: "ElectoralJourneys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ElectoralCandidate_ElectoralPositions_ElectoralPositionId",
+                        column: x => x.ElectoralPositionId,
+                        principalTable: "ElectoralPositions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Zonings",
                 columns: table => new
                 {
@@ -376,6 +409,16 @@ namespace Elections.Backend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ElectoralCandidate_Document",
+                table: "ElectoralCandidate",
+                column: "Document");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElectoralCandidate_ElectoralPositionId",
+                table: "ElectoralCandidate",
+                column: "ElectoralPositionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ElectoralJourneys_Date",
                 table: "ElectoralJourneys",
                 column: "Date",
@@ -430,10 +473,7 @@ namespace Elections.Backend.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ElectoralJourneys");
-
-            migrationBuilder.DropTable(
-                name: "ElectoralPositions");
+                name: "ElectoralCandidate");
 
             migrationBuilder.DropTable(
                 name: "IdentificationTypes");
@@ -449,6 +489,12 @@ namespace Elections.Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ElectoralJourneys");
+
+            migrationBuilder.DropTable(
+                name: "ElectoralPositions");
 
             migrationBuilder.DropTable(
                 name: "VotingStations");

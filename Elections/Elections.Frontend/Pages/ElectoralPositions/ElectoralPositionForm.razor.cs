@@ -3,9 +3,11 @@ using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.ElectoralPositions
 {
+    [Authorize(Roles = "Admin")]
     public partial class ElectoralPositionForm
     {
         private EditContext editContext = null!;
