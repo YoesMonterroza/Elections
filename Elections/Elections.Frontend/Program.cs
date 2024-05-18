@@ -1,4 +1,7 @@
 using Blazored.Modal;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend;
 using Elections.Frontend.AuthenticationProviders;
@@ -21,5 +24,12 @@ builder.Services.AddBlazoredModal();
 builder.Services.AddScoped<AuthenticationProviderJWT>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
 builder.Services.AddScoped<ILoginService, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
+builder.Services
+    .AddBlazorise(options =>
+    {
+        options.Immediate = true;
+    })
+    .AddBootstrapProviders()
+    .AddFontAwesomeIcons();
 
 await builder.Build().RunAsync();

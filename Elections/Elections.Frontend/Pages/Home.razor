@@ -2,11 +2,51 @@
 
 <PageTitle>Home</PageTitle>
 
+
 <AuthorizeView Roles="Admin">
     <Authorized>
-        <p>Estas autenticado y autorizado, @context.User.Identity?.Name</p>
+        <Carousel Interval="5000" Width="Width.Is75">
+            <CarouselSlide Name="1">
+                <Image Source="resources/1.png" Text="1" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+            <CarouselSlide Name="2">
+                <Image Source="resources/2_Admin.png" Text="2" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+            <CarouselSlide Name="3">
+                <Image Source="resources/3.png" Text="3" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+        </Carousel>
     </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <Carousel Interval="5000" Width="Width.Is75">
+            <CarouselSlide Name="1">
+                <Image Source="resources/1.png" Text="1" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+            <CarouselSlide Name="2">
+                <Image Source="resources/2_user.png" Text="2" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+            <CarouselSlide Name="3">
+                <Image Source="resources/3.png" Text="3" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+        </Carousel>
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView>
     <NotAuthorized>
-        <p>No estas autorizado</p>
+        <Carousel Interval="5000" Width="Width.Is75">
+            <CarouselSlide Name="1">
+                <Image Source="resources/1.png" Text="1" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+            <CarouselSlide Name="2">
+                <Image Source="resources/2_Anonimo.png" Text="2" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+            <CarouselSlide Name="3">
+                <Image Source="resources/3_Anonimo.png" Text="3" Display="Display.Block" Width="Width.Is100" />
+            </CarouselSlide>
+        </Carousel>
     </NotAuthorized>
 </AuthorizeView>

@@ -1,3 +1,4 @@
+using Blazorise;
 using Blazored.Modal;
 using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
@@ -12,6 +13,7 @@ namespace Elections.Frontend.Pages.Auth
     public partial class Login
     {
         private LoginDTO loginDTO = new();
+        private Validations validations;
 
         private bool wasClose;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -31,17 +33,19 @@ namespace Elections.Frontend.Pages.Auth
                 NavigationManager.NavigateTo("/");
                 return;
             }
-
-            var responseHttp = await Repository.PostAsync<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);
-            if (responseHttp.Error)
+            if (await validations.ValidateAll())
             {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
-            }
+                var responseHttp = await Repository.PostAsync<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);
+                if (responseHttp.Error)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return;
+                }
 
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
-            NavigationManager.NavigateTo("/");
+                await LoginService.LoginAsync(responseHttp.Response!.Token);
+                NavigationManager.NavigateTo("/");
+            }
         }
 
     }
