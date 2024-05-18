@@ -67,6 +67,32 @@ namespace Elections.Backend.Migrations
                     b.ToTable("Countries");
                 });
 
+            modelBuilder.Entity("Elections.Shared.Entities.ElectoralCandidate", b =>
+                {
+                    b.Property<int>("ElectoralJourneyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Document")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ElectoralPositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ElectoralJourneyId", "Document");
+
+                    b.HasIndex("Document");
+
+                    b.HasIndex("ElectoralPositionId");
+
+                    b.ToTable("ElectoralCandidate");
+                });
+
             modelBuilder.Entity("Elections.Shared.Entities.ElectoralJourney", b =>
                 {
                     b.Property<int>("Id")
@@ -480,6 +506,33 @@ namespace Elections.Backend.Migrations
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("Elections.Shared.Entities.ElectoralCandidate", b =>
+                {
+                    b.HasOne("Elections.Shared.Entities.User", "User")
+                        .WithMany("ElectoralCandidate")
+                        .HasForeignKey("Document")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Elections.Shared.Entities.ElectoralJourney", "ElectoralJourney")
+                        .WithMany("ElectoralCandidate")
+                        .HasForeignKey("ElectoralJourneyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Elections.Shared.Entities.ElectoralPosition", "ElectoralPosition")
+                        .WithMany("ElectoralCandidate")
+                        .HasForeignKey("ElectoralPositionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ElectoralJourney");
+
+                    b.Navigation("ElectoralPosition");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>
                 {
                     b.HasOne("Elections.Shared.Entities.Country", "Country")
@@ -494,7 +547,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Elections.Shared.Entities.User", b =>
                 {
                     b.HasOne("Elections.Shared.Entities.City", "City")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -575,14 +628,34 @@ namespace Elections.Backend.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Elections.Shared.Entities.City", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("Elections.Shared.Entities.Country", b =>
                 {
                     b.Navigation("States");
                 });
 
+            modelBuilder.Entity("Elections.Shared.Entities.ElectoralJourney", b =>
+                {
+                    b.Navigation("ElectoralCandidate");
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.ElectoralPosition", b =>
+                {
+                    b.Navigation("ElectoralCandidate");
+                });
+
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>
                 {
                     b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.User", b =>
+                {
+                    b.Navigation("ElectoralCandidate");
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.VotingStation", b =>

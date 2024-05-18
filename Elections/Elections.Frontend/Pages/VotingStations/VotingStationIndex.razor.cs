@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components;
 using CurrieTechnologies.Razor.SweetAlert2;
 using System.Diagnostics.Metrics;
 using Microsoft.AspNetCore.Authorization;
+using Blazored.Modal.Services;
+using Blazored.Modal;
 
 namespace Elections.Frontend.Pages.VotingStations
 {
@@ -21,6 +23,7 @@ namespace Elections.Frontend.Pages.VotingStations
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
 
 
         private readonly String VOTING_STATION_PATH = "api/votingstations";
@@ -148,6 +151,24 @@ namespace Elections.Frontend.Pages.VotingStations
             if (recordsnumber == 0)
             {
                 RecordsNumber = 10;
+            }
+        }
+
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+            if (isEdit)
+            {
+                modalReference = Modal.Show<VotingStationEdit>(new ModalParameters().Add("Id", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<VotingStationCreate>();
+            }
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
             }
         }
 

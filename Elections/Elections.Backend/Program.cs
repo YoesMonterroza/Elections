@@ -39,6 +39,7 @@ builder.Services.AddScoped<IElectoralJourneysUnitOfWork, ElectoralJourneysUnitOf
 builder.Services.AddScoped<IElectoralPositionsUnitOfWork, ElectoralPositionsUnitOfWork>();
 builder.Services.AddScoped<ISexesUnitOfWork, SexesUnitOfWork>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
+builder.Services.AddScoped<IElectoralCandidateUnitOfWork, ElectoralCandidateUnitOfWork>();
 
 // Repository
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
@@ -52,6 +53,7 @@ builder.Services.AddScoped<IElectoralPositionsRepository, ElectoralPositionsRepo
 builder.Services.AddScoped<ISexesRepository, SexesRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IFileStorage, FileStorage>();
+builder.Services.AddScoped<IElectoralCandidateRepository, ElectoralCandidateRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {

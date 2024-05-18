@@ -1,37 +1,34 @@
 using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
-using Elections.Frontend.Repositories;
-using Elections.Shared.DTOs;
 using Microsoft.AspNetCore.Components;
+using Elections.Frontend.Repositories;
 
 namespace Elections.Frontend.Pages.Auth
 {
-    public partial class ResetPassword
+    public partial class ConfirmEmail
     {
-        private ResetPasswordDTO resetPasswordDTO = new();
-        private bool loading;
+        private string? message;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
+
+        [Parameter, SupplyParameterFromQuery] public string UserId { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Token { get; set; } = string.Empty;
         [CascadingParameter] IModalService Modal { get; set; } = default!;
 
-        private async Task ChangePasswordAsync()
+        protected async Task ConfirmAccountAsync()
         {
-            resetPasswordDTO.Token = Token;
-            loading = true;
-            var responseHttp = await Repository.PostAsync("/api/accounts/ResetPassword", resetPasswordDTO);
-            loading = false;
+            var responseHttp = await Repository.GetAsync($"/api/accounts/ConfirmEmail/?userId={UserId}&token={Token}");
             if (responseHttp.Error)
             {
-                var message = await responseHttp.GetErrorMessageAsync();
+                message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                loading = false;
+                NavigationManager.NavigateTo("/");
                 return;
             }
 
-            await SweetAlertService.FireAsync("Confirmación", "Contraseña cambiada con éxito, ahora puede ingresar con su nueva contraseña.", SweetAlertIcon.Info);
+            await SweetAlertService.FireAsync("Confirmación", "Gracias por confirmar su email, ahora puedes ingresar al sistema.", SweetAlertIcon.Info);
             Modal.Show<Login>();
         }
     }

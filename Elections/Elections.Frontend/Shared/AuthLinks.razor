@@ -1,18 +1,50 @@
-﻿<AuthorizeView>
-    <Authorized>
-        <span class="d-flex align-items-center">
-            Bienvenido, <a href="EditUser" class="nav-link btn btn-link">@context.User.Identity!.Name</a>
-        </span>        
-        @if (!string.IsNullOrEmpty(photoUser))
-        {
-            <div class="mx-2">
-                <img src="@photoUser" width="50" height="50" style="border-radius:50%" />
-            </div>
-        }
-        <a href="Logout" class="nav-link btn btn-link">Cerrar Sesión</a>
-    </Authorized>
-    <NotAuthorized>
-        <a href="register" class="nav-link btn btn-link">Registro</a>
-        <a href="Login" class="nav-link btn btn-link">Iniciar Sesión</a>
-    </NotAuthorized>
-</AuthorizeView>
+﻿<Bar Breakpoint="Breakpoint.Desktop"
+     Background="Background.Transparent"
+     ThemeContrast="ThemeContrast.None"
+     Height="Height.Is25">
+    <BarMenu>
+        <BarEnd>
+            <AuthorizeView>
+                <Authorized>
+                    <BarItem>
+                        <BarDropdown>
+                            <BarDropdownToggle TextColor="TextColor.Light">
+                                @if (!string.IsNullOrEmpty(photoUser))
+                                {
+                                    <img src="@photoUser" width="50" height="50" style="border-radius:50%; margin-right:5px" />
+                                }
+                                else
+                                {
+                                    <img src="https://st3.depositphotos.com/3538469/15483/v/450/depositphotos_154830730-stock-illustration-vector-user-icon.jpg" width="50" height="50" style="border-radius:50%; margin-right:5px">
+                                }
+                                @nameUser
+                            </BarDropdownToggle>
+                            <BarDropdownMenu>
+                                <BarDropdownItem Style="color: inherit;text-decoration: none; cursor: pointer;">
+                                    @context.User.Identity!.Name
+                                </BarDropdownItem>
+                                <BarDropdownDivider />
+                                <BarDropdownItem To="EditUser">
+                                    <BarIcon IconName="IconName.Edit"></BarIcon>
+                                    Editar Usuario
+                                </BarDropdownItem>
+                                <BarDropdownDivider />
+                                <BarDropdownItem To="Logout">
+                                    <BarIcon IconName="@("fas fa-sign-out-alt")"></BarIcon>
+                                    Cerrar Sesión
+                                </BarDropdownItem>
+
+                            </BarDropdownMenu>
+                        </BarDropdown>
+                    </BarItem>
+                </Authorized>
+                <NotAuthorized>
+                    <BarItem>
+                        <Button Type="ButtonType.Link" To="register" Color="Color.Info">Registro</Button>
+                        <Button Color="Color.Primary" Clicked="ShowModal">Iniciar Sesión</Button>
+                    </BarItem>
+                </NotAuthorized>
+            </AuthorizeView>
+        </BarEnd>
+    </BarMenu>
+</Bar>
