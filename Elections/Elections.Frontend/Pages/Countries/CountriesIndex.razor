@@ -11,10 +11,9 @@
         <Filter PlaceHolder="Buscar país..." Callback=@FilterCallBack />
         <GenericList MyList="Countries">
             <Body>
-                <Pagination CurrentPage="currentPage"
-                            TotalPages="totalPages"
-                            SelectedPage="SelectedPageAsync"
-                            RecordsNumber="SelectedRecordsNumberAsync" />
+                <GenericPagination CurrentPage="currentPage"
+                                   TotalPages="totalPages"
+                                   SelectedPage="SelectedPageAsync" />
 
                 <table class="table table-striped">
                     <thead>

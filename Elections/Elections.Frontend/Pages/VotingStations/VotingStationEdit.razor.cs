@@ -1,10 +1,14 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace Elections.Frontend.Pages.VotingStations
 {
+    [Authorize(Roles = "Admin")]
     public partial class VotingStationEdit
     {
         private VotingStation? votingStation;
@@ -13,10 +17,12 @@ namespace Elections.Frontend.Pages.VotingStations
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Parameter] public int Id { get; set; }
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
 
         private readonly String VOTING_STATION_PATH = "api/votingstations";
         protected override async Task OnInitializedAsync()
-        {            
+        {
             var responseHttp = await Repository.GetAsync<VotingStation>(string.Concat(VOTING_STATION_PATH, $"/{Id}"));
             if (responseHttp.Error)
             {
@@ -35,16 +41,17 @@ namespace Elections.Frontend.Pages.VotingStations
                 votingStation = responseHttp.Response;
             }
         }
-       private async Task EditAsync()
+        private async Task EditAsync()
         {
 
             var responseHttp = await Repository.PutAsync(VOTING_STATION_PATH, prepareVotingStation(votingStation!));
             if (responseHttp.Error)
             {
-            var mensajeError = await responseHttp.GetErrorMessageAsync();
+                var mensajeError = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
                 return;
             }
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
             Return();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
@@ -55,7 +62,7 @@ namespace Elections.Frontend.Pages.VotingStations
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
-        
+
         private void Return()
         {
             votingStationForm!.FormPostedSuccessfully = true;

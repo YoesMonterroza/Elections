@@ -2,6 +2,7 @@ using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
 using Microsoft.AspNetCore.Identity;
+using Orders.Shared.DTOs;
 
 namespace Elections.Backend.Repositories.Interfaces
 {
@@ -17,6 +18,8 @@ namespace Elections.Backend.Repositories.Interfaces
 
         Task<User> GetUserAsync(string email);
 
+        Task<IEnumerable<User>> GetAllUserAsync();
+
         Task<User> GetUserAsync(Guid userId);
 
         Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
@@ -29,8 +32,8 @@ namespace Elections.Backend.Repositories.Interfaces
 
         Task AddUserToRoleAsync(User user, string roleName);
 
-        Task<bool> IsUserInRoleAsync(User user, string roleName);              
-
+        Task<bool> IsUserInRoleAsync(User user, string roleName);
+        Task<SignInResult> LoginAsync(LoginDTO model);
         Task LogoutAsync();
     }
 }

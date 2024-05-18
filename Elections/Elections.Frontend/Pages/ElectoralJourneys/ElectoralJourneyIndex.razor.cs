@@ -1,10 +1,14 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace Elections.Frontend.Pages.ElectoralJourneys
 {
+    [Authorize(Roles = "Admin")]
     public partial class ElectoralJourneyIndex
     {
 
@@ -21,9 +25,30 @@ namespace Elections.Frontend.Pages.ElectoralJourneys
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
         private readonly String ELECTORAL_JOURNEY_PATH = "api/electoralJourneys";
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
         protected async override Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<ElectoralJourneyEdit>(string.Empty, new ModalParameters().Add("Id", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<ElectoralJourneyCreate>();
+            }
+
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
         }
 
         private async Task DeleteAsync(ElectoralJourney electoralJourney)

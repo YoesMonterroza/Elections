@@ -1,10 +1,14 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace Elections.Frontend.Pages.ElectoralPositions
 {
+    [Authorize(Roles = "Admin")]
     public partial class ElectoralPositionIndex
     {
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -20,9 +24,29 @@ namespace Elections.Frontend.Pages.ElectoralPositions
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
         private readonly String ELECTORAL_POSITION_PATH = "api/electoralPositions";
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
         protected async override Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<ElectoralPositionEdit>(string.Empty, new ModalParameters().Add("Id", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<ElectoralPositionCreate>();
+            }
+
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
         }
 
         private async Task DeleteAsync(ElectoralPosition electoralPosition)

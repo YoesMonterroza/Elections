@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Components;
 using Elections.Shared.Entities;
 using Elections.Frontend.Repositories;
 using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.VotingStations
 {
+    [Authorize(Roles = "Admin")]
     public partial class VotingStationForm
     {
         public bool FormPostedSuccessfully { get; set; } = false;

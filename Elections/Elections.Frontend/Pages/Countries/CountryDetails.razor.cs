@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Elections.Frontend.Pages.States;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.Countries
 {

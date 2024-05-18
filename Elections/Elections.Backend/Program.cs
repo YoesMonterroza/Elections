@@ -1,12 +1,17 @@
 using Elections.Backend.Data;
+using Elections.Backend.Helpers;
 using Elections.Backend.Repositories;
 using Elections.Backend.Repositories.Implementations;
 using Elections.Backend.Repositories.Interfaces;
 using Elections.Backend.UnitsOfWork.Implementations;
 using Elections.Backend.UnitsOfWork.Interfaces;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Orders.Backend.Helpers;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +25,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name =LocalConnection"));
 builder.Services.AddTransient<SeedDb>();
 
-
+//Helpers
+builder.Services.AddScoped<IMailHelper, MailHelper>();
 
 // UnitOfWork
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
@@ -33,6 +39,7 @@ builder.Services.AddScoped<IElectoralJourneysUnitOfWork, ElectoralJourneysUnitOf
 builder.Services.AddScoped<IElectoralPositionsUnitOfWork, ElectoralPositionsUnitOfWork>();
 builder.Services.AddScoped<ISexesUnitOfWork, SexesUnitOfWork>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
+builder.Services.AddScoped<IElectoralCandidateUnitOfWork, ElectoralCandidateUnitOfWork>();
 
 // Repository
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
@@ -45,6 +52,8 @@ builder.Services.AddScoped<IElectoralJourneysRepository, ElectoralJourneysReposi
 builder.Services.AddScoped<IElectoralPositionsRepository, ElectoralPositionsRepository>();
 builder.Services.AddScoped<ISexesRepository, SexesRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IFileStorage, FileStorage>();
+builder.Services.AddScoped<IElectoralCandidateRepository, ElectoralCandidateRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
@@ -63,6 +72,17 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
+        ClockSkew = TimeSpan.Zero
+    });
+
 var app = builder.Build();
 SeedData(app);
 
@@ -76,6 +96,13 @@ void SeedData(WebApplication app)
         service!.SeedAsync().Wait();
     }
 }
+  
+
+app.UseCors(x => x
+.AllowAnyMethod()
+.AllowAnyHeader()
+.SetIsOriginAllowed(origin => true)
+.AllowCredentials());
 
 
 if (app.Environment.IsDevelopment())
@@ -84,16 +111,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
-app.UseCors(x => x
-.AllowAnyMethod()
-.AllowAnyHeader()
-.SetIsOriginAllowed(origin => true)
-.AllowCredentials());
-
 app.Run();

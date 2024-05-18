@@ -5,6 +5,7 @@ using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Elections.Shared.Responses;
 using Microsoft.AspNetCore.Identity;
+using Orders.Shared.DTOs;
 
 namespace Elections.Backend.UnitsOfWork.Implementations
 {
@@ -33,8 +34,11 @@ namespace Elections.Backend.UnitsOfWork.Implementations
 
         public async Task<User> GetUserAsync(string email) => await _usersRepository.GetUserAsync(email);
 
+        public async Task<IEnumerable<User>> GetAllUserAsync() => await _usersRepository.GetAllUserAsync();
+
         public async Task<bool> IsUserInRoleAsync(User user, string roleName) => await _usersRepository.IsUserInRoleAsync(user, roleName);
-         
+
+        public async Task<SignInResult> LoginAsync(LoginDTO model) => await _usersRepository.LoginAsync(model); 
         public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
 
         public async Task<User> GetUserAsync(Guid userId) => await _usersRepository.GetUserAsync(userId);

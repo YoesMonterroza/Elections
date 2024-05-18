@@ -4,9 +4,10 @@ using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Orders.Frontend.Repositories;
-using Orders.Frontend.Shared;
-using Orders.Shared.Entities;
+using Elections.Frontend.Repositories;
+using Elections.Frontend.Shared;
+using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Orders.Frontend.Pages.States
 {

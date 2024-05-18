@@ -1,12 +1,18 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
+using Elections.Frontend.Pages.Zonings;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.Metrics;
 using System.Net;
+using System.Reflection.Metadata;
 
 namespace Elections.Frontend.Pages.VotingStations
 {
+    [Authorize(Roles = "Admin")]
     public partial class VotingStationDetails
     {
         private VotingStation? votingStation;
@@ -27,11 +33,13 @@ namespace Elections.Frontend.Pages.VotingStations
         [Parameter]
         public int VotingStationId { get; set; }
 
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
+
         private readonly String VOTING_STATION_PATH = "api/votingstations";
         private readonly String ZONING_PATH = "api/zonings";
 
         protected override async Task OnInitializedAsync()
-        {            
+        {
             await LoadAsync();
         }
 
@@ -63,7 +71,7 @@ namespace Elections.Frontend.Pages.VotingStations
                     return;
                 }
             }
-           
+
             await LoadAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
@@ -181,6 +189,22 @@ namespace Elections.Frontend.Pages.VotingStations
             }
         }
 
-
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+            if (isEdit)
+            {
+                modalReference = Modal.Show<ZoningEdit>(string.Empty, new ModalParameters().Add("ZoningId", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<ZoningCreate>(string.Empty, new ModalParameters().Add("VotingStationId", VotingStationId));
+            }
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
+        }
     }
 }

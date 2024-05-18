@@ -1,5 +1,6 @@
 ﻿using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
+using Orders.Shared.DTOs;
 
 namespace Elections.Backend.UnitsOfWork.Interfaces
 {
@@ -15,14 +16,16 @@ namespace Elections.Backend.UnitsOfWork.Interfaces
 
         Task<User> GetUserAsync(string email);
 
+        Task<IEnumerable<User>> GetAllUserAsync();
+
         Task<IdentityResult> AddUserAsync(User user, string password);
 
         Task CheckRoleAsync(string roleName);
 
         Task AddUserToRoleAsync(User user, string roleName);
 
-        Task<bool> IsUserInRoleAsync(User user, string roleName); 
-
+        Task<bool> IsUserInRoleAsync(User user, string roleName);
+        Task<SignInResult> LoginAsync(LoginDTO model);
         Task LogoutAsync();
 
         Task<User> GetUserAsync(Guid userId);

@@ -1,0 +1,36 @@
+﻿<nav>
+    <ul class="pagination">
+        <Pagination>
+            <PaginationItem Disabled="@IsPageNavigationDisabled(PREVIOUS)">
+                <PaginationLink Page="@PreviousPage" Clicked="InternalSelectedPage">
+                    <span aria-hidden="true">«</span>
+                </PaginationLink>
+            </PaginationItem>
+            @{
+                for (var i = 1; i <= TotalPages; i++)
+                {
+                    var pageNumberAsString = i.ToString();
+                    <PaginationItem @key="pageNumberAsString" Active="@IsActive(pageNumberAsString)">
+                        <PaginationLink Page="@pageNumberAsString" Clicked="InternalSelectedPage">
+                            @pageNumberAsString
+                        </PaginationLink>
+                    </PaginationItem>
+                }
+            }
+            <PaginationItem Disabled="@IsPageNavigationDisabled(NEXT)">
+                <PaginationLink Page="@NextPage" Clicked="InternalSelectedPage">
+                    <span aria-hidden="true">»</span>
+                </PaginationLink>
+            </PaginationItem>
+        </Pagination>
+        <li>
+            <select class="form-select custom-select" @onchange="InternalRecordsNumberSelected">
+                @foreach (var option in options)
+                {
+                    <option value="@option.Value">@option.Name</option>
+                }
+            </select>
+        </li>
+    </ul>
+</nav>
+

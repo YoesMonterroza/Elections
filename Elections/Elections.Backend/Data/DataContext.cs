@@ -26,6 +26,7 @@ namespace Elections.Backend.Data
         public DbSet<Sex> Sexes { get; set; }
         public DbSet<IdentificationType> IdentificationTypes { get; set; }
 
+        public DbSet<ElectoralCandidate> ElectoralCandidate { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +40,7 @@ namespace Elections.Backend.Data
             //modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.CityId, x.Name }).IsUnique();
             modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.Name, x.Code }).IsUnique();
             modelBuilder.Entity<Zoning>().HasIndex(x => new { x.VotingStationId, x.ZoningNumber }).IsUnique();
+            modelBuilder.Entity<ElectoralCandidate>().HasKey(x => new { x.ElectoralJourneyId, x.Document });            
             DisableCascadingDelete(modelBuilder);
         }
         private void DisableCascadingDelete(ModelBuilder modelBuilder)

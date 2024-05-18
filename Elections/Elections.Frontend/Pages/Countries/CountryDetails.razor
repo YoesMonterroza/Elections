@@ -18,12 +18,9 @@ else
             <Filter PlaceHolder="Buscar estado/departamento..." Callback=@FilterCallBack />
             <GenericList MyList="states!">
                 <Body>
-                    <Pagination CurrentPage="currentPage"
-                                TotalPages="totalPages"
-                                SelectedPage="SelectedPageAsync"
-                                RecordsNumber="SelectedRecordsNumberAsync" />
-
-
+                    <GenericPagination CurrentPage="currentPage"
+                                       TotalPages="totalPages"
+                                       SelectedPage="SelectedPageAsync" />
                     <table class="table table-striped">
                         <thead>
                             <tr>

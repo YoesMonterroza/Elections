@@ -7,6 +7,7 @@ using Elections.Frontend.Pages.Cities;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.States
 {

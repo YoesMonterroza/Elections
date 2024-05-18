@@ -1,11 +1,15 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
 namespace Elections.Frontend.Pages.Zonings
 {
+    [Authorize(Roles = "Admin")]
     public partial class ZoningEdit
     {
         private Zoning? zoning;
@@ -16,6 +20,8 @@ namespace Elections.Frontend.Pages.Zonings
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
 
         [Parameter] public int ZoningId { get; set; }
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
         private readonly String ZONING_PATH = "api/zonings";
 
         protected override async Task OnParametersSetAsync()
@@ -43,6 +49,8 @@ namespace Elections.Frontend.Pages.Zonings
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
+
             Return();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
