@@ -1,4 +1,8 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using System.Net;
+using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Elections.Frontend.Repositories;
 using Elections.Frontend.Shared;
@@ -13,25 +17,25 @@ namespace Elections.Frontend.Pages.Countries
         private Country? country;
         private FormWithName<Country>? countryForm;
 
-        [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
-        [Parameter] public int Id { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [EditorRequired, Parameter] public int Id { get; set; }
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         protected override async Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<Country>($"api/countries/{Id}");
-
+            var responseHttp = await Repository.GetAsync<Country>($"/api/countries/{Id}");
             if (responseHttp.Error)
             {
-                if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("countries");
+                    NavigationManager.NavigateTo("/countries");
                 }
                 else
                 {
-                    var messageError = await responseHttp.GetErrorMessageAsync();
-                    await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+                    var messsage = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", messsage, SweetAlertIcon.Error);
                 }
             }
             else
@@ -42,16 +46,17 @@ namespace Elections.Frontend.Pages.Countries
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync("api/countries", country);
-
+            var responseHttp = await Repository.PutAsync("/api/countries", country);
             if (responseHttp.Error)
             {
-                var mensajeError = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message);
                 return;
             }
 
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
             Return();
+
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -65,7 +70,7 @@ namespace Elections.Frontend.Pages.Countries
         private void Return()
         {
             countryForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("countries");
+            NavigationManager.NavigateTo("/countries");
         }
     }
 }
