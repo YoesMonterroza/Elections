@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Elections.Shared.Entities
 {
@@ -18,5 +19,9 @@ namespace Elections.Shared.Entities
         [Display(Name = "Fecha Fin Jornada")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public DateTime? DateFinish { get; set; }
+
+
+        //LLAVE FORANEA 
+        public ICollection<ElectoralCandidate>? ElectoralCandidate { get; set; }
     }
 }

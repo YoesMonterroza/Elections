@@ -16,6 +16,8 @@ namespace Elections.Backend.UnitsOfWork.Interfaces
 
         Task<User> GetUserAsync(string email);
 
+        Task<IEnumerable<User>> GetAllUserAsync();
+
         Task<IdentityResult> AddUserAsync(User user, string password);
 
         Task CheckRoleAsync(string roleName);

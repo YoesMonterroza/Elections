@@ -7,6 +7,7 @@ using Elections.Shared.Responses;
 using Elections.Shared.DTOs;
 using Elections.Backend.Helpers;
 using Orders.Shared.DTOs;
+using System.Collections.Generic;
 
 namespace Elections.Backend.Repositories.Implementations
 {
@@ -82,6 +83,11 @@ namespace Elections.Backend.Repositories.Implementations
             return user!;
         }
 
+        public async Task<IEnumerable<User>> GetAllUserAsync()
+        {
+            return await _context.Users.ToListAsync();              
+        }
+         
         public async Task<User> GetUserAsync(Guid userId)
         {
             var user = await _context.Users
