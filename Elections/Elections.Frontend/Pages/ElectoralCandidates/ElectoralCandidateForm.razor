@@ -1,0 +1,58 @@
+﻿
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+     <div class="mb-3">
+        <label>Jornada Electoral:</label>
+        <div>
+            <select class="form-select" @bind="electoralCandidate.ElectoralJourneyId">
+                <option value="0">-- Seleccione Jornada Electoral --</option>
+                @if (electoralJourneys is not null)
+                {
+                    @foreach (var Journeys in electoralJourneys)
+                    {
+                        <option value="@Journeys.Id" selected="@(Journeys.Id == electoralJourneyIdselected)">@Journeys.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div> 
+
+    <div class="mb-3">
+        <label>Puesto Electoral:</label>
+        <div>
+            <select class="form-select" @bind="electoralCandidate.ElectoralPositionId">
+                <option value="0">-- Seleccione Puesto Electoral --</option>
+                @if (ElectoralPositions is not null)
+                {
+                    @foreach (var Position in ElectoralPositions)
+                    {
+                        <option value="@Position.Id" selected="@(Position.Id == countryselected)">@Position.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label>Candidato:</label>
+        <div>
+            <select class="form-select" @bind="electoralCandidate.Document">
+                <option value="0">-- Seleccione Candidato --</option>
+                @if (Candidates is not null)
+                {
+                    @foreach (var Candidate in Candidates)
+                    {
+                        <option value="@Candidate.Document" selected="@(Candidate.Document == Candidateselected)">@Candidate.FullName</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+
+    <button class="btn btn-primary" type="submit">Registrar Candidato</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>

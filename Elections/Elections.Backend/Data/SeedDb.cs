@@ -26,9 +26,16 @@ namespace Elections.Backend.Data
             await CheckElectoralJourneysAsync();
             await CheckRolesAsync();
             await CheckUserAsync("1000", "Daniel", "Davila", "danieldavila93@itm.com", "3105739686", "kr 69c # 21H", UserType.Admin);
-            await CheckUserAsync("1001", "Juan", "Parada", "juanpape24@gmail.com", "3105739686", "kr 69c # 21H", UserType.Admin); 
-            await CheckUserAsync("1002", "Yoes", "Monterroza", "yoestest001@yopmail.com", "3225876445", "kr 66a", UserType.Admin);
-            await CheckUserAsync("1003", "Ana", "Pruebas", "yoestest002@yopmail.com", "3225876445", "kr 66a", UserType.User);
+            await CheckUserAsync("1001", "Juan", "Parada", "juanpape24@gmail.com", "3105739686", "kr 69c # 21H", UserType.Admin);
+            await CheckUserAsync("1002", "Joan", "cardona", "cardona@gmail.com", "310505", "calle 21 # 21H", UserType.Admin);
+            await CheckUserAsync("1003", "Alfredo", "bermudex", "bermudex@gmail.com", "3801505", "calle 96 # 21H", UserType.Admin);
+            await CheckUserAsync("1004", "Miguel", "Azul", "Azul@gmail.com", "306225151", "kr 36-25", UserType.Admin);
+            await CheckUserAsync("1005", "Julian", "cortes", "cortes@gmail.com", "310555", "kr 63-0120", UserType.Admin);
+            await CheckUserAsync("1006", "Jose", "polo", "polo@gmail.com", "3105739686", "kr 81-10", UserType.Admin);
+            await CheckUserAsync("1007", "Michel", "brother", "brother@gmail.com", "36088001", "kr 4-2C", UserType.Admin);            
+            await CheckUserAsync("1009", "Jhan", "turques", "turques@gmail.com", "3901", "kr 69c # 21H", UserType.Admin);
+            await CheckUserAsync("10010", "Mateo", "monsalve", "monsalve@gmail.com", "36001005", "kr 63 # 21H", UserType.Admin);
+            await CheckUserAsync("10011", "Sergio", "Feliz", "Feliz@gmail.com", "366001020", "kr 84 # 21H", UserType.Admin);
         }
 
         private async Task CheckRolesAsync()

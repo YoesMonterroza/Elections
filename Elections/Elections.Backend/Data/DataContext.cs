@@ -40,7 +40,9 @@ namespace Elections.Backend.Data
             //modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.CityId, x.Name }).IsUnique();
             modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.Name, x.Code }).IsUnique();
             modelBuilder.Entity<Zoning>().HasIndex(x => new { x.VotingStationId, x.ZoningNumber }).IsUnique();
-            modelBuilder.Entity<ElectoralCandidate>().HasKey(x => new { x.ElectoralJourneyId, x.Document });            
+            modelBuilder.Entity<ElectoralCandidate>().HasKey(x => new { x.ElectoralJourneyId, x.Document });
+            modelBuilder.Entity<ElectoralCandidate>().HasIndex(x => new { x.ElectoralJourneyId, x.Document }).IsUnique();
+            modelBuilder.Entity<User>().HasKey(x => new { x.Document});
             DisableCascadingDelete(modelBuilder);
         }
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
