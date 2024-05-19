@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Blazored.Modal.Services;
 using Blazored.Modal;
 using Elections.Frontend.Pages.VotingStations;
+using Elections.Shared.DTOs;
 
 namespace Elections.Frontend.Pages.ElectoralCandidates
 {
@@ -26,6 +27,7 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
 
 
         public List<ElectoralCandidate>? ElectoralCandidates { get; set; }
+        public List<ElectoralCandidateDTO>? ElectoralCandidatesDTO { get; set; }
         private readonly String ELECTORAL_CANDIDATE_PATH = "api/ElectoralCandidateRegister/full";
         private readonly String ELECTORAL_CANDIDATE_PATH_MAIN= "api/ElectoralCandidateRegister";
 
@@ -77,14 +79,14 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
                 url += $"&filter={Filter}";
             }
 
-            var responseHttp = await Repository.GetAsync<List<ElectoralCandidate>>(url);
+            var responseHttp = await Repository.GetAsync<List<ElectoralCandidateDTO>>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return false;
             }
-            ElectoralCandidates = responseHttp.Response.Where(x=>x.Enabled == true).ToList();
+            ElectoralCandidatesDTO = responseHttp.Response;
             return true;
         }
 
@@ -136,12 +138,12 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
             await SelectedPageAsync(page);
         }
 
-        private async Task DeleteAsync(ElectoralCandidate electoralCandidate)
+        private async Task DeleteAsync(ElectoralCandidateDTO electoralCandidateDTO)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Esta seguro que quieres borrar el Candidato: {electoralCandidate.Document}?",
+                Text = $"¿Esta seguro que quieres borrar el Candidato: {electoralCandidateDTO.Document}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true
             });
@@ -150,10 +152,18 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
             {
                 return;
             }
-            //var responseHTTP = await Repository.DeleteAsync(string.Concat(ELECTORAL_CANDIDATE_PATH_MAIN, $"/{electoralCandidate.Id}"));
 
-            electoralCandidate.Enabled = false;
-            var responseHTTP = await Repository.PutAsync(ELECTORAL_CANDIDATE_PATH_MAIN, electoralCandidate);
+            //ELECTORAL CANDIDATE MAPPER BETWEEN MODEL AND DTO
+            ElectoralCandidate ElectoralCandidateModel = new ElectoralCandidate();
+            ElectoralCandidateModel.Id = electoralCandidateDTO.Id;
+            ElectoralCandidateModel.ElectoralJourneyId = electoralCandidateDTO.ElectoralJourneyId;
+            ElectoralCandidateModel.ElectoralPositionId = electoralCandidateDTO.ElectoralPositionId;
+            ElectoralCandidateModel.Document = electoralCandidateDTO.Document;
+            ElectoralCandidateModel.RegisterDate = electoralCandidateDTO.RegisterDate;
+            ElectoralCandidateModel.Enabled = false;
+
+            //LOGICAL DELETE OF CANDIDATE
+            var responseHTTP = await Repository.PutAsync(ELECTORAL_CANDIDATE_PATH_MAIN, ElectoralCandidateModel);
             if (responseHTTP.Error)
             {
                 if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)

@@ -54,6 +54,7 @@ builder.Services.AddScoped<ISexesRepository, SexesRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IFileStorage, FileStorage>();
 builder.Services.AddScoped<IElectoralCandidateRepository, ElectoralCandidateRepository>();
+builder.Services.AddScoped<IQueryElectoralCandidateRepository, QueryElectoralCandidateRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {

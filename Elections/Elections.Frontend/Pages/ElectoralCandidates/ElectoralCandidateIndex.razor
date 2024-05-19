@@ -5,7 +5,7 @@
     <a class="btn btn-primary" @onclick=@(() => ShowModalAsync())>Registro de Candidato</a>
 </div>
 
-<GenericList MyList="ElectoralCandidates">
+<GenericList MyList="ElectoralCandidatesDTO">
     <Body>
         <GenericPagination CurrentPage="currentPage"
                            TotalPages="totalPages"
@@ -27,20 +27,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var candidate in ElectoralCandidates!)
+                @foreach (var candidate in ElectoralCandidatesDTO!)
                 {
                     <tr>
                         <td>
                             @candidate.Id
                         </td>
                         <td>
-                            @candidate.ElectoralJourneyId
+                            @candidate.ElectoralJourneyName
                         </td>
                         <td>
-                            @candidate.ElectoralPositionId
+                            @candidate.ElectoralPositionName
                         </td>
                         <td>
-                            @candidate.Document
+                            @candidate.CandidateFullName
                         </td>
                         <td>
                             @candidate.Document
