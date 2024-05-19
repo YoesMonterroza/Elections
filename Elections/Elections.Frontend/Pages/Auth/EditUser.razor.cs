@@ -1,3 +1,5 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Frontend.Services;
@@ -22,7 +24,8 @@ namespace Elections.Frontend.Pages.Auth
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private ILoginService LoginService { get; set; } = null!;
-        //[CascadingParameter] IModalService Modal { get; set; } = default!;
+        
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -38,10 +41,10 @@ namespace Elections.Frontend.Pages.Auth
             }
         }
 
-        //private void ShowModal()
-        //{
-        //    Modal.Show<ChangePassword>();
-        //}
+        private void ShowModal()
+        {
+            Modal.Show<ChangePassword>();
+        }
 
         private async Task LoadUserAsyc()
         {
