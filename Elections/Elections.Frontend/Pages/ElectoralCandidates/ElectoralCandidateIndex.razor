@@ -1,0 +1,59 @@
+﻿@page "/ElectoralCandidateRegister/full"
+<h3>Postulación de Candidatos</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" @onclick=@(() => ShowModalAsync())>Registro de Candidato</a>
+</div>
+
+<GenericList MyList="ElectoralCandidates">
+    <Body>
+        <GenericPagination CurrentPage="currentPage"
+                           TotalPages="totalPages"
+                           SelectedPage="SelectedPageAsync"
+                           RecordsNumber="SelectedRecordsNumberAsync" />
+
+        <GenericFilter PlaceHolder="Buscar Puesto de votación..."
+                       SelectedFilter="ApplyFilterAsync" />
+
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Jornada Electoral</th>
+                    <th>Posición Electoral</th>
+                    <th>Candidato</th>
+                    <th>Identificación</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var candidate in ElectoralCandidates!)
+                {
+                    <tr>
+                        <td>
+                            @candidate.Id
+                        </td>
+                        <td>
+                            @candidate.ElectoralJourneyId
+                        </td>
+                        <td>
+                            @candidate.ElectoralPositionId
+                        </td>
+                        <td>
+                            @candidate.Document
+                        </td>
+                        <td>
+                            @candidate.Document
+                        </td>
+                        
+                        <td>
+                            <a @onclick=@(() => ShowModalAsync(@candidate.Id, true)) class="btn btn-warning btn-sm">Editar</a>                            
+                            <button class="btn btn-danger" @onclick=@(() => DeleteAsync(candidate))>Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
+

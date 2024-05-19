@@ -78,20 +78,19 @@ namespace Elections.Backend.Migrations
                     b.Property<int>("ElectoralPositionId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ElectoralJourneyId", "Document");
 
-                    b.HasIndex("ElectoralPositionId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("ElectoralJourneyId", "Document")
+                        .IsUnique();
 
                     b.ToTable("ElectoralCandidate");
                 });
@@ -509,26 +508,6 @@ namespace Elections.Backend.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("Elections.Shared.Entities.ElectoralCandidate", b =>
-                {
-                    b.HasOne("Elections.Shared.Entities.ElectoralJourney", null)
-                        .WithMany("ElectoralCandidate")
-                        .HasForeignKey("ElectoralJourneyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Elections.Shared.Entities.ElectoralPosition", null)
-                        .WithMany("ElectoralCandidate")
-                        .HasForeignKey("ElectoralPositionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Elections.Shared.Entities.User", null)
-                        .WithMany("ElectoralCandidate")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>
                 {
                     b.HasOne("Elections.Shared.Entities.Country", "Country")
@@ -634,24 +613,9 @@ namespace Elections.Backend.Migrations
                     b.Navigation("States");
                 });
 
-            modelBuilder.Entity("Elections.Shared.Entities.ElectoralJourney", b =>
-                {
-                    b.Navigation("ElectoralCandidate");
-                });
-
-            modelBuilder.Entity("Elections.Shared.Entities.ElectoralPosition", b =>
-                {
-                    b.Navigation("ElectoralCandidate");
-                });
-
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("Elections.Shared.Entities.User", b =>
-                {
-                    b.Navigation("ElectoralCandidate");
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.VotingStation", b =>

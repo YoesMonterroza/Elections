@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Elections.Frontend.Pages.ElectoralCandidates
 {
+    [Authorize(Roles = "Admin")]
     public partial class ElectoralCandidateCreate
     { 
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -19,13 +20,16 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
 
         private ElectoralCandidateForm? electoralCandidateForm;
         private ElectoralCandidate electoralCandidate = new();
-        private readonly String VOTING_STATION_PATH = "api/ElectoralCandidateRegister";
+        private readonly String ELECTORAL_CANDIDATE_PATH = "api/ElectoralCandidateRegister";
 
 
         private async Task Create()
-        {            
+        {
+            Random Rnd = new Random();
+            electoralCandidate.Id = Rnd.Next(10000000);
+            electoralCandidate.Enabled = true;
             electoralCandidate.RegisterDate = DateTime.Now;
-            var responseHttp = await Repository.PostAsync(VOTING_STATION_PATH, electoralCandidate);
+            var responseHttp = await Repository.PostAsync(ELECTORAL_CANDIDATE_PATH, electoralCandidate);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -46,7 +50,7 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
         private void Return()
         {
             electoralCandidateForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("ElectoralCandidateCreate/create");
+            NavigationManager.NavigateTo("ElectoralCandidateRegister/full");
         }  
     }
 }

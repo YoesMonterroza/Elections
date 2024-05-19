@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Elections.Frontend.Pages.ElectoralCandidates
 {
+    [Authorize(Roles = "Admin")]
     public partial class ElectoralCandidateForm
     {
         private EditContext editContext = null!;

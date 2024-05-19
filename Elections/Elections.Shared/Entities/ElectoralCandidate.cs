@@ -24,17 +24,8 @@ namespace Elections.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Document { get; set; } = null!;
 
-        public DateTime RegisterDate { get; set; } 
-                
-        //relaciones del modelo
-        //[ForeignKey("ElectoralJourneyId")]
-        //public ElectoralJourney ElectoralJourney { get; set; }
+        public DateTime RegisterDate { get; set; }
 
-        //[ForeignKey("ElectoralPositionId")]
-        //public ElectoralPosition ElectoralPosition { get; set; }
-
-        //[ForeignKey("Document")]
-        //public User User { get; set; }
-
+        public bool Enabled { get; set; } 
     }
 }
