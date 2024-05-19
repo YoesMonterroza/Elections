@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elections.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240518041456_create database 2024-05-17")]
-    partial class createdatabase20240517
+    [Migration("20240519041025_createDatabase")]
+    partial class createDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,11 +87,14 @@ namespace Elections.Backend.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ElectoralJourneyId", "Document");
 
-                    b.HasIndex("Document");
-
                     b.HasIndex("ElectoralPositionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ElectoralCandidate");
                 });
@@ -511,29 +514,22 @@ namespace Elections.Backend.Migrations
 
             modelBuilder.Entity("Elections.Shared.Entities.ElectoralCandidate", b =>
                 {
-                    b.HasOne("Elections.Shared.Entities.User", "User")
-                        .WithMany("ElectoralCandidate")
-                        .HasForeignKey("Document")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Elections.Shared.Entities.ElectoralJourney", "ElectoralJourney")
+                    b.HasOne("Elections.Shared.Entities.ElectoralJourney", null)
                         .WithMany("ElectoralCandidate")
                         .HasForeignKey("ElectoralJourneyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Elections.Shared.Entities.ElectoralPosition", "ElectoralPosition")
+                    b.HasOne("Elections.Shared.Entities.ElectoralPosition", null)
                         .WithMany("ElectoralCandidate")
                         .HasForeignKey("ElectoralPositionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ElectoralJourney");
-
-                    b.Navigation("ElectoralPosition");
-
-                    b.Navigation("User");
+                    b.HasOne("Elections.Shared.Entities.User", null)
+                        .WithMany("ElectoralCandidate")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>

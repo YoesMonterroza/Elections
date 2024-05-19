@@ -23,7 +23,8 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
 
 
         private async Task Create()
-        {
+        {            
+            electoralCandidate.RegisterDate = DateTime.Now;
             var responseHttp = await Repository.PostAsync(VOTING_STATION_PATH, electoralCandidate);
             if (responseHttp.Error)
             {

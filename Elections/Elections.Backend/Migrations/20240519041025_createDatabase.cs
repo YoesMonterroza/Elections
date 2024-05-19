@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Elections.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class createdatabase20240517 : Migration
+    public partial class createDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -307,14 +307,15 @@ namespace Elections.Backend.Migrations
                     Document = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     ElectoralPositionId = table.Column<int>(type: "int", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ElectoralCandidate", x => new { x.ElectoralJourneyId, x.Document });
                     table.ForeignKey(
-                        name: "FK_ElectoralCandidate_AspNetUsers_Document",
-                        column: x => x.Document,
+                        name: "FK_ElectoralCandidate_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -409,14 +410,14 @@ namespace Elections.Backend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ElectoralCandidate_Document",
-                table: "ElectoralCandidate",
-                column: "Document");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ElectoralCandidate_ElectoralPositionId",
                 table: "ElectoralCandidate",
                 column: "ElectoralPositionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElectoralCandidate_UserId",
+                table: "ElectoralCandidate",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ElectoralJourneys_Date",

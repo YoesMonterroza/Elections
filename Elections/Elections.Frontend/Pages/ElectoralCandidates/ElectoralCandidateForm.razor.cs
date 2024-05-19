@@ -103,24 +103,6 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
             }
             context.PreventNavigation();
         }
-
-
-        //EVENTS
-        private void JourneyChangedAsync(ChangeEventArgs e)
-        {
-            var selectedValue = Convert.ToInt32(e.Value!);             
-            electoralCandidate.ElectoralJourneyId = selectedValue;           
-        }
-        private void PositionChangedAsync(ChangeEventArgs e)
-        {
-            var selectedValue = Convert.ToInt32(e.Value!);
-            electoralCandidate.ElectoralPositionId = selectedValue;
-        }
-
-        private void CandidateChangedAsync(ChangeEventArgs e)
-        {
-            var selectedValue = Convert.ToString(e.Value!);
-            electoralCandidate.Document = selectedValue;
-        }
+         
     }
 }
