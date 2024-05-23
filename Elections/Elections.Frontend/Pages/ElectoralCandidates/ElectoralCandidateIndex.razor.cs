@@ -42,7 +42,7 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
             IModalReference modalReference;
             if (isEdit)
             {
-                modalReference = Modal.Show<ElectoralCandidateCreate>(new ModalParameters().Add("Id", id));
+                modalReference = Modal.Show<ElectoralCandidateEdit>(new ModalParameters().Add("Id", id));
             }
             else
             {
