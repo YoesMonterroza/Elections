@@ -210,8 +210,9 @@ namespace Elections.Backend.Migrations
 
             modelBuilder.Entity("Elections.Shared.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Document")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -228,11 +229,6 @@ namespace Elections.Backend.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Document")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -244,6 +240,9 @@ namespace Elections.Backend.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -289,7 +288,7 @@ namespace Elections.Backend.Migrations
                     b.Property<int>("UserType")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Document");
 
                     b.HasIndex("CityId");
 
@@ -302,6 +301,37 @@ namespace Elections.Backend.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.Vote", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ElectoralPositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ElectoralJourneyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ElectoralCandidateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VotingStationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ElectoralPositionId", "ElectoralJourneyId");
+
+                    b.HasIndex("VotingStationId", "UserId", "ElectoralJourneyId", "ElectoralCandidateId")
+                        .IsUnique();
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.VotingStation", b =>
@@ -432,7 +462,7 @@ namespace Elections.Backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -454,7 +484,7 @@ namespace Elections.Backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -466,7 +496,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
@@ -481,7 +511,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");

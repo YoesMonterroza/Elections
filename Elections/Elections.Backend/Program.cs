@@ -37,7 +37,6 @@ builder.Services.AddScoped<IZoningsUnitOfWork, ZoningsUnitOfWork>();
 builder.Services.AddScoped<IVotingStationsUnitOfWork, VotingStationsUnitOfWork>();
 builder.Services.AddScoped<IElectoralJourneysUnitOfWork, ElectoralJourneysUnitOfWork>();
 builder.Services.AddScoped<IElectoralPositionsUnitOfWork, ElectoralPositionsUnitOfWork>();
-builder.Services.AddScoped<ISexesUnitOfWork, SexesUnitOfWork>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 builder.Services.AddScoped<IElectoralCandidateUnitOfWork, ElectoralCandidateUnitOfWork>();
 
@@ -50,11 +49,11 @@ builder.Services.AddScoped<IZoningsRepository, ZoningsRepository>();
 builder.Services.AddScoped<IVotingStationsRepository, VotingStationsRepository>();
 builder.Services.AddScoped<IElectoralJourneysRepository, ElectoralJourneysRepository>();
 builder.Services.AddScoped<IElectoralPositionsRepository, ElectoralPositionsRepository>();
-builder.Services.AddScoped<ISexesRepository, SexesRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IFileStorage, FileStorage>();
 builder.Services.AddScoped<IElectoralCandidateRepository, ElectoralCandidateRepository>();
 builder.Services.AddScoped<IQueryElectoralCandidateRepository, QueryElectoralCandidateRepository>();
+builder.Services.AddScoped<IVoteRepository, VoteRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {

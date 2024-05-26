@@ -1,0 +1,27 @@
+﻿
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+  
+    <div class="mb-3">
+        <label>Jornada de Votación:</label>
+        <div>
+            <select class="form-select" @bind="electoralJourneyIdselected">
+                <option value="0">-- Seleccione Jornada de Votación --</option>
+                @if (electoralJourneys is not null)
+                {
+                    @foreach (var journeys in electoralJourneys)
+                    {
+                        <option value="@journeys.Id" selected="@(journeys.Id == electoralJourneyIdselected)">@journeys.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+
+     
+</EditForm>
+
+
+
