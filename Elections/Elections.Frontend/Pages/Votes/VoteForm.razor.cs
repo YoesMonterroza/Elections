@@ -9,16 +9,15 @@ namespace Elections.Frontend.Pages.Votes
 {
     public partial class VoteForm
     {
-        private EditContext editContext = null!;
-        private int electoralJourneyIdselected;
-        public bool FormPostedSuccessfully { get; set; } = false;
-        private List<ElectoralJourney> electoralJourneys = new();
+        
         [Inject] private IRepository Repository { get; set; } = null!;
-
         [EditorRequired, Parameter] public Vote vote { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }
-   
+        public bool FormPostedSuccessfully { get; set; } = false;
+        private List<ElectoralJourney> electoralJourneys = new();
+        private EditContext editContext = null!;
+        private int electoralJourneyIdselected;
 
         //METHOD
         protected override void OnInitialized()
@@ -28,7 +27,7 @@ namespace Elections.Frontend.Pages.Votes
 
         protected override async Task OnInitializedAsync()
         {
-            LoadElectoralJourneysAsync();
+            await LoadElectoralJourneysAsync();
         }
 
         private async Task LoadElectoralJourneysAsync()
@@ -42,11 +41,8 @@ namespace Elections.Frontend.Pages.Votes
             }
 
             electoralJourneys = responseHttp.Response;
-
-            //GET CURRENTLY
-            DateTime CurrentVotingDate = DateTime.Now;
-            electoralJourneys = electoralJourneys.Where(x => CurrentVotingDate >= x.Date && x.DateFinish <= CurrentVotingDate).ToList();
         }
+
 
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
