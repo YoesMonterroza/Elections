@@ -1,5 +1,6 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
+using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -16,8 +17,10 @@ namespace Elections.Frontend.Pages.Votes
         [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }
         public bool FormPostedSuccessfully { get; set; } = false;
         private List<ElectoralJourney> electoralJourneys = new();
+        private List<CandidateDTO> electoralCandidates = new();
         private EditContext editContext = null!;
         private int electoralJourneyIdselected;
+
 
         //METHOD
         protected override void OnInitialized()
@@ -28,6 +31,7 @@ namespace Elections.Frontend.Pages.Votes
         protected override async Task OnInitializedAsync()
         {
             await LoadElectoralJourneysAsync();
+            await LoadElectoralCandidates(1);
         }
 
         private async Task LoadElectoralJourneysAsync()
@@ -43,7 +47,20 @@ namespace Elections.Frontend.Pages.Votes
             electoralJourneys = responseHttp.Response;
         }
 
-        private async Task AddVoteToCandidate(int CandidateId)
+        private async Task LoadElectoralCandidates(int JourneyId)
+        {
+            var responseHttp = await Repository.GetAsync<List<CandidateDTO>>("/api/Vote/GetCandidatesByJourney?journeyId=" + JourneyId);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+
+            electoralCandidates = responseHttp.Response;
+        }
+
+        private async Task AddVoteToCandidate(string Document, int ElectoralPositionId)
         {
 
         } 

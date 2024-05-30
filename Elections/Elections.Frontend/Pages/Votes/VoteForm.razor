@@ -20,22 +20,28 @@
     </div>
 
      <div class="row row-cols-1 row-cols-md-5 g-4 mt-1 mb-5">
-            @foreach (var Journeys in electoralJourneys!)
+            @foreach (var candidate in electoralCandidates!)
             {
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="text-center zoom">
-                        <img src="../resources/imageNoFound.png" style="height:190px;width:222px;border-radius:5px;padding: 10px;" class="text-center" />
+            <div class="col">
+                <div class="card h-100">
+                    <div class="text-center zoom">
+                        @if (candidate.Photo == null)
+                        {
+                            <img src="../resources/imageNoFound.png" style="height:190px;width:222px;border-radius:5px;padding: 10px;" class="text-center" />
+                        }else{
+                            <img src="@candidate.Photo" style="height:190px;width:222px;border-radius:5px;padding: 10px;" class="text-center" />
+                        }
+                       
                         </div>                         
                         <div class="card-body">
-                            <h5 class="card-title text-navy"> @Journeys.Name</h5>
-                            <p class="card-text smfnt">@Journeys.Name</p>
+                            <h5 class="card-title text-navy"> @candidate.ElectoralPosition</h5>
+                            <p class="card-text smfnt">@candidate.CandidateFullName</p>
                             <h5 class="text-muted">Candidato</h5>
-                            <h5 class="text-muted">CC.1142625120</h5>
-                            <h5 class="text-muted">Bogotá</h5>
+                        <h5 class="text-muted">CC.@candidate.Document</h5>
+                        <h5 class="text-muted">@candidate.CityName</h5>
                         </div>
                         <div class="card-footer text-center">
-                           <button class="btn btn-sm btn-success" @onclick=@(() => AddVoteToCandidate(Journeys.Id))><i class="bi bi-person-badge" /> Votar</button>
+                        <button class="btn btn-sm btn-success" @onclick=@(() => AddVoteToCandidate(@candidate.Document, @candidate.ElectoralPositionId))><i class="bi bi-person-badge" /> Votar </button>
                         </div>
                     </div>
                 </div>

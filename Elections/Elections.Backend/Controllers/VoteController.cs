@@ -31,5 +31,12 @@ namespace Elections.Backend.Controllers
             return BadRequest();
         }
 
+        [HttpGet("GetCandidatesByJourney")]
+        public async Task<IActionResult> GetCandidatesByJourney(int journeyId)
+        {
+            var response = await _voteRepository.GetCandidatesByJourney(journeyId);
+            return Ok(response);
+        }
+
     }
 }
