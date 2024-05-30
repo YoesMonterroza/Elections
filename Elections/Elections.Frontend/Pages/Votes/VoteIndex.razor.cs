@@ -19,7 +19,7 @@ namespace Elections.Frontend.Pages.Votes
         {
             
         }
-
+          
         private void Return()
         {
             VoteForm!.FormPostedSuccessfully = true;

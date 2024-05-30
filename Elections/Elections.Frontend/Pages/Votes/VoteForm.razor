@@ -19,6 +19,29 @@
         </div>
     </div>
 
+     <div class="row row-cols-1 row-cols-md-5 g-4 mt-1 mb-5">
+            @foreach (var Journeys in electoralJourneys!)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="text-center zoom">
+                        <img src="../resources/imageNoFound.png" style="height:190px;width:222px;border-radius:5px;padding: 10px;" class="text-center" />
+                        </div>                         
+                        <div class="card-body">
+                            <h5 class="card-title text-navy"> @Journeys.Name</h5>
+                            <p class="card-text smfnt">@Journeys.Name</p>
+                            <h5 class="text-muted">Candidato</h5>
+                            <h5 class="text-muted">CC.1142625120</h5>
+                            <h5 class="text-muted">Bogotá</h5>
+                        </div>
+                        <div class="card-footer text-center">
+                           <button class="btn btn-sm btn-success" @onclick=@(() => AddVoteToCandidate(Journeys.Id))><i class="bi bi-person-badge" /> Votar</button>
+                        </div>
+                    </div>
+                </div>
+            } 
+     </div>
+
 
 
 </EditForm>

@@ -43,7 +43,10 @@ namespace Elections.Frontend.Pages.Votes
             electoralJourneys = responseHttp.Response;
         }
 
+        private async Task AddVoteToCandidate(int CandidateId)
+        {
 
+        } 
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
         {
