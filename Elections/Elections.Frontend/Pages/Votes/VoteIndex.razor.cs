@@ -17,7 +17,7 @@ namespace Elections.Frontend.Pages.Votes
 
         private async Task Create()
         {
-            
+            Return();
         }
           
         private void Return()

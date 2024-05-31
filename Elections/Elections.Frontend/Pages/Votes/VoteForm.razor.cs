@@ -19,6 +19,7 @@ namespace Elections.Frontend.Pages.Votes
         public bool FormPostedSuccessfully { get; set; } = false;
         private List<ElectoralJourney> electoralJourneys = new();
         private List<CandidateDTO> electoralCandidates = new();
+        private List<PositionsNameDTO> electoralPositions = new();
         private EditContext editContext = null!;
         private int electoralJourneyIdselected;
 
@@ -31,8 +32,7 @@ namespace Elections.Frontend.Pages.Votes
 
         protected override async Task OnInitializedAsync()
         {
-            await LoadElectoralJourneysAsync();
-            await LoadElectoralCandidates(1);
+            await LoadElectoralJourneysAsync();            
         }
 
         private async Task LoadElectoralJourneysAsync()
@@ -48,9 +48,11 @@ namespace Elections.Frontend.Pages.Votes
             electoralJourneys = responseHttp.Response;
         }
 
-        private async Task LoadElectoralCandidates(int JourneyId)
+        private async Task LoadElectoralCandidates(ChangeEventArgs e)
         {
-            var responseHttp = await Repository.GetAsync<List<CandidateDTO>>("/api/Vote/GetCandidatesByJourney?journeyId=" + JourneyId);
+            //GET CANDIDATES BY JOURNEY ID
+            electoralJourneyIdselected = Convert.ToInt32(e.Value);
+            var responseHttp = await Repository.GetAsync<List<CandidateDTO>>("/api/Vote/GetCandidatesByJourney?journeyId=" + e.Value);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -58,7 +60,17 @@ namespace Elections.Frontend.Pages.Votes
                 return;
             }
 
+
             electoralCandidates = responseHttp.Response;
+            //GET POSTIONS
+            foreach (var item in electoralCandidates) 
+            {
+                var result = electoralPositions.Find(x => x.Id == item.ElectoralPositionId);
+                if (result == null)
+                {
+                    electoralPositions.Add(new PositionsNameDTO { Id = item.ElectoralPositionId, Description = item.ElectoralPosition });
+                }
+            } 
         }
 
         private async Task AddVoteToCandidate(int ElectoralPositionId, int ElectoralCandidateId)
