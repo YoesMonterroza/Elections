@@ -19,16 +19,7 @@ namespace Elections.Backend.Repositories.Implementations
         }
 
         public async Task<ActionResponse<Vote>> RegisterVote(Vote _vote) 
-        {           
-            //DATE PARSE
-            //vote.RegisterDate = DateTime.Now;
-            //vote.UserId = _vote.UserId;
-            //vote.ElectoralCandidateId = _vote.ElectoralCandidateId;
-            //vote.ElectoralPositionId = _vote.ElectoralPositionId;
-            //vote.ElectoralJourneyId = _vote.ElectoralJourneyId;
-
-            //NEW METHOD TO GET VOTING STATION NUMBER OF USER
-
+        {            
             return await AddAsync(_vote);
         }
 
@@ -46,7 +37,8 @@ namespace Elections.Backend.Repositories.Implementations
                                       Photo = us.Photo,
                                       CityName = cit.Name,
                                       ElectoralPosition = pos.Name,
-                                      ElectoralPositionId = pos.Id
+                                      ElectoralPositionId = pos.Id,
+                                      ElectoralCandidateId = can.Id
                                   }).ToList();
 
             return response;

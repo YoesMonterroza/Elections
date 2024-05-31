@@ -298,5 +298,12 @@ namespace Elections.Backend.Controllers
                 Expiration = expiration
             };
         }
+
+        [HttpGet("GetLoggedUser")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetCurrentUserAsync()
+        {
+            return Ok(await _usersUnitOfWork.GetUserAsync(User.Identity!.Name!));
+        }
     }
 }

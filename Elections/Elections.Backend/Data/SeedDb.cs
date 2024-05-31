@@ -25,8 +25,7 @@ namespace Elections.Backend.Data
             await CheckElectoralPositionsAsync();
             await CheckElectoralJourneysAsync();
             await CheckRolesAsync();
-            await CheckUserAsync("1000", "Daniel", "Davila", "danieldavila93@itm.com", "3105739686", "kr 69c # 21H", UserType.Admin);
-            await CheckUserAsync("1001", "Juan", "Parada", "juanpape24@gmail.com", "3105739686", "kr 69c # 21H", UserType.Admin); 
+            await CheckUserAsync("36221", "Daniel", "Davila", "danieldavila93@yopmail.com", "3105786", "kr 69c # 21H", UserType.Admin);          
         }
 
         private async Task CheckRolesAsync()

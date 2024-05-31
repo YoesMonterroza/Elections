@@ -17,6 +17,7 @@ namespace Elections.Shared.DTOs
         public string CityName { get; set; } = null!;
 
         public string ElectoralPosition { get; set; } = null!;
-        public int ElectoralPositionId { get; set; } 
+        public int ElectoralPositionId { get; set; }
+        public int ElectoralCandidateId { get; set; }
     }
 }

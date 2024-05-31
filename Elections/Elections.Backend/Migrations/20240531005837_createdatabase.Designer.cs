@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elections.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240524142938_create database new")]
-    partial class createdatabasenew
+    [Migration("20240531005837_createdatabase")]
+    partial class createdatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,24 +169,6 @@ namespace Elections.Backend.Migrations
                     b.ToTable("IdentificationTypes");
                 });
 
-            modelBuilder.Entity("Elections.Shared.Entities.Sex", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sexes");
-                });
-
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>
                 {
                     b.Property<int>("Id")
@@ -308,8 +290,8 @@ namespace Elections.Backend.Migrations
 
             modelBuilder.Entity("Elections.Shared.Entities.Vote", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserDocument")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ElectoralPositionId")
                         .HasColumnType("int");
@@ -329,9 +311,9 @@ namespace Elections.Backend.Migrations
                     b.Property<int>("VotingStationId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "ElectoralPositionId", "ElectoralJourneyId");
+                    b.HasKey("UserDocument", "ElectoralPositionId", "ElectoralJourneyId");
 
-                    b.HasIndex("VotingStationId", "UserId", "ElectoralJourneyId", "ElectoralCandidateId")
+                    b.HasIndex("VotingStationId", "UserDocument", "ElectoralJourneyId", "ElectoralCandidateId")
                         .IsUnique();
 
                     b.ToTable("Votes");

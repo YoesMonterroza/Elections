@@ -41,7 +41,7 @@
                         <h5 class="text-muted">@candidate.CityName</h5>
                         </div>
                         <div class="card-footer text-center">
-                        <button class="btn btn-sm btn-success" @onclick=@(() => AddVoteToCandidate(@candidate.Document, @candidate.ElectoralPositionId))><i class="bi bi-person-badge" /> Votar </button>
+                        <button class="btn btn-sm btn-success" @onclick=@(() => AddVoteToCandidate(@candidate.ElectoralPositionId, @candidate.ElectoralCandidateId))><i class="bi bi-person-badge" /> Votar </button>
                         </div>
                     </div>
                 </div>

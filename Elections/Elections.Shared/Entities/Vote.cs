@@ -29,7 +29,7 @@ namespace Elections.Shared.Entities
 
 
         [Display(Name = "Sufragante")]
-        public int UserId { get; set; }
+        public string UserDocument { get; set; }
 
 
         [Display(Name = "Fecha de Registro")]        

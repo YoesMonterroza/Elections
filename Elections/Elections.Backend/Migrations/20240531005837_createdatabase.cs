@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Elections.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class createdatabasenew : Migration
+    public partial class createdatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -97,25 +97,12 @@ namespace Elections.Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sexes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sexes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Votes",
                 columns: table => new
                 {
                     ElectoralJourneyId = table.Column<int>(type: "int", nullable: false),
                     ElectoralPositionId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserDocument = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     VotingStationId = table.Column<int>(type: "int", nullable: false),
                     ElectoralCandidateId = table.Column<int>(type: "int", nullable: false),
@@ -123,7 +110,7 @@ namespace Elections.Backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Votes", x => new { x.UserId, x.ElectoralPositionId, x.ElectoralJourneyId });
+                    table.PrimaryKey("PK_Votes", x => new { x.UserDocument, x.ElectoralPositionId, x.ElectoralJourneyId });
                 });
 
             migrationBuilder.CreateTable(
@@ -433,9 +420,9 @@ namespace Elections.Backend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Votes_VotingStationId_UserId_ElectoralJourneyId_ElectoralCandidateId",
+                name: "IX_Votes_VotingStationId_UserDocument_ElectoralJourneyId_ElectoralCandidateId",
                 table: "Votes",
-                columns: new[] { "VotingStationId", "UserId", "ElectoralJourneyId", "ElectoralCandidateId" },
+                columns: new[] { "VotingStationId", "UserDocument", "ElectoralJourneyId", "ElectoralCandidateId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -485,9 +472,6 @@ namespace Elections.Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "IdentificationTypes");
-
-            migrationBuilder.DropTable(
-                name: "Sexes");
 
             migrationBuilder.DropTable(
                 name: "Votes");

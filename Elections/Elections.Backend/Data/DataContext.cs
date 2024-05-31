@@ -44,8 +44,8 @@ namespace Elections.Backend.Data
             modelBuilder.Entity<ElectoralCandidate>().HasKey(x => new { x.ElectoralJourneyId, x.Document });
             modelBuilder.Entity<ElectoralCandidate>().HasIndex(x => new { x.ElectoralJourneyId, x.Document }).IsUnique();
             modelBuilder.Entity<User>().HasKey(x => new { x.Document});
-            modelBuilder.Entity<Vote>().HasIndex(x => new { x.VotingStationId, x.UserId, x.ElectoralJourneyId,x.ElectoralCandidateId }).IsUnique();
-            modelBuilder.Entity<Vote>().HasKey(x => new { x.UserId,x.ElectoralPositionId,x.ElectoralJourneyId }); //A VOTER CAN ONLY VOTE FOR ONE POSITION ON ONE ELECTION JOURNEY
+            //modelBuilder.Entity<Vote>().HasIndex(x => new { x.VotingStationId, x.UserDocument, x.ElectoralJourneyId,x.ElectoralCandidateId }).IsUnique();
+            modelBuilder.Entity<Vote>().HasKey(x => new { x.UserDocument, x.ElectoralPositionId,x.ElectoralJourneyId }); //A VOTER CAN ONLY VOTE FOR ONE POSITION ON ONE ELECTION JOURNEY
 
             DisableCascadingDelete(modelBuilder);
         }
