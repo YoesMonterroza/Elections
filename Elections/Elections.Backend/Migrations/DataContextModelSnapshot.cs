@@ -310,9 +310,6 @@ namespace Elections.Backend.Migrations
 
                     b.HasKey("UserDocument", "ElectoralPositionId", "ElectoralJourneyId");
 
-                    b.HasIndex("VotingStationId", "UserDocument", "ElectoralJourneyId", "ElectoralCandidateId")
-                        .IsUnique();
-
                     b.ToTable("Votes");
                 });
 

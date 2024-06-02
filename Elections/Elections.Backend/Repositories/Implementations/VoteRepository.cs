@@ -43,5 +43,15 @@ namespace Elections.Backend.Repositories.Implementations
 
             return response;
         }
+
+        public async Task<IEnumerable<int>> GetVotesByDocument(Vote _vote)
+        {
+            var response = (from vot in _context.Votes                            
+                            where vot.UserDocument == _vote.UserDocument
+                            && vot.ElectoralJourneyId == _vote.ElectoralJourneyId
+                            select vot.ElectoralPositionId).Distinct().ToList();
+
+            return response;
+        }
     }
 }

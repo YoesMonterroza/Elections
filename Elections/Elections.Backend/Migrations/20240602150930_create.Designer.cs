@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elections.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240531005837_createdatabase")]
-    partial class createdatabase
+    [Migration("20240602150930_create")]
+    partial class create
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -312,9 +312,6 @@ namespace Elections.Backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("UserDocument", "ElectoralPositionId", "ElectoralJourneyId");
-
-                    b.HasIndex("VotingStationId", "UserDocument", "ElectoralJourneyId", "ElectoralCandidateId")
-                        .IsUnique();
 
                     b.ToTable("Votes");
                 });

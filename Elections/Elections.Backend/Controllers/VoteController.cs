@@ -38,5 +38,13 @@ namespace Elections.Backend.Controllers
             return Ok(response);
         }
 
+
+        [HttpPost("GetVotesByDocument")]
+        public async Task<IActionResult> GetVotesByDocument(Vote vote)
+        {
+            var response = await _voteRepository.GetVotesByDocument(vote);
+            return Ok(response);
+        }
+
     }
 }

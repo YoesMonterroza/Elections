@@ -44,8 +44,8 @@ namespace Elections.Frontend.Pages.Votes
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-                       
-            electoralJourneys = responseHttp.Response;
+            var today = DateTime.Now;                       
+            electoralJourneys = responseHttp.Response.Where(x=> today >= x.Date && today<= x.DateFinish).ToList();
         }
 
         private async Task LoadElectoralCandidates(ChangeEventArgs e)
@@ -59,7 +59,7 @@ namespace Elections.Frontend.Pages.Votes
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
+             
 
             electoralCandidates = responseHttp.Response;
             //GET POSTIONS

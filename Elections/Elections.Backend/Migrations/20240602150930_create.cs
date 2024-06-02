@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Elections.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class createdatabase : Migration
+    public partial class create : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -417,12 +417,6 @@ namespace Elections.Backend.Migrations
                 name: "IX_States_CountryId_Name",
                 table: "States",
                 columns: new[] { "CountryId", "Name" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Votes_VotingStationId_UserDocument_ElectoralJourneyId_ElectoralCandidateId",
-                table: "Votes",
-                columns: new[] { "VotingStationId", "UserDocument", "ElectoralJourneyId", "ElectoralCandidateId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

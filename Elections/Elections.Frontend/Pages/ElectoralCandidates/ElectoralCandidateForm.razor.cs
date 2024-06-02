@@ -55,6 +55,8 @@ namespace Elections.Frontend.Pages.ElectoralCandidates
             }
 
             electoralJourneys = responseHttp.Response;
+            var today = DateTime.Now;
+            electoralJourneys = electoralJourneys.Where(x => today <= x.Date).ToList();
         }
 
         private async Task LoadElectoralPositionsAsync()
