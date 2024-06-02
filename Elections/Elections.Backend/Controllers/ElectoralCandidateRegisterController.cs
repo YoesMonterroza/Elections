@@ -1,4 +1,6 @@
-﻿using Elections.Backend.UnitsOfWork.Interfaces;
+﻿using Elections.Backend.Repositories.Implementations;
+using Elections.Backend.Repositories.Interfaces;
+using Elections.Backend.UnitsOfWork.Interfaces;
 using Elections.Shared.DTOs;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Http;
@@ -11,15 +13,17 @@ namespace Elections.Backend.Controllers
     public class ElectoralCandidateRegisterController : GenericController<ElectoralCandidate>
     {
         private readonly IElectoralCandidateUnitOfWork _electoralCandidateUnitOfWork;
-        public ElectoralCandidateRegisterController(IGenericUnitOfWork<ElectoralCandidate> unitOfWork, IElectoralCandidateUnitOfWork electoralCandidateUnitOfWork) : base(unitOfWork)
+        private readonly IQueryElectoralCandidateRepository _IqueryElectoralCandidateRepository;
+        public ElectoralCandidateRegisterController(IQueryElectoralCandidateRepository queryElectoralCandidateRepository, IGenericUnitOfWork<ElectoralCandidate> unitOfWork, IElectoralCandidateUnitOfWork electoralCandidateUnitOfWork) : base(unitOfWork)
         {
             _electoralCandidateUnitOfWork = electoralCandidateUnitOfWork;
+            _IqueryElectoralCandidateRepository = queryElectoralCandidateRepository;
         }
 
         [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
-            var response = await _electoralCandidateUnitOfWork.GetAsync();
+            var response = await _IqueryElectoralCandidateRepository.GetAsync();
             if (response.WasSuccess)
             {
                 return Ok(response.Result);

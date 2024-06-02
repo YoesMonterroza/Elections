@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elections.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240518041456_create database 2024-05-17")]
-    partial class createdatabase20240517
+    [Migration("20240602150930_create")]
+    partial class create
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,6 +81,9 @@ namespace Elections.Backend.Migrations
                     b.Property<int>("ElectoralPositionId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
@@ -89,9 +92,8 @@ namespace Elections.Backend.Migrations
 
                     b.HasKey("ElectoralJourneyId", "Document");
 
-                    b.HasIndex("Document");
-
-                    b.HasIndex("ElectoralPositionId");
+                    b.HasIndex("ElectoralJourneyId", "Document")
+                        .IsUnique();
 
                     b.ToTable("ElectoralCandidate");
                 });
@@ -167,24 +169,6 @@ namespace Elections.Backend.Migrations
                     b.ToTable("IdentificationTypes");
                 });
 
-            modelBuilder.Entity("Elections.Shared.Entities.Sex", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sexes");
-                });
-
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>
                 {
                     b.Property<int>("Id")
@@ -211,8 +195,9 @@ namespace Elections.Backend.Migrations
 
             modelBuilder.Entity("Elections.Shared.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Document")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -229,11 +214,6 @@ namespace Elections.Backend.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Document")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -245,6 +225,9 @@ namespace Elections.Backend.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -290,7 +273,7 @@ namespace Elections.Backend.Migrations
                     b.Property<int>("UserType")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Document");
 
                     b.HasIndex("CityId");
 
@@ -303,6 +286,34 @@ namespace Elections.Backend.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Elections.Shared.Entities.Vote", b =>
+                {
+                    b.Property<string>("UserDocument")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ElectoralPositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ElectoralJourneyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ElectoralCandidateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VotingStationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserDocument", "ElectoralPositionId", "ElectoralJourneyId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.VotingStation", b =>
@@ -433,7 +444,7 @@ namespace Elections.Backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -455,7 +466,7 @@ namespace Elections.Backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -467,7 +478,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
@@ -482,7 +493,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -507,33 +518,6 @@ namespace Elections.Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("State");
-                });
-
-            modelBuilder.Entity("Elections.Shared.Entities.ElectoralCandidate", b =>
-                {
-                    b.HasOne("Elections.Shared.Entities.User", "User")
-                        .WithMany("ElectoralCandidate")
-                        .HasForeignKey("Document")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Elections.Shared.Entities.ElectoralJourney", "ElectoralJourney")
-                        .WithMany("ElectoralCandidate")
-                        .HasForeignKey("ElectoralJourneyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Elections.Shared.Entities.ElectoralPosition", "ElectoralPosition")
-                        .WithMany("ElectoralCandidate")
-                        .HasForeignKey("ElectoralPositionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ElectoralJourney");
-
-                    b.Navigation("ElectoralPosition");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>
@@ -641,24 +625,9 @@ namespace Elections.Backend.Migrations
                     b.Navigation("States");
                 });
 
-            modelBuilder.Entity("Elections.Shared.Entities.ElectoralJourney", b =>
-                {
-                    b.Navigation("ElectoralCandidate");
-                });
-
-            modelBuilder.Entity("Elections.Shared.Entities.ElectoralPosition", b =>
-                {
-                    b.Navigation("ElectoralCandidate");
-                });
-
             modelBuilder.Entity("Elections.Shared.Entities.State", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("Elections.Shared.Entities.User", b =>
-                {
-                    b.Navigation("ElectoralCandidate");
                 });
 
             modelBuilder.Entity("Elections.Shared.Entities.VotingStation", b =>

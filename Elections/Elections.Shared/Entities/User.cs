@@ -41,9 +41,6 @@ namespace Elections.Shared.Entities
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";
-
-       
-        //LLAVE FORANEA 
-        public ICollection<ElectoralCandidate>? ElectoralCandidate { get; set; }
+         
     }
 }

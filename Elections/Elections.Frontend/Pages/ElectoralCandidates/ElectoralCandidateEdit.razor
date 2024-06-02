@@ -1,0 +1,13 @@
+﻿@page "/ElectoralCandidateEdit/edit"
+<h3>EDITAR CANDIDATO</h3>
+@if (electoralCandidate is null)
+{
+  <Loading/>
+}
+else
+{
+    <ElectoralCandidateForm @ref="electoralCandidateForm" electoralCandidate="electoralCandidate" OnValidSubmit="EditAsyncCandidate" ReturnAction="Return" />
+}
+
+
+

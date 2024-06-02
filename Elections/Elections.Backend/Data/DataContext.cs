@@ -22,11 +22,12 @@ namespace Elections.Backend.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Sex> Sexes { get; set; }
+        public DbSet<User> Users { get; set; }         
         public DbSet<IdentificationType> IdentificationTypes { get; set; }
 
         public DbSet<ElectoralCandidate> ElectoralCandidate { get; set; }
+
+        public DbSet<Vote> Votes { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +41,12 @@ namespace Elections.Backend.Data
             //modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.CityId, x.Name }).IsUnique();
             modelBuilder.Entity<VotingStation>().HasIndex(x => new { x.Name, x.Code }).IsUnique();
             modelBuilder.Entity<Zoning>().HasIndex(x => new { x.VotingStationId, x.ZoningNumber }).IsUnique();
-            modelBuilder.Entity<ElectoralCandidate>().HasKey(x => new { x.ElectoralJourneyId, x.Document });            
+            modelBuilder.Entity<ElectoralCandidate>().HasKey(x => new { x.ElectoralJourneyId, x.Document });
+            modelBuilder.Entity<ElectoralCandidate>().HasIndex(x => new { x.ElectoralJourneyId, x.Document }).IsUnique();
+            modelBuilder.Entity<User>().HasKey(x => new { x.Document});
+            //modelBuilder.Entity<Vote>().HasIndex(x => new { x.VotingStationId, x.UserDocument, x.ElectoralJourneyId,x.ElectoralCandidateId }).IsUnique();
+            modelBuilder.Entity<Vote>().HasKey(x => new { x.UserDocument, x.ElectoralPositionId,x.ElectoralJourneyId }); //A VOTER CAN ONLY VOTE FOR ONE POSITION ON ONE ELECTION JOURNEY
+
             DisableCascadingDelete(modelBuilder);
         }
         private void DisableCascadingDelete(ModelBuilder modelBuilder)

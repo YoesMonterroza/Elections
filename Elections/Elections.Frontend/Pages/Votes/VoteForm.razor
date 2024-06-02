@@ -1,0 +1,66 @@
+﻿
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label>Jornada Electoral:</label>
+        <div>
+            <select class="form-select" @onchange="LoadElectoralCandidates">
+                <option value="0">-- Seleccione Jornada Electoral --</option>
+                @if (electoralJourneys is not null)
+                {
+                    @foreach (var Journeys in electoralJourneys)
+                    {
+                        <option value="@Journeys.Id" selected="@(Journeys.Id == electoralJourneyIdselected)">@Journeys.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    
+    @if (electoralPositions.Count > 0)
+    {
+        @foreach (var item in electoralPositions!)
+        {
+            <br>
+            <h3>@item.Description</h3> 
+       
+            <div class="row row-cols-1 row-cols-md-5 g-4 mt-1 mb-5">
+                @foreach (var candidate in electoralCandidates.Where(x => x.ElectoralPositionId == @item.Id)!)
+                    {
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="text-center zoom">
+                                    @if (candidate.Photo == null)
+                                    {
+                                        <img src="../resources/imageNoFound.png" style="height:190px;width:222px;border-radius:5px;padding: 10px;" class="text-center" />
+                                    }else{
+                                        <img src="@candidate.Photo" style="height:190px;width:222px;border-radius:5px;padding: 10px;" class="text-center" />
+                                    }
+                       
+                                    </div>                         
+                                    <div class="card-body">
+                                        <h5 class="card-title text-navy"> @candidate.ElectoralPosition</h5>
+                                        <p class="card-text smfnt">@candidate.CandidateFullName</p>
+                                        <h5 class="text-muted">Candidato</h5>
+                                    <h5 class="text-muted">CC.@candidate.Document</h5>
+                                    <h5 class="text-muted">@candidate.CityName</h5>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button class="btn btn-sm btn-success" @onclick=@(() => AddVoteToCandidate(@candidate.ElectoralPositionId, @candidate.ElectoralCandidateId))><i class="bi bi-person-badge" /> Votar </button>
+                                    </div>
+                                </div>
+                            </div>
+                    }
+                </div>
+            <hr>
+        }
+    }else{
+            <h5>No hay candidatos para mostrar.</h5>
+    } 
+</EditForm>
+
+
+

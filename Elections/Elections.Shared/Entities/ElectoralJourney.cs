@@ -19,9 +19,6 @@ namespace Elections.Shared.Entities
         [Display(Name = "Fecha Fin Jornada")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public DateTime? DateFinish { get; set; }
-
-
-        //LLAVE FORANEA 
-        public ICollection<ElectoralCandidate>? ElectoralCandidate { get; set; }
+         
     }
 }

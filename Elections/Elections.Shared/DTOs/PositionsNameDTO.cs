@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Elections.Shared.DTOs
 {
-    public class SexDTO
+    public class PositionsNameDTO
     {
-        public string Name { get; set; } = null!;
+       public string Description { get; set; } = null!;
+       public int Id { get; set; }  
     }
 }
