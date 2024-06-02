@@ -1,3 +1,5 @@
+using Blazored.Modal.Services;
+using Blazored.Modal;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Elections.Frontend.Repositories;
 using Elections.Shared.DTOs;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
+using Elections.Frontend.Pages.ElectoralJourneys;
 
 namespace Elections.Frontend.Pages.Votes
 {
@@ -16,6 +19,7 @@ namespace Elections.Frontend.Pages.Votes
         [EditorRequired, Parameter] public Vote vote { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;        
         [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         public bool FormPostedSuccessfully { get; set; } = false;
         private List<ElectoralJourney> electoralJourneys = new();
         private List<CandidateDTO> electoralCandidates = new();
@@ -112,8 +116,8 @@ namespace Elections.Frontend.Pages.Votes
                 var message = await _responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message);
                 return;
-            }
-            
+            } 
+          
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -121,7 +125,9 @@ namespace Elections.Frontend.Pages.Votes
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Voto registrado con éxito.");             
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Voto registrado con éxito.");
+
+            Return();
         }
 
         private async Task GET_USER_LOGGED() 
@@ -137,6 +143,11 @@ namespace Elections.Frontend.Pages.Votes
 
             //SET USER IDENTIFICATION
             userLogged = responseHttp.Response.Document;
+        }
+
+        private void Return()
+        {
+            NavigationManager.NavigateTo("/Vote/index", true);
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
