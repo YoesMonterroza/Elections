@@ -44,11 +44,11 @@ namespace Elections.Backend.Repositories.Implementations
             return response;
         }
 
-        public async Task<IEnumerable<int>> GetVotesByDocument(Vote _vote)
+        public async Task<IEnumerable<int>> GetVotesByDocument(string userDocument, int journeyId)
         {
             var response = (from vot in _context.Votes                            
-                            where vot.UserDocument == _vote.UserDocument
-                            && vot.ElectoralJourneyId == _vote.ElectoralJourneyId
+                            where vot.UserDocument == userDocument
+                            && vot.ElectoralJourneyId == journeyId
                             select vot.ElectoralPositionId).Distinct().ToList();
 
             return response;

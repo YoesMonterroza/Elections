@@ -20,8 +20,10 @@ namespace Elections.Frontend.Pages.Votes
         private List<ElectoralJourney> electoralJourneys = new();
         private List<CandidateDTO> electoralCandidates = new();
         private List<PositionsNameDTO> electoralPositions = new();
+        private List<int> UserVotes = new();
         private EditContext editContext = null!;
         private int electoralJourneyIdselected;
+        private string userLogged;
 
 
         //METHOD
@@ -32,7 +34,8 @@ namespace Elections.Frontend.Pages.Votes
 
         protected override async Task OnInitializedAsync()
         {
-            await LoadElectoralJourneysAsync();            
+            await GET_USER_LOGGED();
+            await LoadElectoralJourneysAsync();          
         }
 
         private async Task LoadElectoralJourneysAsync()
@@ -59,16 +62,35 @@ namespace Elections.Frontend.Pages.Votes
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-             
 
+            //GET USER'S VOTES BY DOCUMENT AND ELECTORAL JOURNEYS          
+            var responseVotesHttp = await Repository.GetAsync<List<int>>("/api/Vote/GetVotesByDocument?userDocument="+ userLogged + "&&journeyId=" + e.Value);
+            if (responseVotesHttp.Error)
+            {
+                var message = await responseVotesHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", "consulta de votos del usuario", SweetAlertIcon.Error);
+                return;
+            }
+
+            //GET CANDIDATE'S LIST
             electoralCandidates = responseHttp.Response;
-            //GET POSTIONS
+            //GET USER VOTES
+            UserVotes = responseVotesHttp.Response;
+
+
+            //GET POSITIONS DISTINCT
             foreach (var item in electoralCandidates) 
             {
-                var result = electoralPositions.Find(x => x.Id == item.ElectoralPositionId);
-                if (result == null)
+                //VALIDATE IF USER TO VOTED A ELECTORAL POSITION IN THIS ELECTORAL JOURNEY
+                var isVoteExist = UserVotes!.Contains(item.ElectoralPositionId);
+                if (!isVoteExist)
                 {
-                    electoralPositions.Add(new PositionsNameDTO { Id = item.ElectoralPositionId, Description = item.ElectoralPosition });
+                    //VALIDATE ELECTORAL POSITION LIST CONTAINS A POSITION
+                    var result = electoralPositions.Find(x => x.Id == item.ElectoralPositionId);
+                    if (result == null)
+                    {
+                        electoralPositions.Add(new PositionsNameDTO { Id = item.ElectoralPositionId, Description = item.ElectoralPosition });
+                    }
                 }
             } 
         }
@@ -80,23 +102,14 @@ namespace Elections.Frontend.Pages.Votes
             vote.ElectoralPositionId = ElectoralPositionId;
             vote.ElectoralJourneyId = electoralJourneyIdselected;
             vote.ElectoralCandidateId = ElectoralCandidateId;
-
-            //GET LOGGED USER
-            var responseHttp = await Repository.GetAsync<User>("/api/Accounts/GetLoggedUser");
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", "Vuelva a logearse", SweetAlertIcon.Error);
-                return;
-            }
-
+ 
             //SET USER IDENTIFICATION
-            vote.UserDocument = responseHttp.Response.Document;
+            vote.UserDocument = userLogged;
 
             var _responseHttp = await Repository.PostAsync("/api/Vote/RegisterVote", vote);
-            if (responseHttp.Error)
+            if (_responseHttp.Error)
             {
-                var message = await responseHttp.GetErrorMessageAsync();
+                var message = await _responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message);
                 return;
             }
@@ -109,6 +122,21 @@ namespace Elections.Frontend.Pages.Votes
                 Timer = 3000
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Voto registrado con éxito.");             
+        }
+
+        private async Task GET_USER_LOGGED() 
+        {
+            //GET LOGGED USER
+            var responseHttp = await Repository.GetAsync<User>("/api/Accounts/GetLoggedUser");
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", "Vuelva a logearse", SweetAlertIcon.Error);
+                return;
+            }
+
+            //SET USER IDENTIFICATION
+            userLogged = responseHttp.Response.Document;
         }
 
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)

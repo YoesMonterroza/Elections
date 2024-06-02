@@ -10,6 +10,6 @@ namespace Elections.Backend.Repositories.Interfaces
 
         Task<IEnumerable<CandidateDTO>> GetCandidatesByJourney(int journeyId);
 
-        Task<IEnumerable<int>> GetVotesByDocument(Vote _vote);
+        Task<IEnumerable<int>> GetVotesByDocument(string userDocument, int journeyId);
     }
 }

@@ -39,10 +39,10 @@ namespace Elections.Backend.Controllers
         }
 
 
-        [HttpPost("GetVotesByDocument")]
-        public async Task<IActionResult> GetVotesByDocument(Vote vote)
+        [HttpGet("GetVotesByDocument")]
+        public async Task<IActionResult> GetVotesByDocument(string userDocument, int journeyId)
         {
-            var response = await _voteRepository.GetVotesByDocument(vote);
+            var response = await _voteRepository.GetVotesByDocument(userDocument, journeyId);
             return Ok(response);
         }
 
