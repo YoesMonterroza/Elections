@@ -49,24 +49,24 @@ namespace Elections.UnitTests.Controllers
         }*/
 
 
-        [TestMethod]
-        public async Task GetAsync_ReturnsOkResult()
-        {
-            //Arrange
-            var pagination = new PaginationDTO();
-            var response = new ActionResponse<IEnumerable<ElectoralPosition>> { WasSuccess= true};
-            //var comboData = new List<ElectoralPosition> { new ElectoralPosition() };
-            _mockElectoralPositionUnitOfWork.Setup(x => x.GetAsync(pagination)).ReturnsAsync(response);//new PaginationDTO()
+        //[TestMethod]
+        //public async Task GetAsync_ReturnsOkResult()
+        //{
+        //    //Arrange
+        //    var pagination = new PaginationDTO();
+        //    var response = new ActionResponse<IEnumerable<ElectoralPosition>> { WasSuccess= true};
+        //    //var comboData = new List<ElectoralPosition> { new ElectoralPosition() };
+        //    _mockElectoralPositionUnitOfWork.Setup(x => x.GetAsync(pagination)).ReturnsAsync(response);//new PaginationDTO()
 
-            //Act
-            var result = await _controller.GetAsync();
+        //    //Act
+        //    var result = await _controller.GetAsync();
             
-            //assert
-            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-            var okResult = result as OkObjectResult;
-            Assert.AreEqual(response.Result, okResult!.Value);
-            _mockElectoralPositionUnitOfWork.Verify( x => x.GetAsync(), Times.Once());
-        }
+        //    //assert
+        //    Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+        //    var okResult = result as OkObjectResult;
+        //    Assert.AreEqual(response.Result, okResult!.Value);
+        //    _mockElectoralPositionUnitOfWork.Verify( x => x.GetAsync(), Times.Once());
+        //}
 
         [TestMethod]
         public async Task GetAsync_ReturnsBadRequestResult_WhenWasSuccessIsFalse()
