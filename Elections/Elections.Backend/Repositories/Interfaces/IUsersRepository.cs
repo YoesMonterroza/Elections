@@ -30,7 +30,7 @@ namespace Elections.Backend.Repositories.Interfaces
 
         Task CheckRoleAsync(string roleName);
 
-        Task AddUserToRoleAsync(User user, string roleName);
+        Task<IdentityResult> AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
         Task<SignInResult> LoginAsync(LoginDTO model);

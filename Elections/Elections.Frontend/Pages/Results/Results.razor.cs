@@ -2,6 +2,7 @@
 using Elections.Frontend.Repositories;
 using Elections.Shared.Entities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Elections.Frontend.Pages.Results
 {
@@ -9,85 +10,103 @@ namespace Elections.Frontend.Pages.Results
     {
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
         public List<ElectoralJourney>? ElectoralJourneys { get; set; }
 
-        private List<City> cities = new();
-        private List<State> states = new();
-        private List<Country> countries = new();
-        private int countryselected;
-        private int stateselected;
-        private int cityselected;
+        private readonly String ELECTORAL_JOURNEY_PATH = "api/electoralJourneys";
+        private int currentPage = 1;
+        private int totalPages;
 
         protected override async Task OnInitializedAsync()
         {
-            await LoadCountriesAsync();
+           await LoadElectoralJourneysAsync();
         }
 
-        private async Task LoadCountriesAsync()
+        private async Task SelectedPageAsync(int page)
         {
-            var responseHttp = await Repository.GetAsync<List<Country>>("/api/countries/combo");
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
-            }
-
-            countries = responseHttp.Response;
+            currentPage = page;
+            await LoadAsync(page);
         }
-
-        private async Task CountryChangedAsync(ChangeEventArgs e)
+        private async Task ApplyFilterAsync(string filter)
         {
-            var selectedCountry = Convert.ToInt32(e.Value!);
-            states = null;
-            cities = null;
-            await LoadStatesAsync(selectedCountry);
+            Filter = filter;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
-
-        private async Task LoadStatesAsync(int countryId)
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
         {
-            var responseHttp = await Repository.GetAsync<List<State>>($"/api/states/combo/{countryId}");
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
-            }
-
-            states = responseHttp.Response;
-        }
-
-        private async Task StateChangedAsync(ChangeEventArgs e)
-        {
-            var selectedState = Convert.ToInt32(e.Value!);
-            cities = null;
-            await LoadCitiesAsync(selectedState);
-        }
-
-        private async Task LoadCitiesAsync(int stateId)
-        {
-            var responseHttp = await Repository.GetAsync<List<City>>($"/api/cities/combo/{stateId}");
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
-            }
-
-            cities = responseHttp.Response;
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
 
         private async Task LoadElectoralJourneysAsync()
         {
-            var responseHttp = await Repository.GetAsync<List<City>>($"/api/cities/combo/{cityselected}");
+            await LoadAsync();
+        }
+
+        private async Task LoadAsync(int page = 1)
+        {
+            if (!string.IsNullOrWhiteSpace(Page))
+            {
+                page = Convert.ToInt32(Page);
+            }
+
+            var ok = await LoadListAsync(page);
+            if (ok)
+            {
+                await LoadPagesAsync();
+            }
+        }
+
+        private async Task<bool> LoadListAsync(int page)
+        {
+            validateRecordsNumber(RecordsNumber);
+            var url = string.Concat(ELECTORAL_JOURNEY_PATH, $"?page={page}", $"&recordsnumber={RecordsNumber}");
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<List<ElectoralJourney>>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            ElectoralJourneys = responseHttp.Response;
+            return true;
+        }
+
+        private async Task LoadPagesAsync()
+        {
+            var url = string.Concat(ELECTORAL_JOURNEY_PATH, "/totalPages", $"?recordsnumber={RecordsNumber}");
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
+            totalPages = responseHttp.Response;
+        }
 
-            cities = responseHttp.Response;
+        private void validateRecordsNumber(int recordsnumber)
+        {
+            if (recordsnumber == 0)
+            {
+                RecordsNumber = 10;
+            }
         }
     }
 }

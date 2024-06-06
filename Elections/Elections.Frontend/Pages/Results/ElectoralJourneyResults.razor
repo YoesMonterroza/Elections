@@ -1,0 +1,19 @@
+﻿@page "/results/{ElectoralJourneyId:int}"
+<h3>ElectoralJourneyResults</h3>
+
+<div class="chart-container">
+
+    @if (results is null)
+    {
+        <Loading />
+    }
+    else if (results.Count == 0)
+    {
+        <p>No hay registros para mostrar...</p>
+    }
+    else
+    {
+        <PieChart Options="pieChartOptions" @ref="pieChart" TItem="double" Data="GetChartData()">
+        </PieChart>
+    }
+</div>
