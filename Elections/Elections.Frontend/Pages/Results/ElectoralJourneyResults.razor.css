@@ -1,0 +1,5 @@
+﻿.chart-container {
+    width: 30%; /* Ajusta el ancho según tus necesidades */
+    height: 30%; /* Ajusta la altura según tus necesidades */
+    position: relative;
+}

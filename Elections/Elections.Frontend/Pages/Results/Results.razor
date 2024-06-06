@@ -1,0 +1,51 @@
+﻿@page "/results"
+<h3>Resultados</h3>
+
+<Div id="Journeyslist">
+    <GenericList MyList="ElectoralJourneys">
+        <Body>
+            <GenericPagination CurrentPage="currentPage"
+                               TotalPages="totalPages"
+                               SelectedPage="SelectedPageAsync"
+                               RecordsNumber="SelectedRecordsNumberAsync" />
+
+            <GenericFilter PlaceHolder="Buscar Jornada Electoral..."
+                           SelectedFilter="ApplyFilterAsync" />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Jornada
+                        </th>
+                        <th>
+                            Fecha hora inicio
+                        </th>
+                        <th>
+                            Fecha hora fin
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var electoralJourney in ElectoralJourneys!)
+                    {
+                        <tr>
+                            <td>
+                                <a href="/results/@electoralJourney.Id">@electoralJourney.Name</a>
+                            </td>
+                            <td>
+                                @electoralJourney.Date
+                            </td>
+                            <td>
+                                @electoralJourney.DateFinish
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </Body>
+    </GenericList>
+</Div>

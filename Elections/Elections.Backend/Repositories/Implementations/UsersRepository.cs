@@ -51,9 +51,9 @@ namespace Elections.Backend.Repositories.Implementations
             return await _userManager.CreateAsync(user, password);
         }
 
-        public async Task AddUserToRoleAsync(User user, string roleName)
+        public async Task<IdentityResult> AddUserToRoleAsync(User user, string roleName)
         {
-            await _userManager.AddToRoleAsync(user, roleName);
+           return await _userManager.AddToRoleAsync(user, roleName);
         }
 
         public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)

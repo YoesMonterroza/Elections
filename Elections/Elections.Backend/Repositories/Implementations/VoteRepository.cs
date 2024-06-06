@@ -53,5 +53,22 @@ namespace Elections.Backend.Repositories.Implementations
 
             return response;
         }
+
+        public async Task<IEnumerable<ResultDTO>> GetResultsAsync(int journeyId)
+        {
+            var response = (from vot in _context.Votes
+                            join can in _context.ElectoralCandidate on vot.ElectoralCandidateId equals can.Id
+                            join us in _context.Users on can.Document equals us.Document
+                            where vot.ElectoralJourneyId == journeyId
+                            group vot by new { vot.ElectoralCandidateId, us.FirstName, us.LastName } into g
+                            select new ResultDTO
+                            {
+                                ElectoralCandidateId = g.Key.ElectoralCandidateId,                             
+                                ElectoralCandidateName = string.Concat(g.Key.FirstName, " ", g.Key.LastName),
+                                nVotes = g.Count()
+                            }).ToList();
+
+            return response;
+        }
     }
 }

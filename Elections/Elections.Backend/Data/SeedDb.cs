@@ -22,12 +22,13 @@ namespace Elections.Backend.Data
             await _context.Database.EnsureCreatedAsync();
             await CheckCountriesAsync();
             await CheckVotingStationsAsync();
+            await CheckRolesAsync();
+            await CheckUsersAsync();
             await CheckElectoralPositionsAsync();
             await CheckElectoralJourneysAsync();
-            await CheckRolesAsync();
-            //await CheckUserAsync("3602321", "Daniel", "Davila", "danieldavila93@yopmail.com", "3105786", "kr 69c # 21H", UserType.Admin);
-            //await CheckUserAsync("513221", "yoes", "lp", "dan21ieldavila92@yopmail.com", "36221", "kr 69c # 21H", UserType.Admin);
-        }
+            await CheckElectoralCandidatesAsync();
+            await CheckVotesAsync();
+        }        
 
         private async Task CheckRolesAsync()
         {
@@ -70,8 +71,9 @@ namespace Elections.Backend.Data
         {
             if (!_context.ElectoralJourneys.Any())
             {
-                _context.ElectoralJourneys.Add(new ElectoralJourney { 
-                    Name = "Elección Secretario General", 
+                _context.ElectoralJourneys.Add(new ElectoralJourney
+                {
+                    Name = "Elección Secretario General",
                     Date = DateTime.Parse("2024-04-27T05:56:01.997Z"),
                     DateFinish = DateTime.Parse("2024-04-27T16:56:01.997Z"),
                 });
@@ -1928,6 +1930,157 @@ namespace Elections.Backend.Data
                 });
 
             }
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task CheckUsersAsync()
+        {
+            await CheckUserAsync("3602321", "Daniel", "Davila", "danieldavila93@yopmail.com", "3105786", "kr 69c # 21H", UserType.Admin);
+            await CheckUserAsync("513221", "yoes", "lp", "dan21ieldavila92@yopmail.com", "36221", "kr 69c # 21H", UserType.Admin);
+            await CheckUserAsync("123456", "Juan", "Parada", "juanparada@yopmail.com", "36221", "kr 69c # 21H", UserType.Admin);
+        }
+
+        private async Task CheckElectoralCandidatesAsync()
+        {
+            if (!_context.ElectoralCandidate.Any())
+            {
+                _context.ElectoralCandidate.Add(new ElectoralCandidate
+                {
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    Document = "3602321",
+                    RegisterDate = DateTime.Now,
+                    Enabled = true
+
+                });
+                _context.ElectoralCandidate.Add(new ElectoralCandidate
+                {
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    Document = "513221",
+                    RegisterDate = DateTime.Now,
+                    Enabled = true
+
+                });
+                _context.ElectoralCandidate.Add(new ElectoralCandidate
+                {
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    Document = "123456",
+                    RegisterDate = DateTime.Now,
+                    Enabled = true
+
+                });
+            }
+
+            await _context.SaveChangesAsync();
+        }
+        private async Task CheckVotesAsync()
+        {
+            if (!_context.Votes.Any())
+            {
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 1,                    
+                    UserDocument = "1",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 1,
+                    UserDocument = "2",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 1,
+                    UserDocument = "3",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 2,
+                    UserDocument = "4",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 2,
+                    UserDocument = "5",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 3,
+                    UserDocument = "6",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 3,
+                    UserDocument = "7",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 3,
+                    UserDocument = "8",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 3,
+                    UserDocument = "9",
+                    RegisterDate = DateTime.Now
+
+                });
+                _context.Votes.Add(new Vote
+                {
+                    VotingStationId = 1,
+                    ElectoralJourneyId = 14,
+                    ElectoralPositionId = 13,
+                    ElectoralCandidateId = 3,
+                    UserDocument = "10",
+                    RegisterDate = DateTime.Now
+
+                });
+            }
+
             await _context.SaveChangesAsync();
         }
     }

@@ -3,6 +3,7 @@ using Elections.Backend.Repositories.Interfaces;
 using Elections.Backend.UnitsOfWork.Implementations;
 using Elections.Backend.UnitsOfWork.Interfaces;
 using Elections.Shared.Entities;
+using Elections.Shared.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,13 @@ namespace Elections.Backend.Controllers
         public async Task<IActionResult> GetVotesByDocument(string userDocument, int journeyId)
         {
             var response = await _voteRepository.GetVotesByDocument(userDocument, journeyId);
+            return Ok(response);
+        }
+
+        [HttpGet("GetResults/{journeyId:int}")]
+        public async Task<IActionResult> GetResults(int journeyId)
+        {
+            var response = await _voteRepository.GetResultsAsync(journeyId);
             return Ok(response);
         }
 
