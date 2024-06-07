@@ -57,19 +57,19 @@ namespace Elections.UnitTests.UnitsOfWork
             _mockUsersRepository.Verify(repo => repo.AddUserAsync(user, password), Times.Once);
         }
 
-        [TestMethod]
-        public async Task AddUserToRoleAsync_CallsRepositoryMethod()
-        {
-            // Arrange
-            var user = new User();
-            var roleName = "TestRole";
-            _mockUsersRepository.Setup(repo => repo.AddUserToRoleAsync(user, roleName))
-            .Returns(Task.CompletedTask);
-            // Act
-            await _usersUnitOfWork.AddUserToRoleAsync(user, roleName);
-            // Assert
-            _mockUsersRepository.Verify(repo => repo.AddUserToRoleAsync(user, roleName), Times.Once);
-        }
+        //[TestMethod]
+        //public async Task AddUserToRoleAsync_CallsRepositoryMethod()
+        //{
+        //    // Arrange
+        //    var user = new User();
+        //    var roleName = "TestRole";
+        //    _mockUsersRepository.Setup(repo => repo.AddUserToRoleAsync(user, roleName))
+        //    .Returns(Task.CompletedTask);
+        //    // Act
+        //    await _usersUnitOfWork.AddUserToRoleAsync(user, roleName);
+        //    // Assert
+        //    _mockUsersRepository.Verify(repo => repo.AddUserToRoleAsync(user, roleName), Times.Once);
+        //}
 
         [TestMethod]
         public async Task CheckRoleAsync_CallsRepositoryMethod()

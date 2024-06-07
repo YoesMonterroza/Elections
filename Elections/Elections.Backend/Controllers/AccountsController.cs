@@ -55,8 +55,8 @@ namespace Elections.Backend.Controllers
             }, HttpContext.Request.Scheme, _configuration["Url Frontend"]);
 
             var response = _mailHelper.SendMail(user.FullName, user.Email!,
-                $"Orders - Recuperación de contraseña",
-                $"<h1>Orders - Recuperación de contraseña</h1>" +
+                $"Elections - Recuperación de contraseña",
+                $"<h1>Elections - Recuperación de contraseña</h1>" +
                 $"<p>Para recuperar su contraseña, por favor hacer clic 'Recuperar Contraseña':</p>" +
                 $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
 
@@ -191,7 +191,6 @@ namespace Elections.Backend.Controllers
             var result = await _usersUnitOfWork.AddUserAsync(user, model.Password);
             if (result.Succeeded)
             {
-                await _usersUnitOfWork.AddUserToRoleAsync(user, user.UserType.ToString());
                 var response = await SendConfirmationEmailAsync(user);
                 if (response.WasSuccess)
                 {
@@ -262,8 +261,8 @@ namespace Elections.Backend.Controllers
             }, HttpContext.Request.Scheme, _configuration["Url Frontend"]);
 
             return _mailHelper.SendMail(user.FullName, user.Email!,
-                $"Orders - Confirmación de cuenta",
-                $"<h1>Orders - Confirmación de cuenta</h1>" +
+                $"Elections - Confirmación de cuenta",
+                $"<h1>Elections - Confirmación de cuenta</h1>" +
                 $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
                 $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
         }
