@@ -193,8 +193,8 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Elections.Shared.Entities.User", b =>
                 {
                     b.Property<string>("Document")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -441,7 +441,7 @@ namespace Elections.Backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -463,7 +463,7 @@ namespace Elections.Backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -475,7 +475,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
@@ -490,7 +490,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elections.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240602150930_create")]
-    partial class create
+    [Migration("20240607010400_data")]
+    partial class data
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,8 +196,8 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Elections.Shared.Entities.User", b =>
                 {
                     b.Property<string>("Document")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -444,7 +444,7 @@ namespace Elections.Backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -466,7 +466,7 @@ namespace Elections.Backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -478,7 +478,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
@@ -493,7 +493,7 @@ namespace Elections.Backend.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
