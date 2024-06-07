@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Orders.Backend.Helpers;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name =LocalConnection"));
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=AzureConnection"));
 builder.Services.AddTransient<SeedDb>();
 
 //Helpers
@@ -82,6 +83,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
         ClockSkew = TimeSpan.Zero
     });
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration["ConnectionStrings:AzureStorage:blob"]!, preferMsi: true);
+    clientBuilder.AddQueueServiceClient(builder.Configuration["ConnectionStrings:AzureStorage:queue"]!, preferMsi: true);
+});
 
 var app = builder.Build();
 SeedData(app);

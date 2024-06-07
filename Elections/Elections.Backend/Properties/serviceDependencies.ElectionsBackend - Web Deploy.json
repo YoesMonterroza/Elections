@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "ignored": "true",
+      "type": "identityapp"
+    },
+    "apis1": {
+      "ignored": "true",
+      "type": "apis.azure"
+    },
+    "storage1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/ElectionsBackend/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsAzureStorage_2D913DD54B, /subscriptions/4bdebdde-b351-4c42-9308-375d82bcdbde/resourcegroups/ElectionsBackend20240606211819ResourceGroup/providers/Microsoft.Web/sites/ElectionsBackend/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsAzureStorage_BC9DE8E840",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/electionsbackendstorage",
+      "type": "storage.azure",
+      "connectionId": "ConnectionStrings:AzureStorage",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/ElectionsBackend/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsDockerConnection_14DF3AD597",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/electionsbserver/databases/Elections.Backend_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:DockerConnection",
+      "dynamicId": null
+    }
+  }
+}
