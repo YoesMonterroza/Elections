@@ -80,6 +80,8 @@ namespace Elections.Frontend.Pages.Results
                 return false;
             }
             ElectoralJourneys = responseHttp.Response;
+            var getDate = DateTime.Now;
+            ElectoralJourneys = ElectoralJourneys.Where(x => x.DateFinish < getDate).ToList();
             return true;
         }
 
